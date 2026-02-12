@@ -1,0 +1,30 @@
+{
+  "name": "mesh-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx scripts/mesh-bootstrap.ts",
+    "serve": "node dist/scripts/mesh-bootstrap.js",
+    "build": "tsc --noEmit -p tsconfig.json && graphql-mesh build -c .meshrc.ts"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^1.10.0",
+    "@connectrpc/connect": "^1.7.0",
+    "@connectrpc/connect-node": "^1.4.0",
+    "@graphql-mesh/cli": "0.100.21",
+    "@graphql-mesh/config": "^0.108.21",
+    "@graphql-mesh/graphql": "0.104.19",
+    "@graphql-mesh/grpc": "0.108.20",
+    "@graphql-mesh/http": "^0.106.19",
+    "@graphql-mesh/runtime": "^0.106.19",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.9.0",
+    "jose": "^6.1.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0"
+  }
+}
