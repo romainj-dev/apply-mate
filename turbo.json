@@ -1,21 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "connect:codegen": {
-      "cache": false,
-      "outputs": ["packages/shared/connect/gen/**"]
-    },
     "dev": {
-      "dependsOn": ["connect:codegen"],
       "cache": false,
       "persistent": true
     },
     "build": {
-      "dependsOn": ["^build", "connect:codegen"],
+      "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "build/**"]
     },
     "lint": {
-      "dependsOn": ["connect:codegen"],
       "outputs": [],
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -29,7 +23,7 @@
       "env": ["TURBO_HASH"]
     },
     "test": {
-      "dependsOn": ["^build", "connect:codegen"],
+      "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
     }
   }

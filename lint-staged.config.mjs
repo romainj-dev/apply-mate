@@ -1,9 +1,7 @@
 import path from 'node:path'
 
 const GENERATED_PREFIXES = [
-  'apps/mesh-gateway/.mesh/',
   'apps/web/graphql/generated/',
-  'packages/shared/connect/gen/',
 ]
 
 const toRelative = (filePath) =>

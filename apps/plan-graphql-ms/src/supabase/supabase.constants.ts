@@ -1,1 +1,0 @@
-export const SUPABASE_ADMIN_CLIENT = Symbol('SUPABASE_ADMIN_CLIENT')

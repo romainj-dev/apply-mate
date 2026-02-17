@@ -1,4 +1,4 @@
-const PROXY_PATH = '/api/mesh/graphql'
+const PROXY_PATH = '/api/graphql'
 
 export function graphqlFetcher<TData, TVariables>(
   query: string,
@@ -26,7 +26,7 @@ export function graphqlFetcher<TData, TVariables>(
     }
 
     if (!json.data) {
-      throw new Error('No data returned from GraphQL gateway')
+      throw new Error('No data returned from GraphQL API')
     }
 
     return json.data

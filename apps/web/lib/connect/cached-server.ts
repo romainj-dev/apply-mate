@@ -8,8 +8,8 @@ import {
 } from '@/graphql/generated'
 
 /**
- * Cached server-side function to fetch plan pricing from Mesh GraphQL.
- * Uses Next.js 'use cache' directive for request deduplication and revalidation support.
+ * Cached server-side function to fetch plan pricing from GraphQL.
+ * Uses Next.js `use cache` for deduplication and revalidation support.
  */
 export async function getPlanPricingCached(): Promise<GetPlanPricingQuery> {
   'use cache'
@@ -20,7 +20,7 @@ export async function getPlanPricingCached(): Promise<GetPlanPricingQuery> {
     return graphqlRequest<GetPlanPricingQuery>(GetPlanPricingDocument)
   } catch (error) {
     console.warn(
-      `[getPlanPricingCached] prefetching failed. Check that Mesh gateway is running on port ${process.env.MESH_GATEWAY_PORT}.`
+      '[getPlanPricingCached] prefetching failed. Check /api/graphql availability.'
     )
 
     throw error

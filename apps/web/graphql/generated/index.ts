@@ -14,21 +14,11 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: { input: any; output: any; }
-  File: { input: any; output: any; }
-  /** Represents a simple JSON object (no arrays). */
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: { input: any; output: any; }
-  TransportOptions: { input: any; output: any; }
 };
-
-export enum ConnectivityState {
-  Connecting = 'CONNECTING',
-  Idle = 'IDLE',
-  Ready = 'READY',
-  Shutdown = 'SHUTDOWN',
-  TransientFailure = 'TRANSIENT_FAILURE'
-}
 
 export type ExperienceLearningInput = {
   credentialUrl?: InputMaybe<Scalars['String']['input']>;
@@ -150,24 +140,12 @@ export type ExperienceRoleProjectModel = {
 
 export type Mutation = {
   saveExperience: ExperienceMutationResult;
-  upload_v1_UploadService_StartUpload: Maybe<Upload__V1__UploadResult>;
-  upload_v1_UploadService_WatchUpload: Maybe<Array<Maybe<Upload__V1__UploadStatus>>>;
   upsertUser: User;
 };
 
 
 export type MutationSaveExperienceArgs = {
   input: SaveExperienceInput;
-};
-
-
-export type MutationUpload_V1_UploadService_StartUploadArgs = {
-  input: InputMaybe<Scalars['File']['input']>;
-};
-
-
-export type MutationUpload_V1_UploadService_WatchUploadArgs = {
-  input: InputMaybe<Upload__V1__UploadStatusRequest_Input>;
 };
 
 
@@ -188,13 +166,7 @@ export type Query = {
   experienceProfile: Maybe<ExperienceProfileAggregateModel>;
   health: Scalars['String']['output'];
   plans: Array<PlanModel>;
-  upload_v1_UploadService_connectivityState: Maybe<ConnectivityState>;
   user: User;
-};
-
-
-export type QueryUpload_V1_UploadService_ConnectivityStateArgs = {
-  tryToConnect: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -207,28 +179,6 @@ export type SaveExperienceInput = {
   profile: ExperienceProfileInput;
   rawPayload?: InputMaybe<Scalars['JSONObject']['input']>;
   roles?: InputMaybe<Array<ExperienceRoleInput>>;
-};
-
-export type Subscription = {
-  uploadStatus: UploadStatus;
-  upload_v1_UploadService_WatchUpload: Maybe<Upload__V1__UploadStatus>;
-};
-
-
-export type SubscriptionUploadStatusArgs = {
-  uploadId: Scalars['ID']['input'];
-};
-
-
-export type SubscriptionUpload_V1_UploadService_WatchUploadArgs = {
-  input: InputMaybe<Upload__V1__UploadStatusRequest_Input>;
-};
-
-export type UploadStatus = {
-  message: Maybe<Scalars['String']['output']>;
-  progress: Maybe<Scalars['Int']['output']>;
-  status: Scalars['String']['output'];
-  uploadId: Scalars['ID']['output'];
 };
 
 export type UpsertUserRequest = {
@@ -252,23 +202,6 @@ export type User = {
   provider: Scalars['String']['output'];
   providerAccountId: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
-};
-
-export type Upload__V1__UploadResult = {
-  message: Maybe<Scalars['String']['output']>;
-  status: Maybe<Scalars['String']['output']>;
-  upload_id: Maybe<Scalars['String']['output']>;
-};
-
-export type Upload__V1__UploadStatus = {
-  message: Maybe<Scalars['String']['output']>;
-  progress: Maybe<Scalars['Int']['output']>;
-  status: Maybe<Scalars['String']['output']>;
-  upload_id: Maybe<Scalars['String']['output']>;
-};
-
-export type Upload__V1__UploadStatusRequest_Input = {
-  upload_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GetExperienceProfileQueryVariables = Exact<{ [key: string]: never; }>;

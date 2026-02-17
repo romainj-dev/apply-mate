@@ -2,34 +2,19 @@
   "name": "apply-mate-monorepo",
   "version": "0.1.0",
   "private": true,
-  "description": "Monorepo for the ApplyMate platform (Next.js web + Nest.js services)",
+  "description": "ApplyMate web app (Next.js + in-app GraphQL API)",
   "type": "module",
   "packageManager": "pnpm@9.12.2",
-  "pnpm": {
-    "overrides": {
-      "@nestjs/core": "10.4.20",
-      "@nestjs/common": "10.4.20"
-    }
-  },
   "scripts": {
-    "dev": "turbo run dev --parallel",
-    "dev:mesh": "pnpm --filter mesh-gateway dev",
-    "dev:web": "turbo run dev --filter=web",
-    "dev:user-graphql-ms": "turbo run dev --filter=user-graphql-ms",
-    "dev:plan-graphql-ms": "turbo run dev --filter=plan-graphql-ms",
-    "dev:auth-ms": "turbo run dev --filter=auth-ms",
-    "dev:upload-ms": "turbo run dev --filter=upload-ms",
-    "open:mesh": "open http://localhost:4103/graphql",
-    "mesh:build": "pnpm --filter mesh-gateway build",
+    "dev": "pnpm --filter web dev",
+    "dev:web": "pnpm --filter web dev",
     "graphql:codegen:web": "pnpm --filter web codegen:graphql",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "connect:codegen": "pnpm --filter @apply-mate/shared proto:generate",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "cache:clear:next": "rm -rf apps/web/.next",
-    "cache:clear:mesh": "rm -rf apps/mesh-gateway/.mesh"
+    "cache:clear:next": "rm -rf apps/web/.next"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.84.0",

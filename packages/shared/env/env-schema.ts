@@ -1,30 +1,31 @@
 import { z } from 'zod'
 
 export const envSchema = z.object({
-  SUPABASE_URL: z.string().url(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  DATABASE_URL: z.string().min(1),
   NEXT_PUBLIC_APP_URL: z.string().url(),
-  MESH_GATEWAY_PORT: z.coerce.number().int().positive(),
-  USER_GRAPHQL_MS_PORT: z.coerce.number().int().positive(),
-  PLAN_GRAPHQL_MS_PORT: z.coerce.number().int().positive(),
-  UPLOAD_MS_PORT: z.coerce.number().int().positive(),
-  // Auth.js
-  AUTH_SECRET: z.string().min(1),
-  // Token encryption (32 bytes base64-encoded)
-  TOKEN_ENCRYPTION_KEY: z.string().min(1),
-  // Internal API key for service-to-service calls
-  INTERNAL_API_KEY: z.string().min(32),
-})
-
-export const bffEnvSchema = z.object({
-  API_URL: z.string().url(),
-  MESH_GATEWAY_PORT: z.coerce.number().int().positive(),
-  USER_GRAPHQL_MS_PORT: z.coerce.number().int().positive(),
   // Auth.js
   AUTH_SECRET: z.string().min(1),
   AUTH_URL: z.string().url(),
-  // Internal API key for service-to-service calls
-  INTERNAL_API_KEY: z.string().min(32),
+  // Token encryption (32 bytes base64-encoded)
+  TOKEN_ENCRYPTION_KEY: z.string().min(1),
+  // OAuth Providers
+  AUTH_GOOGLE_ID: z.string().min(1).optional(),
+  AUTH_GOOGLE_SECRET: z.string().min(1).optional(),
+  AUTH_LINKEDIN_ID: z.string().min(1).optional(),
+  AUTH_LINKEDIN_SECRET: z.string().min(1).optional(),
+  AUTH_GITHUB_ID: z.string().min(1).optional(),
+  AUTH_GITHUB_SECRET: z.string().min(1).optional(),
+  // Resume parser provider
+  RESUME_PARSER_KEY: z.string().min(1).optional(),
+})
+
+export const bffEnvSchema = z.object({
+  DATABASE_URL: z.string().min(1),
+  // Auth.js
+  AUTH_SECRET: z.string().min(1),
+  AUTH_URL: z.string().url(),
+  // Token encryption (32 bytes base64-encoded)
+  TOKEN_ENCRYPTION_KEY: z.string().min(1),
   // OAuth Providers
   AUTH_GOOGLE_ID: z.string().min(1).optional(),
   AUTH_GOOGLE_SECRET: z.string().min(1).optional(),

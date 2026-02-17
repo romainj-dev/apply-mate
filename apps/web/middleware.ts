@@ -23,7 +23,7 @@ export const config = {
      * - /settings and sub-routes
      * - /profile and sub-routes
      *
-     * Public routes (/, /auth, /api/mesh, etc.) are NOT matched.
+     * Public routes (/, /auth, /api/graphql, etc.) are NOT matched.
      */
     '/dashboard/:path*',
     '/settings/:path*',

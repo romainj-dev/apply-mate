@@ -1,12 +1,7 @@
 import 'server-only'
 
-/**
- * GraphQL client for server-side requests (RSC, API routes, cached functions).
- * Connects directly to the Mesh gateway and attaches session auth.
- */
-
 import { FORWARDED_HEADERS } from '@/lib/connect/forwarded-headers'
-import { parseBffEnv } from '@shared/env'
+import { parseBffEnv } from '@shared/env/env-schema'
 import { SignJWT } from 'jose'
 import { print } from 'graphql'
 import type { DocumentNode } from 'graphql'
@@ -76,24 +71,13 @@ export class GraphqlRequestError extends Error {
   }
 }
 
-function getMeshGraphqlUrl(): string {
-  return `${bffEnv.API_URL}:${bffEnv.MESH_GATEWAY_PORT}/graphql`
+function getGraphqlUrl(): string {
+  return `${bffEnv.AUTH_URL}/api/graphql`
 }
 
 /**
- * Build Authorization header with a signed JWT for the given user.
- * Returns empty object if no user is provided (for unauthenticated requests).
- *
- * IMPORTANT: This module does NOT call auth() internally. Callers must provide
- * the authenticated user explicitly via the `user` option.
- *
- * Why? NextAuth's auth() relies on cookies from the request context. In Next.js,
- * this context can be "lost" when auth() is called deep in nested async functions
- * (e.g., Server Actions calling helpers that call graphqlRequest). The auth() call
- * silently returns null even when the user is authenticated.
- *
- * By requiring callers to pass the user explicitly, we ensure auth is resolved
- * once at the entry point (route handler, server action) where context is available.
+ * Builds Authorization header with a signed JWT for the given user.
+ * Returns an empty object for unauthenticated/public requests.
  */
 async function buildAuthHeaders(
   user?: AuthUser | null
@@ -128,7 +112,7 @@ export async function graphqlRequest<T>(
   options?: GraphqlRequestOptions
 ): Promise<T> {
   const queryString = typeof query === 'string' ? query : print(query)
-  const url = getMeshGraphqlUrl()
+  const url = getGraphqlUrl()
 
   const authHeaders = await buildAuthHeaders(options?.user)
   const headers = {
@@ -150,7 +134,7 @@ export async function graphqlRequest<T>(
   } catch {
     throw new GraphqlRequestError('Failed to parse GraphQL response', {
       status: 502,
-      statusText: 'Bad Gateway',
+      statusText: 'Internal Server Error',
     })
   }
 
@@ -170,17 +154,17 @@ export async function graphqlRequest<T>(
   if (json?.errors?.length) {
     const message = json.errors.map((e) => e.message).join(', ')
     throw new GraphqlRequestError(`GraphQL errors: ${message}`, {
-      status: 502,
-      statusText: 'Bad Gateway',
+      status: 500,
+      statusText: 'Internal Server Error',
       errors: json.errors,
     })
   }
 
   // No data returned
   if (!json?.data) {
-    throw new GraphqlRequestError('No data returned from GraphQL gateway', {
-      status: 502,
-      statusText: 'Bad Gateway',
+    throw new GraphqlRequestError('No data returned from GraphQL API', {
+      status: 500,
+      statusText: 'Internal Server Error',
     })
   }
 

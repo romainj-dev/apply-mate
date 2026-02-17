@@ -3,7 +3,7 @@ import Google from 'next-auth/providers/google'
 import LinkedIn from 'next-auth/providers/linkedin'
 import GitHub from 'next-auth/providers/github'
 import { parseBffEnv } from '@shared/env/env-schema'
-import { upsertUser } from './upsert-user'
+import { upsertUserFromOAuth } from '@/lib/db/services/user-service'
 
 const env = parseBffEnv()
 
@@ -43,9 +43,9 @@ export const authConfig = {
       if (account && user) {
         token.provider = account.provider as 'google' | 'linkedin' | 'github'
 
-        try {
+        try {          
           // Upsert user in database and get UUID
-          const dbUser = await upsertUser({
+          const dbUser = await upsertUserFromOAuth({
             provider: account.provider as 'google' | 'linkedin' | 'github',
             providerAccountId: account.providerAccountId ?? account.id,
             email: user.email ?? '',
