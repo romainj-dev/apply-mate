@@ -1,4 +1,3 @@
-/** @type {import('prettier').Config} */
 export const prettierConfig = {
   semi: false,
   singleQuote: true,

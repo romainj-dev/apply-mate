@@ -2,7 +2,7 @@ import 'server-only'
 
 import { ResumeParserAppProvider } from './resume-parser-app'
 
-import { parseBffEnv } from '@shared/env/env-schema'
+import { parseBffEnv } from '@shared/env'
 const env = parseBffEnv()
 
 /**

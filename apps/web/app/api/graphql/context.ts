@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db/client'
-import { parseBffEnv } from '@shared/env/env-schema'
+import { parseBffEnv } from '@shared/env'
 import { jwtVerify } from 'jose'
 
 const env = parseBffEnv()

@@ -1,7 +1,6 @@
 import 'server-only'
 
-import { FORWARDED_HEADERS } from '@/lib/connect/forwarded-headers'
-import { parseBffEnv } from '@shared/env/env-schema'
+import { parseBffEnv } from '@shared/env'
 import { SignJWT } from 'jose'
 import { print } from 'graphql'
 import type { DocumentNode } from 'graphql'
@@ -32,23 +31,6 @@ export interface GraphqlRequestOptions {
    * request. Pass null/undefined for unauthenticated requests (public endpoints).
    */
   user?: AuthUser | null
-}
-
-/**
- * Extract forwardable headers from an incoming request.
- * Filters to only include headers that should be propagated.
- */
-export function extractForwardableHeaders(
-  incomingHeaders: Record<string, string>
-): Record<string, string> {
-  const forwarded: Record<string, string> = {}
-  for (const key of FORWARDED_HEADERS) {
-    const value = incomingHeaders[key.toLowerCase()]
-    if (value) {
-      forwarded[key] = value
-    }
-  }
-  return forwarded
 }
 
 export class GraphqlRequestError extends Error {
@@ -98,12 +80,6 @@ async function buildAuthHeaders(
     .sign(secret)
 
   return { Authorization: `Bearer ${token}` }
-}
-
-export function buildForwardableHeaders(
-  incomingHeaders: Record<string, string>
-): Record<string, string> {
-  return extractForwardableHeaders(incomingHeaders)
 }
 
 export async function graphqlRequest<T>(

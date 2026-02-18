@@ -26,7 +26,7 @@
  *   already acts as a singleton within each serverless process, and
  *   there is no HMR.
  */
-import { parseBffEnv } from '@shared/env/env-schema'
+import { parseBffEnv } from '@shared/env'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import * as schema from './schema'

@@ -2,7 +2,7 @@ import type { NextAuthConfig } from 'next-auth'
 import Google from 'next-auth/providers/google'
 import LinkedIn from 'next-auth/providers/linkedin'
 import GitHub from 'next-auth/providers/github'
-import { parseBffEnv } from '@shared/env/env-schema'
+import { parseBffEnv } from '@shared/env'
 
 const env = parseBffEnv()
 

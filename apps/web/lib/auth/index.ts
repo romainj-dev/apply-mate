@@ -2,7 +2,7 @@ import 'server-only'
 
 import NextAuth from 'next-auth'
 import { authConfig } from './config'
-import { parseBffEnv } from '@shared/env/env-schema'
+import { parseBffEnv } from '@shared/env'
 import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { upsertUserFromOAuth } from '@/lib/db/services/user-service'
