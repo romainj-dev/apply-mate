@@ -17,7 +17,7 @@ status tracking) powered by custom workflows.
 ├── apps/
 │   └── web/
 ├── packages/
-│   ├── shared/          # env + crypto helpers
+│   ├── shared/          # env helpers + zod schemas
 │   └── shared/schemas/  # zod domain schemas
 ├── supabase/migrations/ # source-of-truth SQL schema
 └── docs/
@@ -35,7 +35,6 @@ pnpm install
    - `DATABASE_URL` (Supabase pooled connection string)
    - `AUTH_SECRET`
    - `AUTH_URL` (e.g. `http://localhost:3000`)
-   - `TOKEN_ENCRYPTION_KEY` (base64, 32-byte decoded key)
    - `NEXT_PUBLIC_APP_URL`
    - Optional OAuth + parser keys:
      - `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`

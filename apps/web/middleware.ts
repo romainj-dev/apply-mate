@@ -1,19 +1,7 @@
-import { auth } from '@/lib/auth'
-import { NextResponse } from 'next/server'
+import NextAuth from 'next-auth'
+import { authConfig } from '@/lib/auth/config'
 
-export default auth((req) => {
-  const { nextUrl } = req
-  const isAuthenticated = !!req.auth
-
-  // Redirect unauthenticated users from protected routes to login
-  if (!isAuthenticated) {
-    const loginUrl = new URL('/auth', nextUrl)
-    loginUrl.searchParams.set('callbackUrl', nextUrl.pathname)
-    return NextResponse.redirect(loginUrl)
-  }
-
-  return NextResponse.next()
-})
+export default NextAuth(authConfig).auth
 
 export const config = {
   matcher: [
@@ -24,6 +12,8 @@ export const config = {
      * - /profile and sub-routes
      *
      * Public routes (/, /auth, /api/graphql, etc.) are NOT matched.
+     * Unauthenticated users are redirected to /auth by the
+     * `authorized` callback in auth.config.ts.
      */
     '/dashboard/:path*',
     '/settings/:path*',

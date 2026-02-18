@@ -6,8 +6,6 @@ export const envSchema = z.object({
   // Auth.js
   AUTH_SECRET: z.string().min(1),
   AUTH_URL: z.string().url(),
-  // Token encryption (32 bytes base64-encoded)
-  TOKEN_ENCRYPTION_KEY: z.string().min(1),
   // OAuth Providers
   AUTH_GOOGLE_ID: z.string().min(1).optional(),
   AUTH_GOOGLE_SECRET: z.string().min(1).optional(),
@@ -24,8 +22,6 @@ export const bffEnvSchema = z.object({
   // Auth.js
   AUTH_SECRET: z.string().min(1),
   AUTH_URL: z.string().url(),
-  // Token encryption (32 bytes base64-encoded)
-  TOKEN_ENCRYPTION_KEY: z.string().min(1),
   // OAuth Providers
   AUTH_GOOGLE_ID: z.string().min(1).optional(),
   AUTH_GOOGLE_SECRET: z.string().min(1).optional(),

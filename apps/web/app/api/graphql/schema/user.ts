@@ -1,8 +1,4 @@
-import {
-  findUserById,
-  upsertUserFromOAuth,
-  type UpsertUserFromOAuthInput,
-} from '@/lib/db/services/user-service'
+import { findUserById } from '@/lib/db/services/user-service'
 import { builder } from './builder'
 
 export const UserRef = builder.objectRef<{
@@ -28,19 +24,6 @@ UserRef.implement({
     providerAccountId: t.exposeString('providerAccountId'),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
-  }),
-})
-
-const UpsertUserInput = builder.inputType('UpsertUserRequest', {
-  fields: (t) => ({
-    provider: t.string({ required: true }),
-    providerAccountId: t.string({ required: true }),
-    email: t.string({ required: true }),
-    fullName: t.string({ required: true }),
-    avatarUrl: t.string(),
-    accessToken: t.string(),
-    refreshToken: t.string(),
-    tokenExpiresAt: t.field({ type: 'DateTime' }),
   }),
 })
 
@@ -76,24 +59,6 @@ builder.queryField('user', (t) =>
         throw new Error(`User ${args.id} not found`)
       }
 
-      return user
-    },
-  })
-)
-
-builder.mutationField('upsertUser', (t) =>
-  t.field({
-    type: UserRef,
-    args: {
-      input: t.arg({ type: UpsertUserInput, required: true }),
-    },
-    resolve: async (_root, args) => {
-      const input = args.input as UpsertUserFromOAuthInput
-      const { id } = await upsertUserFromOAuth(input)
-      const user = await findUserById(id)
-      if (!user) {
-        throw new Error('User upsert failed')
-      }
       return user
     },
   })

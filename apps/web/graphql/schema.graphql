@@ -128,7 +128,6 @@ scalar JSONObject
 
 type Mutation {
   saveExperience(input: SaveExperienceInput!): ExperienceMutationResult!
-  upsertUser(input: UpsertUserRequest!): User!
 }
 
 type PlanModel {
@@ -152,17 +151,6 @@ input SaveExperienceInput {
   profile: ExperienceProfileInput!
   rawPayload: JSONObject
   roles: [ExperienceRoleInput!]
-}
-
-input UpsertUserRequest {
-  accessToken: String
-  avatarUrl: String
-  email: String!
-  fullName: String!
-  provider: String!
-  providerAccountId: String!
-  refreshToken: String
-  tokenExpiresAt: DateTime
 }
 
 type User {

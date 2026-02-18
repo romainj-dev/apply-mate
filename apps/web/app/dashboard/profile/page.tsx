@@ -28,16 +28,14 @@ export default async function ProfilePage() {
           <div className="bg-card rounded-lg border p-6">
             <h2 className="text-xl font-semibold mb-4">Welcome back!</h2>
             <div className="space-y-2">
-              {user.image && (
-                <Image
-                  src={user.image}
+              <Image
+                  src={user.image ?? ''}
                   alt={user.name || 'User avatar'}
                   className="w-16 h-16 rounded-full mb-4"
                   sizes="64px"
                   width={64}
                   height={64}
                 />
-              )}
               <p>
                 <span className="font-medium">Name:</span>{' '}
                 {user.name || 'Not provided'}

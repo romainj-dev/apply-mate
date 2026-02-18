@@ -140,17 +140,11 @@ export type ExperienceRoleProjectModel = {
 
 export type Mutation = {
   saveExperience: ExperienceMutationResult;
-  upsertUser: User;
 };
 
 
 export type MutationSaveExperienceArgs = {
   input: SaveExperienceInput;
-};
-
-
-export type MutationUpsertUserArgs = {
-  input: UpsertUserRequest;
 };
 
 export type PlanModel = {
@@ -179,17 +173,6 @@ export type SaveExperienceInput = {
   profile: ExperienceProfileInput;
   rawPayload?: InputMaybe<Scalars['JSONObject']['input']>;
   roles?: InputMaybe<Array<ExperienceRoleInput>>;
-};
-
-export type UpsertUserRequest = {
-  accessToken?: InputMaybe<Scalars['String']['input']>;
-  avatarUrl?: InputMaybe<Scalars['String']['input']>;
-  email: Scalars['String']['input'];
-  fullName: Scalars['String']['input'];
-  provider: Scalars['String']['input'];
-  providerAccountId: Scalars['String']['input'];
-  refreshToken?: InputMaybe<Scalars['String']['input']>;
-  tokenExpiresAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type User = {

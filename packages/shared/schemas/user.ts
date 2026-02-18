@@ -25,9 +25,6 @@ export const upsertUserInputSchema = z.object({
   email: z.string().email(),
   fullName: z.string().min(1).max(160),
   avatarUrl: z.string().url().nullable().optional(),
-  accessToken: z.string().nullable().optional(),
-  refreshToken: z.string().nullable().optional(),
-  tokenExpiresAt: z.coerce.date().nullable().optional(),
 })
 
 export type User = z.infer<typeof userSchema>

@@ -3,7 +3,6 @@ import Google from 'next-auth/providers/google'
 import LinkedIn from 'next-auth/providers/linkedin'
 import GitHub from 'next-auth/providers/github'
 import { parseBffEnv } from '@shared/env/env-schema'
-import { upsertUserFromOAuth } from '@/lib/db/services/user-service'
 
 const env = parseBffEnv()
 
@@ -36,60 +35,14 @@ export const authConfig = {
   ],
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, user, account }) {
-      // On initial sign-in (account and user exist)
-      if (account && user) {
-        token.provider = account.provider as 'google' | 'linkedin' | 'github'
-
-        try {          
-          // Upsert user in database and get UUID
-          const dbUser = await upsertUserFromOAuth({
-            provider: account.provider as 'google' | 'linkedin' | 'github',
-            providerAccountId: account.providerAccountId ?? account.id,
-            email: user.email ?? '',
-            fullName: user.name ?? user.email ?? '',
-            avatarUrl: user.image ?? null,
-            accessToken: account.access_token ?? null,
-            refreshToken: account.refresh_token ?? null,
-            tokenExpiresAt: account.expires_at
-              ? new Date(account.expires_at * 1000)
-              : null,
-          })
-
-          // Store database UUID in token
-          token.dbUserId = dbUser.id
-        } catch (error) {
-          console.error('Failed to upsert user:', error)
-          // Continue with provider ID as fallback
-          token.dbUserId = user.id
-        }
-
-        // Set user fields on initial sign-in
-        token.id = user.id
-        token.email = user.email
-        token.name = user.name
-        token.image = user.image
-      }
-
-      // On subsequent token refreshes, dbUserId is already in token
-      return token
-    },
-    session({ session, token }) {
-      if (session.user) {
-        // Use database UUID if available, otherwise fallback to provider ID
-        session.user.id = (token.dbUserId as string) || (token.id as string)
-        session.user.email = token.email as string
-        session.user.name = token.name as string
-        session.user.image = token.image as string | null
-        session.user.provider = token.provider as
-          | 'google'
-          | 'linkedin'
-          | 'github'
-          | undefined
-      }
-      return session
+    authorized({ auth }) {
+      // Protected routes are defined by the middleware matcher.
+      // This callback only runs on matched routes, so we just
+      // enforce that the user is authenticated.
+      return !!auth
     },
     redirect({ url, baseUrl }) {
       // If redirecting to a relative URL, make it absolute

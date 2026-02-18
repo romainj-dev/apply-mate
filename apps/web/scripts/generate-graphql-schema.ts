@@ -15,7 +15,6 @@ function setupEnvironmentForSchemaGeneration(): void {
     DATABASE_URL: 'postgres://postgres:postgres@localhost:5432/postgres',
     AUTH_SECRET: 'schema-generation-placeholder',
     AUTH_URL: 'http://localhost:3000',
-    TOKEN_ENCRYPTION_KEY: Buffer.alloc(32).toString('base64'),
   } as const
 
   for (const [key, value] of Object.entries(defaults)) {
