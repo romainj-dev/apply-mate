@@ -6,7 +6,17 @@
   "type": "module",
   "main": "./env/index.ts",
   "types": "./env/index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3"
   }
 }

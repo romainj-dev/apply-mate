@@ -1,9 +1,9 @@
 export const prettierConfig = {
   semi: false,
   singleQuote: true,
-  trailingComma: 'all',
+  trailingComma: 'es5',
   tabWidth: 2,
   printWidth: 80,
-  plugins: ['prettier-plugin-tailwindcss']
+  arrowParens: 'always',
+  endOfLine: 'lf',
 }
-

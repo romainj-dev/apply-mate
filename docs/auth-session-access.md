@@ -46,13 +46,13 @@ flowchart TB
 
 ## Route and API protection
 
-| Layer | Mechanism |
-|---|---|
-| Protected pages | Middleware matcher + `authorized` callback |
-| Server Components | `getSession()` check before data access |
-| Server Actions | `getSession()` check at the top of the action |
-| GraphQL API | Per-resolver `context.user` check (see below) |
-| Auth endpoints | `/api/auth/*` — handled by NextAuth, public by design |
+| Layer             | Mechanism                                             |
+| ----------------- | ----------------------------------------------------- |
+| Protected pages   | Middleware matcher + `authorized` callback            |
+| Server Components | `getSession()` check before data access               |
+| Server Actions    | `getSession()` check at the top of the action         |
+| GraphQL API       | Per-resolver `context.user` check (see below)         |
+| Auth endpoints    | `/api/auth/*` — handled by NextAuth, public by design |
 
 ## GraphQL auth model
 
@@ -63,14 +63,14 @@ flowchart TB
 - Context sets `user: null` when unauthenticated; resolvers decide
   whether to allow or reject.
 
-| Operation | Auth required |
-|---|---|
-| `health` | No |
-| `plans` | No |
-| `currentUser` | Yes (returns `null` if unauthenticated) |
-| `user(id)` | Yes + ownership check (`user.id === args.id`) |
-| `experienceProfile` | Yes |
-| `saveExperience` | Yes |
+| Operation           | Auth required                                 |
+| ------------------- | --------------------------------------------- |
+| `health`            | No                                            |
+| `plans`             | No                                            |
+| `currentUser`       | Yes (returns `null` if unauthenticated)       |
+| `user(id)`          | Yes + ownership check (`user.id === args.id`) |
+| `experienceProfile` | Yes                                           |
+| `saveExperience`    | Yes                                           |
 
 ## User upsert flow
 

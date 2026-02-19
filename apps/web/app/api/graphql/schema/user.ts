@@ -3,9 +3,8 @@ import type { InferSelectModel } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
 import { builder } from './builder'
 
-export const UserRef = builder.objectRef<
-  InferSelectModel<typeof schema.users>
->('User')
+export const UserRef =
+  builder.objectRef<InferSelectModel<typeof schema.users>>('User')
 
 UserRef.implement({
   fields: (t) => ({

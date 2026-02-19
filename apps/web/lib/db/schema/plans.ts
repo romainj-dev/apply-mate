@@ -30,6 +30,9 @@ export const plans = pgTable(
   },
   (table) => ({
     codeIdx: index('plans_code_idx').on(table.code),
-    priceNonNegative: check('plans_price_nonnegative', sql`${table.price} >= 0`),
+    priceNonNegative: check(
+      'plans_price_nonnegative',
+      sql`${table.price} >= 0`
+    ),
   })
 )

@@ -20,7 +20,9 @@ export interface GraphqlContext {
   } | null
 }
 
-async function getUserFromJwt(request: Request): Promise<GraphqlContext['user']> {
+async function getUserFromJwt(
+  request: Request
+): Promise<GraphqlContext['user']> {
   const authHeader = request.headers.get('authorization')
   if (!authHeader?.startsWith('Bearer ')) {
     return null

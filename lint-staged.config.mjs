@@ -2,6 +2,7 @@ import path from 'node:path'
 
 const GENERATED_PREFIXES = [
   'apps/web/graphql/generated/',
+  'apps/web/graphql/schema.graphql',
 ]
 
 const toRelative = (filePath) =>

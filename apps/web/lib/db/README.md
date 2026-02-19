@@ -58,3 +58,36 @@ missing required columns at the service insert call if they are not handled.
 - Drizzle tables/relations match migration SQL.
 - `pnpm tsc --noEmit` passes.
 - `pnpm codegen:graphql` was re-run if GraphQL surface changed.
+
+---
+
+## DB client configuration
+
+Drizzle + `postgres.js` is configured for Supabase Supavisor in
+**transaction mode** behind a pooler connection string.
+
+### Why transaction mode
+
+On Vercel (serverless), each cold start can spawn a new Node process.
+Direct PostgreSQL connections can quickly hit the free-tier limit (60).
+Supavisor multiplexes many short-lived client connections into a smaller
+pool of real PostgreSQL backends (free tier allows 200 pooled connections).
+
+### Key settings
+
+- `prepare: false`: required for transaction-mode pooling because prepared
+  statements are session-scoped, while backend connections are reused across
+  clients between transactions.
+- `max: 4`: caps concurrent PostgreSQL connections _per serverless function
+  instance_. SSR page renders with parallel prefetching rarely exceed 3-4
+  concurrent queries, so 4 keeps headroom low. With around 10 warm Vercel
+  instances at peak, this is around 40 Supavisor connections, well within
+  the 200-connection limit.
+
+### Dev singleton (`globalForDb`)
+
+In development, Next.js HMR re-evaluates this module on each save. Caching
+the client on `globalThis` prevents connection leaks.
+
+In production, this guard is unnecessary: the module-level `const` already
+acts as a singleton within each serverless process, and there is no HMR.

@@ -15,6 +15,6 @@ export default defineConfig([
     'build/**',
     'next-env.d.ts',
     'graphql/generated/**',
+    'graphql/schema.graphql',
   ]),
 ])
-

@@ -20,7 +20,9 @@ export const users = pgTable(
     avatarUrl: text('avatar_url'),
     metadata: jsonb('metadata').$type<Record<string, unknown> | null>(),
     provider: varchar('provider', { length: 32 }).notNull(),
-    providerAccountId: varchar('provider_account_id', { length: 255 }).notNull(),
+    providerAccountId: varchar('provider_account_id', {
+      length: 255,
+    }).notNull(),
     accessToken: text('access_token'),
     refreshToken: text('refresh_token'),
     tokenExpiresAt: timestamp('token_expires_at', {

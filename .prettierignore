@@ -10,3 +10,7 @@ package-lock.json
 yarn.lock
 .env*.local
 
+# GraphQL codegen outputs
+apps/web/graphql/generated/
+apps/web/graphql/schema.graphql
+

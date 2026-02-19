@@ -56,7 +56,10 @@ ExperienceRoleRef.implement({
     teamStructure: t.exposeString('teamStructure', { nullable: true }),
     keyAchievements: t.exposeStringList('keyAchievements'),
     missingDetails: t.exposeString('missingDetails', { nullable: true }),
-    customFields: t.expose('customFields', { type: 'JSONObject', nullable: true }),
+    customFields: t.expose('customFields', {
+      type: 'JSONObject',
+      nullable: true,
+    }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
     projects: t.field({
@@ -100,7 +103,10 @@ ExperienceProfileRef.implement({
     location: t.exposeString('location', { nullable: true }),
     yearsOfExperience: t.exposeInt('yearsOfExperience', { nullable: true }),
     skills: t.exposeStringList('skills'),
-    customFields: t.expose('customFields', { type: 'JSONObject', nullable: true }),
+    customFields: t.expose('customFields', {
+      type: 'JSONObject',
+      nullable: true,
+    }),
     ingestionMetadata: t.expose('ingestionMetadata', {
       type: 'JSONObject',
       nullable: true,

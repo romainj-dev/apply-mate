@@ -29,13 +29,13 @@ export default async function ProfilePage() {
             <h2 className="text-xl font-semibold mb-4">Welcome back!</h2>
             <div className="space-y-2">
               <Image
-                  src={user.image ?? ''}
-                  alt={user.name || 'User avatar'}
-                  className="w-16 h-16 rounded-full mb-4"
-                  sizes="64px"
-                  width={64}
-                  height={64}
-                />
+                src={user.image ?? ''}
+                alt={user.name || 'User avatar'}
+                className="w-16 h-16 rounded-full mb-4"
+                sizes="64px"
+                width={64}
+                height={64}
+              />
               <p>
                 <span className="font-medium">Name:</span>{' '}
                 {user.name || 'Not provided'}

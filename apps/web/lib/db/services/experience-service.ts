@@ -73,7 +73,10 @@ export async function getExperienceProfileByUserId(userId: string) {
     .orderBy(desc(userExperienceLearning.startDate))
 
   const roleIds = roles.map((role) => role.id)
-  const projectsByRoleId = new Map<string, Array<(typeof userExperienceRoleProjects.$inferSelect)>>()
+  const projectsByRoleId = new Map<
+    string,
+    Array<typeof userExperienceRoleProjects.$inferSelect>
+  >()
 
   if (roleIds.length > 0) {
     const projects = await db
@@ -162,9 +165,9 @@ export async function saveExperienceByUserId(
       await tx
         .delete(userExperienceRoleProjects)
         .where(inArray(userExperienceRoleProjects.roleId, existingRoleIds))
-      await tx.delete(userExperienceRoles).where(
-        inArray(userExperienceRoles.id, existingRoleIds)
-      )
+      await tx
+        .delete(userExperienceRoles)
+        .where(inArray(userExperienceRoles.id, existingRoleIds))
     }
 
     const existingLearning = await tx

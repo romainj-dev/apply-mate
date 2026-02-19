@@ -10,7 +10,13 @@ const upsertUserInputSchema = createInsertSchema(users, {
   email: z.string().email(),
   fullName: z.string().min(1).max(160),
   avatarUrl: z.string().url().nullable().optional(),
-}).pick({ provider: true, providerAccountId: true, email: true, fullName: true, avatarUrl: true })
+}).pick({
+  provider: true,
+  providerAccountId: true,
+  email: true,
+  fullName: true,
+  avatarUrl: true,
+})
 
 const userIdSchema = z.string().uuid()
 

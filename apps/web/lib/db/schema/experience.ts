@@ -36,10 +36,14 @@ export const userExperienceProfiles = pgTable(
     location: text('location'),
     yearsOfExperience: numeric('years_of_experience', { mode: 'number' }),
     skills: text('skills').array().$type<string[]>().default([]).notNull(),
-    customFields: jsonb('custom_fields').$type<Record<string, unknown> | null>(),
-    ingestionMetadata: jsonb('ingestion_metadata').$type<
-      Record<string, unknown> | null
-    >(),
+    customFields: jsonb('custom_fields').$type<Record<
+      string,
+      unknown
+    > | null>(),
+    ingestionMetadata: jsonb('ingestion_metadata').$type<Record<
+      string,
+      unknown
+    > | null>(),
     rawPayload: jsonb('raw_payload').$type<Record<string, unknown> | null>(),
     createdAt: timestamp('created_at', {
       withTimezone: true,
@@ -55,7 +59,9 @@ export const userExperienceProfiles = pgTable(
       .notNull(),
   },
   (table) => ({
-    userUnique: unique('user_experience_profiles_user_id_unique').on(table.userId),
+    userUnique: unique('user_experience_profiles_user_id_unique').on(
+      table.userId
+    ),
     userIdIdx: index('user_experience_profiles_user_id_idx').on(table.userId),
   })
 )
@@ -78,7 +84,11 @@ export const userExperienceRoles = pgTable(
     durationLabel: text('duration_label'),
     status: experienceStatusEnum('status').default('incomplete'),
     summary: text('summary'),
-    techStack: text('tech_stack').array().$type<string[]>().default([]).notNull(),
+    techStack: text('tech_stack')
+      .array()
+      .$type<string[]>()
+      .default([])
+      .notNull(),
     methodologies: text('methodologies')
       .array()
       .$type<string[]>()
@@ -91,7 +101,10 @@ export const userExperienceRoles = pgTable(
       .default([])
       .notNull(),
     missingDetails: text('missing_details'),
-    customFields: jsonb('custom_fields').$type<Record<string, unknown> | null>(),
+    customFields: jsonb('custom_fields').$type<Record<
+      string,
+      unknown
+    > | null>(),
     createdAt: timestamp('created_at', {
       withTimezone: true,
       mode: 'date',
@@ -106,10 +119,9 @@ export const userExperienceRoles = pgTable(
       .notNull(),
   },
   (table) => ({
-    profileStartDateIdx: index('user_experience_roles_profile_id_start_date_idx').on(
-      table.profileId,
-      table.startDate
-    ),
+    profileStartDateIdx: index(
+      'user_experience_roles_profile_id_start_date_idx'
+    ).on(table.profileId, table.startDate),
   })
 )
 
@@ -123,7 +135,11 @@ export const userExperienceRoleProjects = pgTable(
     title: text('title').notNull(),
     period: text('period'),
     description: text('description'),
-    achievements: text('achievements').array().$type<string[]>().default([]).notNull(),
+    achievements: text('achievements')
+      .array()
+      .$type<string[]>()
+      .default([])
+      .notNull(),
     createdAt: timestamp('created_at', {
       withTimezone: true,
       mode: 'date',
@@ -138,7 +154,9 @@ export const userExperienceRoleProjects = pgTable(
       .notNull(),
   },
   (table) => ({
-    roleIdIdx: index('user_experience_role_projects_role_id_idx').on(table.roleId),
+    roleIdIdx: index('user_experience_role_projects_role_id_idx').on(
+      table.roleId
+    ),
   })
 )
 
@@ -171,7 +189,9 @@ export const userExperienceLearning = pgTable(
       .notNull(),
   },
   (table) => ({
-    profileIdIdx: index('user_experience_learning_profile_id_idx').on(table.profileId),
+    profileIdIdx: index('user_experience_learning_profile_id_idx').on(
+      table.profileId
+    ),
   })
 )
 
