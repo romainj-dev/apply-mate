@@ -1,15 +1,20 @@
 import { db } from '@/lib/db/client'
 import { users } from '@/lib/db/schema'
-import { upsertUserInputSchema, userIdSchema } from '@shared/schemas/user'
 import { eq } from 'drizzle-orm'
+import { createInsertSchema } from 'drizzle-zod'
+import { z } from 'zod'
 
-export type UpsertUserFromOAuthInput = {
-  provider: 'google' | 'linkedin' | 'github'
-  providerAccountId: string
-  email: string
-  fullName: string
-  avatarUrl?: string | null
-}
+const upsertUserInputSchema = createInsertSchema(users, {
+  provider: z.enum(['google', 'linkedin', 'github']),
+  providerAccountId: z.string().min(1).max(255),
+  email: z.string().email(),
+  fullName: z.string().min(1).max(160),
+  avatarUrl: z.string().url().nullable().optional(),
+}).pick({ provider: true, providerAccountId: true, email: true, fullName: true, avatarUrl: true })
+
+const userIdSchema = z.string().uuid()
+
+export type UpsertUserFromOAuthInput = z.infer<typeof upsertUserInputSchema>
 
 export async function upsertUserFromOAuth(
   input: UpsertUserFromOAuthInput

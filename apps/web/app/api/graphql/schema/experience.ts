@@ -3,18 +3,18 @@ import {
   saveExperienceByUserId,
   type SaveExperienceInput,
 } from '@/lib/db/services/experience-service'
+import type { InferSelectModel } from 'drizzle-orm'
+import * as schema from '@/lib/db/schema'
 import { builder } from './builder'
 
-const ExperienceRoleProjectRef = builder.objectRef<{
-  id: string
-  roleId: string
-  title: string
-  period: string | null
-  description: string | null
-  achievements: string[]
-  createdAt: Date
-  updatedAt: Date
-}>('ExperienceRoleProjectModel')
+type ProfileRow = InferSelectModel<typeof schema.userExperienceProfiles>
+type RoleRow = InferSelectModel<typeof schema.userExperienceRoles>
+type ProjectRow = InferSelectModel<typeof schema.userExperienceRoleProjects>
+type LearningRow = InferSelectModel<typeof schema.userExperienceLearning>
+
+const ExperienceRoleProjectRef = builder.objectRef<ProjectRow>(
+  'ExperienceRoleProjectModel'
+)
 
 ExperienceRoleProjectRef.implement({
   fields: (t) => ({
@@ -29,39 +29,9 @@ ExperienceRoleProjectRef.implement({
   }),
 })
 
-const ExperienceRoleRef = builder.objectRef<{
-  id: string
-  profileId: string
-  title: string
-  company: string
-  employmentType: string | null
-  location: string | null
-  startDate: string | null
-  endDate: string | null
-  isCurrent: boolean | null
-  periodLabel: string | null
-  durationLabel: string | null
-  status: 'complete' | 'incomplete' | null
-  summary: string | null
-  techStack: string[]
-  methodologies: string[]
-  teamStructure: string | null
-  keyAchievements: string[]
-  missingDetails: string | null
-  customFields: Record<string, unknown> | null
-  createdAt: Date
-  updatedAt: Date
-  projects: Array<{
-    id: string
-    roleId: string
-    title: string
-    period: string | null
-    description: string | null
-    achievements: string[]
-    createdAt: Date
-    updatedAt: Date
-  }>
-}>('ExperienceRoleModel')
+const ExperienceRoleRef = builder.objectRef<
+  RoleRow & { projects: ProjectRow[] }
+>('ExperienceRoleModel')
 
 ExperienceRoleRef.implement({
   fields: (t) => ({
@@ -96,20 +66,9 @@ ExperienceRoleRef.implement({
   }),
 })
 
-const ExperienceLearningRef = builder.objectRef<{
-  id: string
-  profileId: string
-  entryType: 'education' | 'certification'
-  institution: string
-  program: string | null
-  fieldOfStudy: string | null
-  credentialUrl: string | null
-  startDate: string | null
-  endDate: string | null
-  description: string | null
-  createdAt: Date
-  updatedAt: Date
-}>('ExperienceLearningModel')
+const ExperienceLearningRef = builder.objectRef<LearningRow>(
+  'ExperienceLearningModel'
+)
 
 ExperienceLearningRef.implement({
   fields: (t) => ({
@@ -128,20 +87,9 @@ ExperienceLearningRef.implement({
   }),
 })
 
-const ExperienceProfileRef = builder.objectRef<{
-  id: string
-  userId: string
-  headline: string | null
-  summary: string | null
-  location: string | null
-  yearsOfExperience: number | null
-  skills: string[]
-  customFields: Record<string, unknown> | null
-  ingestionMetadata: Record<string, unknown> | null
-  rawPayload: Record<string, unknown> | null
-  createdAt: Date
-  updatedAt: Date
-}>('ExperienceProfileModel')
+const ExperienceProfileRef = builder.objectRef<ProfileRow>(
+  'ExperienceProfileModel'
+)
 
 ExperienceProfileRef.implement({
   fields: (t) => ({
@@ -164,67 +112,9 @@ ExperienceProfileRef.implement({
 })
 
 const ExperienceProfileAggregateRef = builder.objectRef<{
-  profile: {
-    id: string
-    userId: string
-    headline: string | null
-    summary: string | null
-    location: string | null
-    yearsOfExperience: number | null
-    skills: string[]
-    customFields: Record<string, unknown> | null
-    ingestionMetadata: Record<string, unknown> | null
-    rawPayload: Record<string, unknown> | null
-    createdAt: Date
-    updatedAt: Date
-  }
-  roles: Array<{
-    id: string
-    profileId: string
-    title: string
-    company: string
-    employmentType: string | null
-    location: string | null
-    startDate: string | null
-    endDate: string | null
-    isCurrent: boolean | null
-    periodLabel: string | null
-    durationLabel: string | null
-    status: 'complete' | 'incomplete' | null
-    summary: string | null
-    techStack: string[]
-    methodologies: string[]
-    teamStructure: string | null
-    keyAchievements: string[]
-    missingDetails: string | null
-    customFields: Record<string, unknown> | null
-    createdAt: Date
-    updatedAt: Date
-    projects: Array<{
-      id: string
-      roleId: string
-      title: string
-      period: string | null
-      description: string | null
-      achievements: string[]
-      createdAt: Date
-      updatedAt: Date
-    }>
-  }>
-  learning: Array<{
-    id: string
-    profileId: string
-    entryType: 'education' | 'certification'
-    institution: string
-    program: string | null
-    fieldOfStudy: string | null
-    credentialUrl: string | null
-    startDate: string | null
-    endDate: string | null
-    description: string | null
-    createdAt: Date
-    updatedAt: Date
-  }>
+  profile: ProfileRow
+  roles: Array<RoleRow & { projects: ProjectRow[] }>
+  learning: LearningRow[]
 }>('ExperienceProfileAggregateModel')
 
 ExperienceProfileAggregateRef.implement({

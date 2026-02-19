@@ -1,17 +1,11 @@
 import { findUserById } from '@/lib/db/services/user-service'
+import type { InferSelectModel } from 'drizzle-orm'
+import * as schema from '@/lib/db/schema'
 import { builder } from './builder'
 
-export const UserRef = builder.objectRef<{
-  id: string
-  email: string
-  fullName: string
-  avatarUrl: string | null
-  metadata: Record<string, unknown> | null
-  provider: string
-  providerAccountId: string
-  createdAt: Date
-  updatedAt: Date
-}>('User')
+export const UserRef = builder.objectRef<
+  InferSelectModel<typeof schema.users>
+>('User')
 
 UserRef.implement({
   fields: (t) => ({

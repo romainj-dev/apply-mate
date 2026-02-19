@@ -1,1 +1,5 @@
-export * from '@shared/schemas/experience'
+export type {
+  NormalizedProfile,
+  NormalizedRole,
+  NormalizedLearning,
+} from '@/lib/db/services/experience-service'

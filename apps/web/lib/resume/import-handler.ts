@@ -27,7 +27,7 @@ const fileSchema = z.instanceof(File).refine(
     return isTypeValid && isSizeValid
   },
   {
-    message: 'Invalid file. Allowed types: PDF, TXT. Max size: 10MB.',
+    error: 'Invalid file. Allowed types: PDF, TXT. Max size: 10MB.',
   }
 )
 
@@ -94,7 +94,7 @@ export async function handleResumeUpload(
       profileId: result.profileId,
       rolesCount: result.rolesCount,
       learningCount: result.learningCount,
-      skillsCount: normalized.profile.skills.length,
+      skillsCount: normalized.profile.skills?.length ?? 0,
     }
   } catch (error) {
     console.error('Resume upload error:', error)
@@ -102,7 +102,7 @@ export async function handleResumeUpload(
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: `Invalid request: ${error.errors.map((e) => e.message).join(', ')}`,
+        error: `Invalid request: ${error.issues.map((e) => e.message).join(', ')}`,
         statusCode: 400,
       }
     }

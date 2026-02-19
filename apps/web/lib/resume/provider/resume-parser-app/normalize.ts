@@ -4,7 +4,7 @@ import {
   type NormalizedProfile,
   type NormalizedRole,
   type NormalizedLearning,
-} from '@shared/schemas/experience'
+} from '@/lib/db/services/experience-service'
 
 /**
  * Formats a date string (YYYY-MM-DD) to YYYY-MM-DD format

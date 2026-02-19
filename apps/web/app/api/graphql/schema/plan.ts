@@ -1,13 +1,11 @@
 import { listPlans } from '@/lib/db/queries/plans'
+import type { InferSelectModel } from 'drizzle-orm'
+import * as schema from '@/lib/db/schema'
 import { builder } from './builder'
 
-export const PlanRef = builder.objectRef<{
-  id: string
-  code: string
-  price: number
-  createdAt: Date
-  updatedAt: Date
-}>('PlanModel')
+export const PlanRef = builder.objectRef<
+  InferSelectModel<typeof schema.plans>
+>('PlanModel')
 
 PlanRef.implement({
   fields: (t) => ({

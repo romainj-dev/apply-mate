@@ -6,10 +6,10 @@ import {
 } from './schemas'
 import { normalizeResumeParserAppResponse } from './normalize'
 import {
-  NormalizedLearning,
-  NormalizedProfile,
-  NormalizedRole,
-} from '@shared/schemas/experience.js'
+  type NormalizedLearning,
+  type NormalizedProfile,
+  type NormalizedRole,
+} from '@/lib/db/services/experience-service'
 
 export interface ResumeParserProvider {
   parse(file: File): Promise<ResumeParserAppResponse>

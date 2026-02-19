@@ -5,51 +5,47 @@ import {
   userExperienceRoleProjects,
   userExperienceRoles,
 } from '@/lib/db/schema'
-import {
-  normalizedExperienceLearningSchema,
-  normalizedExperienceProfileSchema,
-  normalizedExperienceRoleSchema,
-} from '@shared/schemas/experience'
 import { desc, eq, inArray } from 'drizzle-orm'
+import { createInsertSchema } from 'drizzle-zod'
+import { z } from 'zod'
+
+const jsonbRecord = z.record(z.string(), z.unknown()).nullable().optional()
+
+const insertProfileSchema = createInsertSchema(userExperienceProfiles, {
+  customFields: jsonbRecord,
+}).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+  ingestionMetadata: true,
+  rawPayload: true,
+})
+
+const insertRoleSchema = createInsertSchema(userExperienceRoles, {
+  customFields: jsonbRecord,
+}).omit({
+  id: true,
+  profileId: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+const insertLearningSchema = createInsertSchema(userExperienceLearning).omit({
+  id: true,
+  profileId: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export type NormalizedProfile = z.infer<typeof insertProfileSchema>
+export type NormalizedRole = z.infer<typeof insertRoleSchema>
+export type NormalizedLearning = z.infer<typeof insertLearningSchema>
 
 export type SaveExperienceInput = {
-  profile: {
-    headline?: string | null
-    summary?: string | null
-    location?: string | null
-    yearsOfExperience?: number | null
-    skills?: string[] | null
-    customFields?: Record<string, unknown> | null
-  }
-  roles?: Array<{
-    title: string
-    company: string
-    employmentType?: string | null
-    location?: string | null
-    startDate?: string | null
-    endDate?: string | null
-    isCurrent?: boolean | null
-    periodLabel?: string | null
-    durationLabel?: string | null
-    status?: 'complete' | 'incomplete' | null
-    summary?: string | null
-    techStack?: string[] | null
-    methodologies?: string[] | null
-    teamStructure?: string | null
-    keyAchievements?: string[] | null
-    missingDetails?: string | null
-    customFields?: Record<string, unknown> | null
-  }> | null
-  learning?: Array<{
-    entryType: 'education' | 'certification'
-    institution: string
-    program?: string | null
-    fieldOfStudy?: string | null
-    credentialUrl?: string | null
-    startDate?: string | null
-    endDate?: string | null
-    description?: string | null
-  }> | null
+  profile: NormalizedProfile
+  roles?: NormalizedRole[] | null
+  learning?: NormalizedLearning[] | null
   rawPayload?: Record<string, unknown> | null
 }
 
@@ -109,11 +105,9 @@ export async function saveExperienceByUserId(
   userId: string,
   input: SaveExperienceInput
 ) {
-  const profile = normalizedExperienceProfileSchema.parse(input.profile)
-  const roles = normalizedExperienceRoleSchema.array().parse(input.roles ?? [])
-  const learning = normalizedExperienceLearningSchema
-    .array()
-    .parse(input.learning ?? [])
+  const profile = insertProfileSchema.parse(input.profile)
+  const roles = insertRoleSchema.array().parse(input.roles ?? [])
+  const learning = insertLearningSchema.array().parse(input.learning ?? [])
 
   return db.transaction(async (tx) => {
     const [upsertedProfile] = await tx
