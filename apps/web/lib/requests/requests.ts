@@ -33,19 +33,22 @@ export class GraphQLRequestError extends Error {
  * @param params - Execution parameters
  * @param params.query - GraphQL query string
  * @param params.variables - Optional GraphQL variables
+ * @param params.useCache - Boolean - indicates cached requests
  * @returns Typed GraphQL response data
  * @throws {GraphQLRequestError} On HTTP errors, GraphQL errors, or missing data
  */
 async function executeGraphQL<TData>(params: {
   query: string
   variables?: Record<string, unknown>
+  useCache?: boolean
 }): Promise<TData> {
-  const { query, variables } = params
+  const { query, variables, useCache } = params
 
   const request = new Request('http://yoga/api/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(useCache ? { 'Internal-Use-Cache': 'true' } : {}),
     },
     body: JSON.stringify({ query, variables }),
   })
@@ -84,16 +87,19 @@ async function executeGraphQL<TData>(params: {
  * @param params - Execution parameters
  * @param params.document - Code-generated typed GraphQL document
  * @param params.variables - GraphQL variables (type-safe)
+ * @param params.useCache - Boolean - indicates cached requests
  * @returns Typed GraphQL response data
  * @throws {GraphQLRequestError} On GraphQL errors or execution failures
  */
 export async function fetchGraphQL<TData, TVariables>(params: {
   document: TypedDocumentNode<TData, TVariables>
   variables?: TVariables
+  useCache?: boolean
 }): Promise<TData> {
-  const { document, variables } = params
+  const { document, variables, useCache } = params
   return executeGraphQL({
     query: print(document),
     variables: variables as Record<string, unknown>,
+    useCache,
   })
 }

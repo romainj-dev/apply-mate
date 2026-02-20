@@ -1,11 +1,12 @@
 import 'server-only'
 
 import { cacheLife, cacheTag } from 'next/cache'
-import { graphqlRequest } from '@/lib/graphql/server-client'
+
 import {
   GetPlanPricingDocument,
-  GetPlanPricingQuery,
+  type GetPlanPricingQuery,
 } from '@/graphql/generated'
+import { fetchGraphQL } from '@/lib/requests/requests'
 
 /**
  * Cached server-side function to fetch plan pricing from GraphQL.
@@ -13,16 +14,16 @@ import {
  */
 export async function getPlanPricingCached(): Promise<GetPlanPricingQuery> {
   'use cache'
-  cacheLife('minutes')
+  cacheLife('max')
   cacheTag('plans')
 
   try {
-    return graphqlRequest<GetPlanPricingQuery>(GetPlanPricingDocument)
+    return fetchGraphQL({
+      document: GetPlanPricingDocument,
+      useCache: true,
+    })
   } catch (error) {
-    console.warn(
-      '[getPlanPricingCached] prefetching failed. Check /api/graphql availability.'
-    )
-
+    console.warn('[getPlanPricingCached] prefetching failed.')
     throw error
   }
 }

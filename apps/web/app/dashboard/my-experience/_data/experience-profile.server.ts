@@ -2,12 +2,12 @@ import 'server-only'
 
 import { QueryClient } from '@tanstack/react-query'
 import { getSession } from '@/lib/auth'
-import { graphqlRequest } from '@/lib/graphql/server-client'
+import { fetchGraphQL } from '@/lib/requests/requests'
+import { queryKeys } from '@/lib/requests/query-keys'
 import {
   GetExperienceProfileDocument,
   type GetExperienceProfileQuery,
 } from '@/graphql/generated'
-import { experienceProfileKeys } from './experience-profile.query'
 
 export async function fetchExperienceProfile(): Promise<GetExperienceProfileQuery> {
   const { user } = await getSession()
@@ -16,9 +16,9 @@ export async function fetchExperienceProfile(): Promise<GetExperienceProfileQuer
     return { experienceProfile: null }
   }
 
-  const data = await graphqlRequest<GetExperienceProfileQuery>(
-    GetExperienceProfileDocument
-  )
+  const data = await fetchGraphQL({
+    document: GetExperienceProfileDocument,
+  })
 
   return data
 }
@@ -27,7 +27,7 @@ export async function prefetchExperienceProfile(
   queryClient: QueryClient
 ): Promise<void> {
   await queryClient.prefetchQuery({
-    queryKey: experienceProfileKeys.profile(),
+    queryKey: queryKeys.experienceProfile.get(),
     queryFn: fetchExperienceProfile,
   })
 }

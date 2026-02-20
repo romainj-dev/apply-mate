@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { getSession } from '@/lib/auth'
-import { graphqlRequest } from '@/lib/graphql/server-client'
+import { fetchGraphQL } from '@/lib/requests/requests'
 import {
   SaveExperienceDocument,
   type SaveExperienceMutation,
@@ -81,10 +81,13 @@ export async function handleResumeUpload(
       },
     }
 
-    const response = await graphqlRequest<SaveExperienceMutation>(
-      SaveExperienceDocument,
-      variables
-    )
+    const response = await fetchGraphQL<
+      SaveExperienceMutation,
+      SaveExperienceMutationVariables
+    >({
+      document: SaveExperienceDocument,
+      variables,
+    })
 
     const result = response.saveExperience
 

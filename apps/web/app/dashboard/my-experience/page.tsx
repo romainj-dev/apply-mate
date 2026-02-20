@@ -1,18 +1,16 @@
 import InitExperiencePage from './_init/page'
 import CompleteExperiencePage from './_complete/page'
+import type { GetExperienceProfileQuery } from '@/graphql/generated'
+import { queryKeys } from '@/lib/requests/query-keys'
 import { PrefetchHydrationBoundary } from '@/lib/query/prefetch-hydration-boundary'
 import { prefetchExperienceProfile } from './_data/experience-profile.server'
-import {
-  experienceProfileKeys,
-  type ExperienceProfileQueryData,
-} from './_data/experience-profile.query'
 
 export default async function MyExperiencePage() {
   return (
     <PrefetchHydrationBoundary prefetchers={[prefetchExperienceProfile]}>
       {(queryClient) => {
-        const data = queryClient.getQueryData<ExperienceProfileQueryData>(
-          experienceProfileKeys.profile()
+        const data = queryClient.getQueryData<GetExperienceProfileQuery>(
+          queryKeys.experienceProfile.get()
         )
 
         const hasExperience = !!data?.experienceProfile?.profile?.id

@@ -2,20 +2,14 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 
 const config: CodegenConfig = {
   schema: './graphql/schema.graphql',
-  documents: ['./graphql/**/*.graphql', './app/**/*.graphql'],
+  documents: [
+    './graphql/**/*.graphql',
+    './app/**/*.graphql',
+    './lib/**/*.graphql',
+  ],
   generates: {
     './graphql/generated/index.ts': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-query',
-      ],
-      config: {
-        fetcher: '@/lib/graphql/fetcher#graphqlFetcher',
-        exposeQueryKeys: true,
-        exposeFetcher: true,
-        reactQueryVersion: 5,
-      },
+      plugins: ['typescript', 'typescript-operations', 'typed-document-node'],
     },
   },
   config: {

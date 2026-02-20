@@ -9,19 +9,18 @@
  *
  * @example
  * // In hooks
- * queryClient.setQueryData(queryKeys.plans.details(), data)
+ * queryClient.setQueryData(queryKeys.plans.pricing(), data)
  *
  * @example
  * // In prefetch
  * queryClient.prefetchQuery({
- *   queryKey: queryKeys.plans.details(),
+ *   queryKey: queryKeys.plans.pricing(),
  *   queryFn: ...
  * })
  */
 export const queryKeys = {
   plans: {
     all: ['plans'] as const,
-    details: () => [...queryKeys.plans.all, 'details'] as const,
     pricing: () => [...queryKeys.plans.all, 'pricing'] as const,
   },
   experienceProfile: {

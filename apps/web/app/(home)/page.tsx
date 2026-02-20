@@ -12,15 +12,15 @@ import { Pricing } from '@/components/features/marketing/pricing'
 import { Security } from '@/components/features/marketing/security'
 import { CTABanner } from '@/components/features/marketing/cta-banner'
 
-import { getPlanPricingCached } from '@/lib/connect/cached-server'
-import { useGetPlanPricingQuery } from '@/graphql/generated'
+import { getPlanPricingCached } from './_data/plans.server'
 import { createPrefetchQueryClient } from '@/lib/query/create-prefetch-query-client'
+import { queryKeys } from '@/lib/requests/query-keys'
 
 export default async function LandingPage() {
   const queryClient = await createPrefetchQueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: useGetPlanPricingQuery.getKey(),
+    queryKey: queryKeys.plans.pricing(),
     queryFn: getPlanPricingCached,
   })
 

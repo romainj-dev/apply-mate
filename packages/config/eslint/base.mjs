@@ -1,6 +1,9 @@
 import js from '@eslint/js'
+import json from '@eslint/json'
 import prettierPlugin from 'eslint-plugin-prettier/recommended'
 import tseslint from 'typescript-eslint'
+
+const codeFiles = ['**/*.{ts,tsx,js,jsx,mjs,cjs}']
 
 export const baseConfig = tseslint.config(
   {
@@ -13,11 +16,27 @@ export const baseConfig = tseslint.config(
       'packages/shared/**/*.d.ts',
     ],
   },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
+  {
+    ...js.configs.recommended,
+    files: codeFiles,
+  },
+  ...tseslint.configs.recommended.map((config) => ({
+    ...config,
+    files: codeFiles,
+  })),
   prettierPlugin,
   {
-    files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
+    files: ['**/*.json'],
+    plugins: {
+      json,
+    },
+    language: 'json/json',
+    rules: {
+      ...json.configs.recommended.rules,
+    },
+  },
+  {
+    files: codeFiles,
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
