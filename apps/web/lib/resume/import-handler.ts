@@ -83,8 +83,7 @@ export async function handleResumeUpload(
 
     const response = await graphqlRequest<SaveExperienceMutation>(
       SaveExperienceDocument,
-      variables,
-      { user: { id: user.id, email: user.email, name: user.name } }
+      variables
     )
 
     const result = response.saveExperience

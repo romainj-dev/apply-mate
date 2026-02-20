@@ -1,7 +1,6 @@
 import 'server-only'
 
 import { parseBffEnv } from '@shared/env'
-import { SignJWT } from 'jose'
 import { print } from 'graphql'
 import type { DocumentNode } from 'graphql'
 
@@ -13,24 +12,10 @@ interface GraphQLResponse<T> {
 }
 
 /**
- * Authenticated user info for building auth headers.
- */
-export interface AuthUser {
-  id: string
-  email: string
-  name?: string | null
-}
-
-/**
  * Options for graphqlRequest.
  */
 export interface GraphqlRequestOptions {
   headers?: Record<string, string>
-  /**
-   * The authenticated user. If provided, a signed JWT will be attached to the
-   * request. Pass null/undefined for unauthenticated requests (public endpoints).
-   */
-  user?: AuthUser | null
 }
 
 export class GraphqlRequestError extends Error {
@@ -58,30 +43,11 @@ function getGraphqlUrl(): string {
 }
 
 /**
- * Builds Authorization header with a signed JWT for the given user.
- * Returns an empty object for unauthenticated/public requests.
+ * @deprecated Use fetchGraphQL from @/lib/requests/requests instead.
+ * This function makes an HTTP round-trip to /api/graphql and does not
+ * forward session cookies, meaning it runs unauthenticated.
+ * Migrate callers to fetchGraphQL which uses yoga.fetch() in-process.
  */
-async function buildAuthHeaders(
-  user?: AuthUser | null
-): Promise<Record<string, string>> {
-  if (!user?.id || !user.email) {
-    return {}
-  }
-
-  const secret = new TextEncoder().encode(bffEnv.AUTH_SECRET)
-  const token = await new SignJWT({
-    id: user.id,
-    email: user.email,
-    name: user.name,
-  })
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('1h')
-    .sign(secret)
-
-  return { Authorization: `Bearer ${token}` }
-}
-
 export async function graphqlRequest<T>(
   query: string | DocumentNode,
   variables?: Record<string, unknown>,
@@ -90,11 +56,9 @@ export async function graphqlRequest<T>(
   const queryString = typeof query === 'string' ? query : print(query)
   const url = getGraphqlUrl()
 
-  const authHeaders = await buildAuthHeaders(options?.user)
   const headers = {
     'Content-Type': 'application/json',
     ...(options?.headers ?? {}),
-    ...authHeaders,
   }
 
   const response = await fetch(url, {
@@ -114,7 +78,6 @@ export async function graphqlRequest<T>(
     })
   }
 
-  // Transport error (non-2xx)
   if (!response.ok) {
     throw new GraphqlRequestError(
       `GraphQL request failed: ${response.status} ${response.statusText}`,
@@ -126,7 +89,6 @@ export async function graphqlRequest<T>(
     )
   }
 
-  // GraphQL-level errors
   if (json?.errors?.length) {
     const message = json.errors.map((e) => e.message).join(', ')
     throw new GraphqlRequestError(`GraphQL errors: ${message}`, {
@@ -136,7 +98,6 @@ export async function graphqlRequest<T>(
     })
   }
 
-  // No data returned
   if (!json?.data) {
     throw new GraphqlRequestError('No data returned from GraphQL API', {
       status: 500,

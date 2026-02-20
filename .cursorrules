@@ -1,5 +1,18 @@
 # ApplyMate Coding Standards for AI-Generated Code
 
+## AI Knowledge Limitations
+
+The following packages are at versions that may postdate the AI's training cutoff.
+For any question touching version-specific behavior (APIs, defaults, experimental
+features, breaking changes), always search the official docs if training data is not up to date:
+
+- `next`: 16.x
+- `next-auth`: 5.0.0-beta (rapidly changing, treat all version-specific behavior as unverified)
+- `react` / `react-dom`: 19.x
+- `zod`: 4.x
+- `drizzle-orm`: 0.45.x (evolving API, verify before answering)
+- `@tanstack/react-query`: 5.x
+
 ## TypeScript & Type Safety
 
 - Always use TypeScript strict mode - no `any` types allowed
@@ -134,4 +147,3 @@
 - Don't skip error handling
 - Don't use default exports for components
 - Don't access process.env directly - use lib/env
-

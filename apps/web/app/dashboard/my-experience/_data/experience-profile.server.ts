@@ -17,9 +17,7 @@ export async function fetchExperienceProfile(): Promise<GetExperienceProfileQuer
   }
 
   const data = await graphqlRequest<GetExperienceProfileQuery>(
-    GetExperienceProfileDocument,
-    undefined,
-    { user: { id: user.id, email: user.email, name: user.name } }
+    GetExperienceProfileDocument
   )
 
   return data
