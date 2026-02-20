@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button'
 import { GetPlanPricingDocument } from '@/graphql/generated'
-import { useQuery } from '@/hooks/requests'
-import { queryKeys } from '@/lib/requests/query-keys'
+import { useQuery } from '@/modules/requests/client/hooks'
+import { queryKeys } from '@/modules/requests/shared/query-keys'
 import { Check, RefreshCw } from 'lucide-react'
 
 interface Plan {

@@ -4,8 +4,8 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { Geist } from 'next/font/google'
 import '@/styles/globals.css'
-import { QueryProvider } from '@/components/providers/query-provider'
-import { SessionProvider } from '@/components/providers/session-provider'
+import { QueryProvider } from '@/modules/requests/client/QueryProvider'
+import { SessionProvider } from '@/modules/session/client/SessionProvider'
 
 const geist = Geist({
   subsets: ['latin'],

@@ -1,7 +1,7 @@
 import 'server-only'
 
 import NextAuth from 'next-auth'
-import { authConfig } from './config'
+import { authConfig } from '@/modules/session/shared/config'
 import { parseBffEnv } from '@shared/env'
 import { cache } from 'react'
 import { cookies } from 'next/headers'

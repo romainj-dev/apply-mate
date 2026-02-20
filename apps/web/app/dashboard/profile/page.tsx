@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button'
-import { getSession, signOut } from '@/lib/auth'
+import { getSession, signOut } from '@/modules/session/server'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Profile | ApplyMate',
   description: 'Your ApplyMate profile',
 }

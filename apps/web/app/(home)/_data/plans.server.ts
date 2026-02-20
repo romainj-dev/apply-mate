@@ -6,7 +6,7 @@ import {
   GetPlanPricingDocument,
   type GetPlanPricingQuery,
 } from '@/graphql/generated'
-import { fetchGraphQL } from '@/lib/requests/requests'
+import { fetchGraphQL } from '@/modules/requests/server/requests'
 
 /**
  * Cached server-side function to fetch plan pricing from GraphQL.

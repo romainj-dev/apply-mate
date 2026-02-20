@@ -21,8 +21,8 @@ import type { OperationDefinitionNode } from 'graphql'
 import {
   fetchGraphQLClient,
   type GraphQLClientError,
-} from '@/lib/requests/requests-client'
-import { type QueryKey } from '@/lib/requests/query-keys'
+} from '@/modules/requests/client/requests-client'
+import { type QueryKey } from '@/modules/requests/shared/query-keys'
 
 // Re-export TanStack Query utilities for consistent imports
 export { useQueryClient, type InfiniteData }

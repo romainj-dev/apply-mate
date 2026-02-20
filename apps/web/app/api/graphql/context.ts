@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import { auth } from '@/modules/session/server'
 import { db } from '@/lib/db/client'
 
 async function getSessionUser() {

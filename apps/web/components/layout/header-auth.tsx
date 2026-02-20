@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { getSession } from '@/lib/auth'
+import { getSession } from '@/modules/session/server'
 
 export async function HeaderAuth() {
   const { isAuth } = await getSession()

@@ -1,26 +1,31 @@
 import InitExperiencePage from './_init/page'
 import CompleteExperiencePage from './_complete/page'
-import type { GetExperienceProfileQuery } from '@/graphql/generated'
-import { queryKeys } from '@/lib/requests/query-keys'
-import { PrefetchHydrationBoundary } from '@/lib/query/prefetch-hydration-boundary'
-import { prefetchExperienceProfile } from './_data/experience-profile.server'
+import { queryKeys } from '@/modules/requests/shared/query-keys'
+import { createPrefetchQueryClient } from '@/modules/requests/server/create-prefetch-query-client'
+import { PrefetchHydrationBoundary } from '@/modules/requests/server/PrefetchHydrationBoundary'
+import { fetchGraphQL } from '@/modules/requests/server/requests'
+import { GetExperienceProfileDocument } from '@/graphql/generated'
 
 export default async function MyExperiencePage() {
-  return (
-    <PrefetchHydrationBoundary prefetchers={[prefetchExperienceProfile]}>
-      {(queryClient) => {
-        const data = queryClient.getQueryData<GetExperienceProfileQuery>(
-          queryKeys.experienceProfile.get()
-        )
+  const queryClient = await createPrefetchQueryClient()
 
-        const hasExperience = !!data?.experienceProfile?.profile?.id
+  const [experienceProfileData] = await Promise.all([
+    queryClient.fetchQuery({
+      queryKey: queryKeys.experienceProfile.get(),
+      queryFn: () =>
+        fetchGraphQL({
+          document: GetExperienceProfileDocument,
+        }),
+    }),
+  ])
 
-        return hasExperience ? (
-          <CompleteExperiencePage />
-        ) : (
-          <InitExperiencePage />
-        )
-      }}
+  const hasExperience = !!experienceProfileData?.experienceProfile?.profile?.id
+
+  return !hasExperience ? (
+    <InitExperiencePage />
+  ) : (
+    <PrefetchHydrationBoundary queryClient={queryClient}>
+      <CompleteExperiencePage />
     </PrefetchHydrationBoundary>
   )
 }

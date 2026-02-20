@@ -1,7 +1,7 @@
 import 'server-only'
 
-import { getSession } from '@/lib/auth'
-import { fetchGraphQL } from '@/lib/requests/requests'
+import { getSession } from '@/modules/session/server'
+import { fetchGraphQL } from '@/modules/requests/server/requests'
 import {
   SaveExperienceDocument,
   type SaveExperienceMutation,
