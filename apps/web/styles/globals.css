@@ -2,7 +2,7 @@
 @import 'tw-animate-css';
 
 :root {
-  /* ApplyMate vibrant AI theme */
+  /* Semantic base tokens. Source: app design system. Scope: runtime CSS variables. */
   --background: oklch(0.98 0.01 240);
   --foreground: oklch(0.12 0.04 260);
 
@@ -12,7 +12,6 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.12 0.04 260);
 
-  /* Vibrant Blue-Violet Primary */
   --primary: oklch(0.55 0.22 260);
   --primary-foreground: oklch(0.98 0 0);
 
@@ -22,7 +21,6 @@
   --muted: oklch(0.96 0.01 260);
   --muted-foreground: oklch(0.5 0.04 260);
 
-  /* Energetic Orange/Coral Accent */
   --accent: oklch(0.65 0.22 30);
   --accent-foreground: oklch(0.98 0 0);
 
@@ -44,7 +42,6 @@
   --sidebar-border: oklch(0.9 0.01 265);
   --sidebar-ring: oklch(0.55 0.18 265);
 
-  /* Charts - Vibrant */
   --chart-1: oklch(0.55 0.22 260);
   --chart-2: oklch(0.65 0.22 30);
   --chart-3: oklch(0.6 0.18 160);
@@ -53,8 +50,14 @@
 }
 
 @theme inline {
+  /* Tailwind font aliases. Source: app fonts. Scope: Tailwind + token consumers. */
   --font-sans: var(--font-geist), sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+
+  /* Tailwind spacing unit alias. Source: Tailwind v4 convention. Scope: spacing scale. */
+  --spacing: 0.25rem;
+
+  /* Semantic color namespace aliases. Source: :root semantic colors. Scope: Tailwind color utilities. */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -79,11 +82,65 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
 
+  /* Radius scale aliases. Source: Tailwind v4 scale. Scope: shared radius tokens. */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+
+  /* Typography scale. Source: Tailwind v4 defaults. Scope: text size + line-height tokens. */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm: 0.875rem;
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-base: 1rem;
+  --text-base--line-height: calc(1.5 / 1);
+  --text-lg: 1.125rem;
+  --text-lg--line-height: calc(1.75 / 1.125);
+  --text-xl: 1.25rem;
+  --text-xl--line-height: calc(1.75 / 1.25);
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: calc(2 / 1.5);
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: calc(2.25 / 1.875);
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: calc(2.5 / 2.25);
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1;
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: 1;
+  --text-7xl: 4.5rem;
+  --text-7xl--line-height: 1;
+  --text-8xl: 6rem;
+  --text-8xl--line-height: 1;
+  --text-9xl: 8rem;
+  --text-9xl--line-height: 1;
+
+  /* Font weight scale. Source: Tailwind v4 defaults. Scope: app-exposed weight tokens. */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Shadow scale. Source: Tailwind v4 named shadows. Scope: box + inset shadow tokens. */
+  --shadow-2xs: 0 1px rgb(0 0 0 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --inset-shadow-2xs: inset 0 1px rgb(0 0 0 / 0.05);
+  --inset-shadow-xs: inset 0 1px 1px rgb(0 0 0 / 0.05);
+  --inset-shadow-sm: inset 0 2px 4px rgb(0 0 0 / 0.05);
+
+  /* Sidebar semantic aliases. Source: :root sidebar tokens. Scope: Tailwind sidebar utilities. */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -93,7 +150,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Custom Animations */
+  /* Shared animation token. Source: app motion style. Scope: utility animation use. */
   --animate-float: float 6s ease-in-out infinite;
 
   @keyframes float {
@@ -108,13 +165,17 @@
   }
 }
 
+/*
+ * Must live in @layer base (not in styled-components GlobalStyles) so that
+ * Tailwind utility classes in @layer utilities can still override them.
+ * Unlayered CSS always wins over @layer — see GlobalStyles.tsx for details.
+ */
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased;
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border);
+    outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
   }
 }
 

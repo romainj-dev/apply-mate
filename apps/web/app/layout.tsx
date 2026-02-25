@@ -12,9 +12,9 @@ import { ThemeProvider } from '@/styles/ThemeProvider'
 const geist = Geist({
   subsets: ['latin'],
   variable: '--font-geist',
+  display: 'swap',
 })
 
-// <CHANGE> Updated metadata for ApplyMate
 export const metadata: Metadata = {
   title: 'ApplyMate - Smarter Job Applications Powered by AI',
   description:
@@ -37,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.variable} font-sans antialiased`}>
+      <body className={geist.variable}>
         <SessionProvider>
           <Suspense fallback={null}>
             <QueryProvider>
