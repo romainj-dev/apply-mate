@@ -6,6 +6,8 @@ import { Geist } from 'next/font/google'
 import '@/styles/globals.css'
 import { QueryProvider } from '@/modules/requests/client/QueryProvider'
 import { SessionProvider } from '@/modules/session/client/SessionProvider'
+import { StyledComponentsRegistry } from '@/styles/registry'
+import { ThemeProvider } from '@/styles/ThemeProvider'
 
 const geist = Geist({
   subsets: ['latin'],
@@ -19,14 +21,6 @@ export const metadata: Metadata = {
     'Generate tailored resumes and cover letters that pass AI recruiter filters. Track all your applications in one place.',
   icons: {
     icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
       {
         url: '/icon.svg',
         type: 'image/svg+xml',
@@ -46,7 +40,11 @@ export default function RootLayout({
       <body className={`${geist.variable} font-sans antialiased`}>
         <SessionProvider>
           <Suspense fallback={null}>
-            <QueryProvider>{children}</QueryProvider>
+            <QueryProvider>
+              <StyledComponentsRegistry>
+                <ThemeProvider>{children}</ThemeProvider>
+              </StyledComponentsRegistry>
+            </QueryProvider>
           </Suspense>
         </SessionProvider>
         <Analytics />

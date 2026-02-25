@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
   /* ApplyMate vibrant AI theme */
   --background: oklch(0.98 0.01 240);
@@ -52,49 +50,6 @@
   --chart-3: oklch(0.6 0.18 160);
   --chart-4: oklch(0.65 0.22 300);
   --chart-5: oklch(0.7 0.18 120);
-}
-
-.dark {
-  /* Deep, rich dark mode */
-  --background: oklch(0.1 0.02 260);
-  --foreground: oklch(0.98 0.01 260);
-
-  --card: oklch(0.14 0.03 260);
-  --card-foreground: oklch(0.98 0.01 260);
-
-  --popover: oklch(0.14 0.03 260);
-  --popover-foreground: oklch(0.98 0.01 260);
-
-  /* Lighter, glowing primary for dark mode */
-  --primary: oklch(0.65 0.2 260);
-  --primary-foreground: oklch(0.1 0.02 260);
-
-  --secondary: oklch(0.2 0.04 260);
-  --secondary-foreground: oklch(0.98 0 0);
-
-  --muted: oklch(0.2 0.04 260);
-  --muted-foreground: oklch(0.7 0.02 260);
-
-  --accent: oklch(0.7 0.2 30);
-  --accent-foreground: oklch(0.1 0.02 260);
-
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-
-  --border: oklch(0.2 0.04 260);
-  --input: oklch(0.2 0.04 260);
-  --ring: oklch(0.65 0.2 260);
-
-  --radius: 0.75rem;
-
-  --sidebar: oklch(0.16 0 0);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.65 0.2 265);
-  --sidebar-primary-foreground: oklch(0.12 0 0);
-  --sidebar-accent: oklch(0.24 0 0);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.24 0 0);
-  --sidebar-ring: oklch(0.65 0.2 265);
 }
 
 @theme inline {
@@ -165,7 +120,7 @@
 
 @layer utilities {
   .glass {
-    @apply bg-background/60 backdrop-blur-xl border border-white/10 dark:border-white/5 shadow-xl;
+    @apply bg-background/60 backdrop-blur-xl border border-white/10 shadow-xl;
   }
 
   .glass-card {

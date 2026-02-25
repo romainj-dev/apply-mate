@@ -20,7 +20,7 @@ export function TechnicalSkills() {
   return (
     <GlassCard
       variant="primary"
-      className="h-full min-h-[450px] flex flex-col overflow-hidden bg-white/50 dark:bg-black/20"
+      className="h-full min-h-[450px] flex flex-col overflow-hidden bg-white/50"
     >
       <GlassCardHeader className="pb-2">
         <div className="flex items-center justify-between">
@@ -89,7 +89,7 @@ export function TechnicalSkills() {
         </AnimatePresence>
       </GlassCardContent>
 
-      <div className="p-3 border-t border-border/10 bg-white/40 dark:bg-black/20 backdrop-blur-md flex justify-between items-center">
+      <div className="p-3 border-t border-border/10 bg-white/40 backdrop-blur-md flex justify-between items-center">
         <span className="text-[10px] font-medium text-muted-foreground">
           Computed from achievements
         </span>
@@ -219,7 +219,7 @@ function CategoryDetails({ category }: { category: SkillCategory }) {
             transition={{ delay: idx * 0.05 }}
             className="group relative"
           >
-            <div className="bg-white dark:bg-white/5 border border-border/50 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="bg-white border border-border/50 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
               <div className="flex justify-between items-start mb-2">
                 <span className="font-bold text-xs group-hover:text-primary transition-colors">
                   {skill.name}

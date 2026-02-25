@@ -11,7 +11,7 @@ export const config = {
      *
      * Public routes (/, /auth, /api/graphql, etc.) are NOT matched.
      * Unauthenticated users are redirected to /auth by the
-     * `authorized` callback in auth.config.ts.
+     * `authorized` callback in apps/web/modules/session/shared/config.ts.
      */
     '/dashboard/:path*',
   ],

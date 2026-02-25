@@ -48,7 +48,7 @@ export function AuthForm() {
         <CardContent className="space-y-3">
           <Button
             variant="outline"
-            className="w-full h-12 text-base bg-background/50 hover:bg-white dark:hover:bg-slate-900 transition-all border-muted-foreground/20 hover:border-red-500/50 hover:text-foreground hover:shadow-lg hover:shadow-red-500/10 group"
+            className="w-full h-12 text-base bg-background/50 hover:bg-white transition-all border-muted-foreground/20 hover:border-red-500/50 hover:text-foreground hover:shadow-lg hover:shadow-red-500/10 group"
             onClick={() => handleOAuthSignIn('google')}
             disabled={isLoading !== null}
           >
@@ -87,7 +87,7 @@ export function AuthForm() {
 
           <Button
             variant="outline"
-            className="w-full h-12 text-base bg-background/50 hover:bg-white dark:hover:bg-slate-900 transition-all border-muted-foreground/20 hover:border-blue-600/50 hover:text-foreground hover:shadow-lg hover:shadow-blue-600/10 group"
+            className="w-full h-12 text-base bg-background/50 hover:bg-white transition-all border-muted-foreground/20 hover:border-blue-600/50 hover:text-foreground hover:shadow-lg hover:shadow-blue-600/10 group"
             onClick={() => handleOAuthSignIn('linkedin')}
             disabled={isLoading !== null}
           >
@@ -112,7 +112,7 @@ export function AuthForm() {
 
           <Button
             variant="outline"
-            className="w-full h-12 text-base bg-background/50 hover:bg-white dark:hover:bg-slate-900 transition-all border-muted-foreground/20 hover:border-violet-600/50 hover:text-foreground hover:shadow-lg hover:shadow-violet-600/10 group"
+            className="w-full h-12 text-base bg-background/50 hover:bg-white transition-all border-muted-foreground/20 hover:border-violet-600/50 hover:text-foreground hover:shadow-lg hover:shadow-violet-600/10 group"
             onClick={() => handleOAuthSignIn('github')}
             disabled={isLoading !== null}
           >
