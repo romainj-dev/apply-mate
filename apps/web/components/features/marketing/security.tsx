@@ -1,4 +1,18 @@
+'use client'
+
 import { Lock, Shield, Eye, FileCheck } from 'lucide-react'
+import {
+  Section,
+  Container,
+  SectionHeader,
+  Heading,
+  Lead,
+  Grid,
+  FeatureItem,
+  FeatureIconWrapper,
+  FeatureTitle,
+  FeatureDescription,
+} from './security.styles'
 
 const securityFeatures = [
   {
@@ -28,32 +42,28 @@ const securityFeatures = [
 
 export function Security() {
   return (
-    <section className="py-20 md:py-32 border-t border-border">
-      <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-2xl text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4 md:text-5xl text-balance">
-            Your data is safe with us
-          </h2>
-          <p className="text-lg text-muted-foreground text-balance leading-relaxed">
+    <Section>
+      <Container>
+        <SectionHeader>
+          <Heading>Your data is safe with us</Heading>
+          <Lead>
             Enterprise-grade security and privacy protection for your sensitive
             information
-          </p>
-        </div>
+          </Lead>
+        </SectionHeader>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+        <Grid>
           {securityFeatures.map((feature, index) => (
-            <div key={index} className="text-center">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 mx-auto">
-                <feature.icon className="h-6 w-6 text-accent" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
+            <FeatureItem key={index}>
+              <FeatureIconWrapper>
+                <feature.icon size={24} />
+              </FeatureIconWrapper>
+              <FeatureTitle>{feature.title}</FeatureTitle>
+              <FeatureDescription>{feature.description}</FeatureDescription>
+            </FeatureItem>
           ))}
-        </div>
-      </div>
-    </section>
+        </Grid>
+      </Container>
+    </Section>
   )
 }

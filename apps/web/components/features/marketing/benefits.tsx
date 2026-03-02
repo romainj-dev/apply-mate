@@ -1,4 +1,18 @@
+'use client'
+
 import { Target, Zap, FolderCheck, Shield } from 'lucide-react'
+import {
+  Section,
+  Container,
+  SectionHeader,
+  Heading,
+  Lead,
+  Grid,
+  Card,
+  IconWrapper,
+  CardTitle,
+  CardDescription,
+} from './benefits.styles'
 
 const benefits = [
   {
@@ -29,34 +43,25 @@ const benefits = [
 
 export function Benefits() {
   return (
-    <section className="py-20 md:py-32 bg-card/50">
-      <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-2xl text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4 md:text-5xl text-balance">
-            Why job seekers choose ApplyMate
-          </h2>
-          <p className="text-lg text-muted-foreground text-balance leading-relaxed">
-            Solve the biggest pain points of modern job searching
-          </p>
-        </div>
+    <Section>
+      <Container>
+        <SectionHeader>
+          <Heading>Why job seekers choose ApplyMate</Heading>
+          <Lead>Solve the biggest pain points of modern job searching</Lead>
+        </SectionHeader>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+        <Grid>
           {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-border bg-card p-6 hover:border-accent/30 transition-colors"
-            >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
-                <benefit.icon className="h-6 w-6 text-accent" />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold">{benefit.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {benefit.description}
-              </p>
-            </div>
+            <Card key={index}>
+              <IconWrapper>
+                <benefit.icon size={24} />
+              </IconWrapper>
+              <CardTitle>{benefit.title}</CardTitle>
+              <CardDescription>{benefit.description}</CardDescription>
+            </Card>
           ))}
-        </div>
-      </div>
-    </section>
+        </Grid>
+      </Container>
+    </Section>
   )
 }
