@@ -2,6 +2,7 @@
 
 import { Component, type ReactNode } from 'react'
 import { Button } from '@/components/ui/button'
+import { Content, Description, Title, Wrapper } from './error-boundary.styles'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -40,13 +41,13 @@ export class ErrorBoundary extends Component<
       }
 
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center p-4">
-          <div className="max-w-md space-y-4 text-center">
-            <h1 className="text-2xl font-bold">Something went wrong</h1>
-            <p className="text-muted-foreground">
+        <Wrapper>
+          <Content>
+            <Title>Something went wrong</Title>
+            <Description>
               {this.state.error?.message ||
                 'An unexpected error occurred. Please try again.'}
-            </p>
+            </Description>
             <Button
               onClick={() => {
                 this.setState({ hasError: false, error: null })
@@ -55,8 +56,8 @@ export class ErrorBoundary extends Component<
             >
               Reload Page
             </Button>
-          </div>
-        </div>
+          </Content>
+        </Wrapper>
       )
     }
 

@@ -1,4 +1,5 @@
 import { Header } from '@/components/layout/header'
+import { HeaderAuth } from '@/components/layout/header-auth'
 import { Footer } from '@/components/layout/footer'
 
 export default function MarketingLayout({
@@ -8,7 +9,7 @@ export default function MarketingLayout({
 }) {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header authSlot={<HeaderAuth />} />
       <main>{children}</main>
       <Footer />
     </div>

@@ -31,8 +31,6 @@
   --input: oklch(0.92 0.01 260);
   --ring: oklch(0.55 0.22 260);
 
-  --radius: 0.75rem;
-
   --sidebar: oklch(0.98 0 0);
   --sidebar-foreground: oklch(0.15 0 0);
   --sidebar-primary: oklch(0.55 0.18 265);
@@ -41,12 +39,6 @@
   --sidebar-accent-foreground: oklch(0.15 0 0);
   --sidebar-border: oklch(0.9 0.01 265);
   --sidebar-ring: oklch(0.55 0.18 265);
-
-  --chart-1: oklch(0.55 0.22 260);
-  --chart-2: oklch(0.65 0.22 30);
-  --chart-3: oklch(0.6 0.18 160);
-  --chart-4: oklch(0.65 0.22 300);
-  --chart-5: oklch(0.7 0.18 120);
 }
 
 @theme inline {
@@ -77,11 +69,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
 
   /* Radius scale aliases. Source: Tailwind v4 scale. Scope: shared radius tokens. */
   --radius-xs: 0.125rem;
@@ -133,8 +120,10 @@
   --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --inset-shadow-2xs: inset 0 1px rgb(0 0 0 / 0.05);
   --inset-shadow-xs: inset 0 1px 1px rgb(0 0 0 / 0.05);

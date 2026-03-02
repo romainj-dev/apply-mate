@@ -1,0 +1,122 @@
+---
+name: styled-components-rsc-boundary
+description: Guides RSC vs Client Component decisions when using styled-components. Apply when creating or migrating components that use styled-components, or when resolving theme/context errors in Server Components.
+globs:
+alwaysApply: false
+---
+
+# styled-components & React Server Components
+
+styled-components relies on React Context (`ThemeProvider`) for theme
+injection. React Context is **not available** in Server Components. Any
+styled component that uses `({ theme }) => …` interpolations **must**
+render inside a Client Component tree.
+
+## Decision Flow
+
+When a component uses (or will use) styled-components:
+
+1. **Does the component itself call server-only APIs?** (`async`, direct
+   DB queries, `cookies()`, `headers()`, server actions that read secrets)
+   - **No** → add `'use client'` to the component file. It will still
+     be SSR'd — users see server-rendered HTML on first load. The only
+     cost is the component JS is sent to the client for hydration.
+   - **Yes** → the component must stay a Server Component. Extract the
+     styled markup into a separate `'use client'` component and pass
+     server data as props.
+
+2. **Does the component import a Server Component child?** (e.g., an
+   `async` component that fetches data)
+   - Adding `'use client'` to a file pulls all its imports into the
+     client bundle. An `async` Server Component imported by a Client
+     Component will break.
+   - **Do not** create an intermediate wrapper file to work around this.
+     Instead, convert the Server Component child into a **slot prop**
+     (`React.ReactNode`) and compose at the parent layout level.
+
+### Slot pattern example
+
+```tsx
+// header.tsx — Client Component (styled)
+'use client'
+import { HeaderRoot, Nav } from './header.styles'
+
+export function Header({ authSlot }: { authSlot: React.ReactNode }) {
+  return (
+    <HeaderRoot>
+      <Nav>{/* … */}</Nav>
+      {authSlot}
+    </HeaderRoot>
+  )
+}
+```
+
+```tsx
+// header-auth.tsx — Server Component, no styling
+export async function HeaderAuth() {
+  const { isAuth } = await getSession()
+  return (
+    <Button size="sm" asChild>
+      {isAuth ? (
+        <Link href="/dashboard">Dashboard</Link>
+      ) : (
+        <Link href="/auth">Log in</Link>
+      )}
+    </Button>
+  )
+}
+```
+
+```tsx
+// layout.tsx — Server Component (composition point)
+import { Header } from './header'
+import { HeaderAuth } from './header-auth' // async RSC
+
+export default function Layout({ children }) {
+  return (
+    <>
+      <Header authSlot={<HeaderAuth />} />
+      {children}
+    </>
+  )
+}
+```
+
+The layout (a Server Component) can render `<HeaderAuth />` and pass it
+as a `React.ReactNode` prop. Next.js serializes the Server Component
+output and streams it into the Client Component slot. No extra wrapper
+files needed.
+
+## Common Mistakes
+
+### Missing `'use client'`
+
+Importing styled-components in a file without `'use client'` compiles
+the styled definitions into the RSC bundle. The `ThemeProvider` context
+is absent there, so `theme` is `undefined` and every
+`theme.colors.*` / `theme.space.*` access throws:
+
+```
+TypeError: Cannot read properties of undefined (reading 'colors')
+```
+
+The fix is never to remove theme access — it is to ensure the component
+renders inside the client boundary (`'use client'`).
+
+### Unnecessary wrapper files
+
+When a component needs `'use client'` but imports a Server Component
+child, do **not** create a `-client.tsx` wrapper that duplicates the
+component. Instead, convert the child to a slot prop and compose at the
+layout level (see the slot pattern above).
+
+## Quick Reference — SSR vs RSC
+
+| Aspect                    | Server Component (RSC) | Client Component (`'use client'`) |
+| ------------------------- | ---------------------- | --------------------------------- |
+| Rendered on server        | Yes                    | Yes (SSR)                         |
+| JS sent to browser        | No                     | Yes                               |
+| Hydrates on client        | No                     | Yes                               |
+| React Context available   | No                     | Yes                               |
+| Can be async              | Yes                    | No                                |
+| styled-components theming | **Not supported**      | **Supported**                     |
