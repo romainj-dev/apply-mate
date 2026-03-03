@@ -51,12 +51,7 @@ import {
   TagsWrap,
 } from './applications-table.styles'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-} from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import {
   DropdownMenu,
   DropdownMenuItem,

@@ -2,6 +2,14 @@
 
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import {
+  Actions,
+  Content,
+  Description,
+  ErrorId,
+  PageContainer,
+  Title,
+} from './error.styles'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -17,18 +25,14 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <div className="max-w-md space-y-4 text-center">
-        <h1 className="text-2xl font-bold">Something went wrong</h1>
-        <p className="text-muted-foreground">
+    <PageContainer>
+      <Content>
+        <Title>Something went wrong</Title>
+        <Description>
           {error.message || 'An unexpected error occurred. Please try again.'}
-        </p>
-        {error.digest && (
-          <p className="text-xs text-muted-foreground">
-            Error ID: {error.digest}
-          </p>
-        )}
-        <div className="flex gap-2 justify-center">
+        </Description>
+        {error.digest && <ErrorId>Error ID: {error.digest}</ErrorId>}
+        <Actions>
           <Button onClick={reset}>Try Again</Button>
           <Button
             variant="outline"
@@ -36,8 +40,8 @@ export default function Error({ error, reset }: ErrorProps) {
           >
             Go Home
           </Button>
-        </div>
-      </div>
-    </div>
+        </Actions>
+      </Content>
+    </PageContainer>
   )
 }

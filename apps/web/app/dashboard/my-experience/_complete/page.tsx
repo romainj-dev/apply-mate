@@ -5,13 +5,20 @@ import { Button } from '@/components/ui/button'
 import { GetExperienceProfileDocument } from '@/graphql/generated'
 import { useQuery } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
-import { Plus } from 'lucide-react'
 import { DashboardHeader } from '@/components/features/dashboard/commons/header'
 import { ProgressCard } from '@/components/features/my-experience/progress-card'
 import { TechnicalSkills } from '@/components/features/my-experience/technical-skills'
 import { ROLES } from '@/components/features/my-experience/roles/data'
 import { RolesList } from '@/components/features/my-experience/roles/list'
 import { RolesDetail } from '@/components/features/my-experience/roles/detail'
+import {
+  AddIcon,
+  PageContainer,
+  RoleDetailSection,
+  RolesHeader,
+  RolesSection,
+  RolesTitle,
+} from './page.styles'
 
 export default function ProfileOngoingPage() {
   useQuery(GetExperienceProfileDocument, undefined, {
@@ -23,7 +30,7 @@ export default function ProfileOngoingPage() {
   const selectedRole = ROLES.find((r) => r.id === selectedRoleId)
 
   return (
-    <div className="max-w-6xl space-y-6">
+    <PageContainer>
       <DashboardHeader
         title="Professional Experience"
         subtitle="Build your tech profile by documenting roles, projects, and achievements"
@@ -35,26 +42,26 @@ export default function ProfileOngoingPage() {
       {/* Technical skills */}
       <TechnicalSkills />
 
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Your Roles</h3>
+      <RolesSection>
+        <RolesHeader>
+          <RolesTitle>Your Roles</RolesTitle>
           <Button variant="outline" size="sm">
-            <Plus className="h-4 w-4 mr-2" />
+            <AddIcon />
             Add Role
           </Button>
-        </div>
+        </RolesHeader>
 
         <RolesList
           roles={ROLES}
           selectedRoleId={selectedRoleId}
           onSelectRole={setSelectedRoleId}
         />
-      </div>
+      </RolesSection>
 
       {/* Right: Selected role details */}
-      <div className="lg:col-span-2 space-y-6">
+      <RoleDetailSection>
         {selectedRole && <RolesDetail role={selectedRole} />}
-      </div>
-    </div>
+      </RoleDetailSection>
+    </PageContainer>
   )
 }

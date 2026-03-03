@@ -1,10 +1,5 @@
-import { ProfileSetupPrompt } from '@/components/features/dashboard/profile-setup-prompt'
-import { QuickApplicationInput } from '@/components/features/dashboard/quick-application-input'
-import {
-  ApplicationsTable,
-  type Application,
-} from '@/components/features/dashboard/applications-table'
-import { DashboardHeader } from '@/components/features/dashboard/commons/header'
+import { type Application } from '@/components/features/dashboard/applications-table'
+import { DashboardEmptyPageClient } from './page-client'
 
 export const metadata = {
   title: 'Dashboard | ApplyMate',
@@ -67,23 +62,9 @@ export default function DashboardEmptyPage() {
   const hasProfileCompleted = profile.status === 'ready'
 
   return (
-    <div className="max-w-6xl space-y-6">
-      <DashboardHeader
-        title={
-          <>
-            Welcome back, <span className="text-primary">Romain</span> 👋
-          </>
-        }
-        subtitle="Let’s get back to business. Your command center is ready."
-      />
-
-      {!hasProfileCompleted && <ProfileSetupPrompt />}
-
-      <QuickApplicationInput disabled={!hasProfileCompleted} />
-
-      <ApplicationsTable
-        items={!hasProfileCompleted ? null : mockApplications}
-      />
-    </div>
+    <DashboardEmptyPageClient
+      hasProfileCompleted={hasProfileCompleted}
+      items={!hasProfileCompleted ? null : mockApplications}
+    />
   )
 }

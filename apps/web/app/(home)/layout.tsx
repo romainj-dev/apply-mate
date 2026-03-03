@@ -1,6 +1,5 @@
-import { Header } from '@/components/layout/header'
 import { HeaderAuth } from '@/components/layout/header-auth'
-import { Footer } from '@/components/layout/footer'
+import { MarketingLayoutClient } from './layout-client'
 
 export default function MarketingLayout({
   children,
@@ -8,10 +7,8 @@ export default function MarketingLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-background">
-      <Header authSlot={<HeaderAuth />} />
-      <main>{children}</main>
-      <Footer />
-    </div>
+    <MarketingLayoutClient authSlot={<HeaderAuth />}>
+      {children}
+    </MarketingLayoutClient>
   )
 }
