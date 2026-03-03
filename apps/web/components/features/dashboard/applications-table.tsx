@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import AdventureIllustration from './adventure-illustration'
+import { AdventureIllustration } from './adventure-illustration'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'

@@ -101,6 +101,20 @@ Tailwind is only allowed **inside** `components/ui/*` files. Tailwind
 `className` overrides passed to ui components from outside must be
 removed. In order of preference:
 
+0. **Check for redundancy first.** Before wrapping or styling, verify
+   whether the Tailwind className override duplicates styling already
+   provided by the component's active variant. If so, drop the
+   `className` entirely — no migration step is required.
+
+   ```tsx
+   // GlassCard variant="accent" already applies border-orange-200 internally.
+   // The explicit className is redundant → drop it.
+   // Before:
+   <GlassCard variant="accent" className="border-orange-200">
+   // After:
+   <GlassCard variant="accent">
+   ```
+
 1. **Use built-in props.** If the component's variant/size API already
    covers the styling, drop the `className` entirely:
 
@@ -151,7 +165,7 @@ under "Worked Example".
 Run both commands after migration and fix any errors before considering
 the migration complete:
 
-1. `pnpm check` (from root) — type-checking must pass.
+1. `pnpm type-check` (from `apps/web`) — type-checking must pass.
 2. `pnpm build` — the production build must succeed. RSC boundary
    violations (e.g., `theme` is `undefined`) surface here as runtime
    errors. If they occur, follow

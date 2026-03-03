@@ -1,7 +1,25 @@
+'use client'
+
 import { Building2, Calendar, AlertCircle } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { GlassCard, GlassCardContent } from '@/components/ui/glass-card'
 import { Role } from './data'
+import {
+  RoleCard,
+  CardBody,
+  CardStack,
+  CardHeader,
+  CardHeaderContent,
+  BadgeRow,
+  StatusBadge,
+  CurrentBadge,
+  RoleTitle,
+  CompanyLine,
+  PeriodLine,
+  TechStack,
+  TechBadge,
+  SummaryRow,
+  SummaryText,
+  MissingDetails,
+} from './card.styles'
 
 interface RolesCardProps {
   role: Role
@@ -13,83 +31,69 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
   const isComplete = role.status === 'Complete'
 
   return (
-    <GlassCard
+    <RoleCard
       interactive={true}
       variant={isComplete ? 'primary' : 'accent'}
       selected={isSelected}
-      className={`shrink-0 w-80`}
       onClick={onClick}
     >
-      <GlassCardContent className="p-5">
-        <div className="space-y-3">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1">
-              <div className="flex items-center gap-1.5 mb-2">
-                <Badge
-                  variant="secondary"
-                  className={`text-xs ${
-                    isComplete
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-orange-100 text-orange-700'
-                  }`}
-                >
+      <CardBody>
+        <CardStack>
+          <CardHeader>
+            <CardHeaderContent>
+              <BadgeRow>
+                <StatusBadge variant="secondary" $isComplete={isComplete}>
                   {role.status}
-                </Badge>
+                </StatusBadge>
                 {role.isCurrent && (
-                  <Badge variant="outline" className="text-xs">
-                    Current
-                  </Badge>
+                  <CurrentBadge variant="outline">Current</CurrentBadge>
                 )}
-              </div>
-              <h4 className="font-semibold text-foreground">{role.title}</h4>
-              <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                <Building2 className="h-3.5 w-3.5" />
+              </BadgeRow>
+              <RoleTitle>{role.title}</RoleTitle>
+              <CompanyLine>
+                <Building2 size={14} />
                 {role.company}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Calendar className="h-3.5 w-3.5" />
+              </CompanyLine>
+            </CardHeaderContent>
+          </CardHeader>
+          <PeriodLine>
+            <Calendar size={14} />
             {role.period} · {role.duration}
-          </div>
+          </PeriodLine>
 
           {isComplete ? (
             <>
               {role.techStack && (
-                <div className="flex flex-wrap gap-1.5">
+                <TechStack>
                   {role.techStack.slice(0, 4).map((tech) => (
-                    <Badge
-                      key={tech}
-                      variant="secondary"
-                      className="text-xs bg-primary/10 text-primary"
-                    >
+                    <TechBadge key={tech} variant="secondary">
                       {tech}
-                    </Badge>
+                    </TechBadge>
                   ))}
-                </div>
+                </TechStack>
               )}
-              <div className="pt-2 border-t">
-                <p className="text-xs text-muted-foreground">
+              <SummaryRow>
+                <SummaryText>
                   {role.projectsCount} Projects · {role.achievementsCount}{' '}
                   Achievements
-                </p>
-              </div>
+                </SummaryText>
+              </SummaryRow>
             </>
           ) : (
             <>
-              <div className="flex items-center gap-2 text-xs text-orange-600 font-medium">
-                <AlertCircle className="h-3.5 w-3.5" />
+              <MissingDetails>
+                <AlertCircle size={14} />
                 {role.missingDetails}
-              </div>
-              <div className="pt-2 border-t">
-                <p className="text-xs text-muted-foreground">
+              </MissingDetails>
+              <SummaryRow>
+                <SummaryText>
                   {role.projectsCount} Projects · Add more info
-                </p>
-              </div>
+                </SummaryText>
+              </SummaryRow>
             </>
           )}
-        </div>
-      </GlassCardContent>
-    </GlassCard>
+        </CardStack>
+      </CardBody>
+    </RoleCard>
   )
 }

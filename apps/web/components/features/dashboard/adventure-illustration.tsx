@@ -1,20 +1,26 @@
+'use client'
+
 import { SVGProps } from 'react'
 
-export default function AdventureIllustration(props: SVGProps<SVGSVGElement>) {
+import {
+  IllustrationSvg,
+  SlowPulsingPath,
+  EaseInPulsingPath,
+  PulsingCircle,
+} from './adventure-illustration.styles'
+
+export function AdventureIllustration(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      className="w-full h-full drop-shadow-sm"
+    <IllustrationSvg
       viewBox="0 0 400 300"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       {/* Background Abstract Shapes */}
-      <path
+      <SlowPulsingPath
         d="M48.5 258C18.5 238 -5.5 188 4.5 158C14.5 128 58.5 118 88.5 138C118.5 158 138.5 208 128.5 238C118.5 268 78.5 278 48.5 258Z"
         fill="#0666ee0d"
-        className="animate-pulse"
-        style={{ animationDuration: '4s' }}
       />
       <path
         d="M320 80C350 60 390 70 400 100C410 130 370 160 340 180C310 200 270 190 260 160C250 130 290 100 320 80Z"
@@ -30,13 +36,12 @@ export default function AdventureIllustration(props: SVGProps<SVGSVGElement>) {
       />
 
       {/* Dashed Trajectory Line */}
-      <path
+      <EaseInPulsingPath
         d="M80 230 Q 150 230 180 180 T 280 100"
         stroke="#cbd5e1"
         strokeWidth="3"
         strokeDasharray="8 8"
         fill="none"
-        className="animate-[pulse_3s_ease-in-out_infinite]"
       />
 
       {/* Target/Goal Pole */}
@@ -102,19 +107,13 @@ export default function AdventureIllustration(props: SVGProps<SVGSVGElement>) {
         />
       </g>
 
-      <circle
-        cx="360"
-        cy="120"
-        r="4"
-        fill="#475569"
-        className="animate-pulse"
-      />
+      <PulsingCircle cx="360" cy="120" r="4" fill="#475569" />
       <circle cx="40" cy="180" r="6" fill="#f43f5e" opacity="0.4" />
       <circle cx="150" cy="60" r="3" fill="#cbd5e1" />
 
       {/* Plants - Simplified */}
       <path d="M340 280 Q 340 260 330 260 Q 320 260 320 280" fill="#475569" />
       <path d="M350 280 Q 360 250 370 280" fill="#475569" />
-    </svg>
+    </IllustrationSvg>
   )
 }

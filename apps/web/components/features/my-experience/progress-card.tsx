@@ -1,58 +1,54 @@
-import { GlassCard, GlassCardContent } from '@/components/ui/glass-card'
-import { Progress } from '@radix-ui/react-progress'
+'use client'
+
+import { GlassCard } from '@/components/ui/glass-card'
 import { AlertCircle } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import {
+  CardBody,
+  ContentRow,
+  IconWrapper,
+  ContentBody,
+  ProfileLabel,
+  ProfileDescription,
+  ProgressBar,
+  BadgeRow,
+  GreenBadge,
+  OrangeBadge,
+} from './progress-card.styles'
 
 export function ProgressCard() {
   const completionPercentage = 60
 
   return (
-    <GlassCard variant="accent" className="border-orange-200">
-      <GlassCardContent className="p-6">
-        <div className="flex items-start gap-4">
-          <div className="rounded-full bg-orange-100 p-2 shrink-0">
-            <AlertCircle className="h-5 w-5 text-orange-600" />
-          </div>
-          <div className="flex-1 space-y-3">
+    <GlassCard variant="accent">
+      <CardBody>
+        <ContentRow>
+          <IconWrapper>
+            <AlertCircle size={20} />
+          </IconWrapper>
+          <ContentBody>
             <div>
-              <p className="text-sm font-medium text-foreground">
+              <ProfileLabel>
                 Profile {completionPercentage}% Complete
-              </p>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              </ProfileLabel>
+              <ProfileDescription>
                 Add more projects and details to unlock high-quality
                 applications
-              </p>
+              </ProfileDescription>
             </div>
-            <Progress value={completionPercentage} className="h-2" />
-            <div className="flex flex-wrap gap-2">
-              <Badge
-                variant="outline"
-                className="text-xs bg-green-100 text-green-700 border-green-200"
-              >
-                ✓ Basic Info
-              </Badge>
-              <Badge
-                variant="outline"
-                className="text-xs bg-green-100 text-green-700 border-green-200"
-              >
-                ✓ 1 Role Added
-              </Badge>
-              <Badge
-                variant="outline"
-                className="text-xs bg-orange-100 text-orange-700 border-orange-200"
-              >
+            <ProgressBar value={completionPercentage} />
+            <BadgeRow>
+              <GreenBadge variant="outline">✓ Basic Info</GreenBadge>
+              <GreenBadge variant="outline">✓ 1 Role Added</GreenBadge>
+              <OrangeBadge variant="outline">
                 ⚠ Projects Incomplete
-              </Badge>
-              <Badge
-                variant="outline"
-                className="text-xs bg-orange-100 text-orange-700 border-orange-200"
-              >
+              </OrangeBadge>
+              <OrangeBadge variant="outline">
                 ⚠ Skills Need Details
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </GlassCardContent>
+              </OrangeBadge>
+            </BadgeRow>
+          </ContentBody>
+        </ContentRow>
+      </CardBody>
     </GlassCard>
   )
 }
