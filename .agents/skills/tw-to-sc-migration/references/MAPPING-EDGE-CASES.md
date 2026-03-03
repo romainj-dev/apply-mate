@@ -42,11 +42,17 @@ duration. Listing properties comma-separated without individual durations
 is **invalid** — only the last item gets the timing.
 
 **WRONG** (only `stroke` gets the duration):
+
 ```css
-transition: color, background-color, fill, stroke 150ms cubic-bezier(0.4, 0, 0.2, 1);
+transition:
+  color,
+  background-color,
+  fill,
+  stroke 150ms cubic-bezier(0.4, 0, 0.2, 1);
 ```
 
 **CORRECT** — use `all` for Tailwind's multi-property `transition` utility:
+
 ```css
 transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 ```
@@ -98,3 +104,53 @@ For `Image fill` with styling classes like `object-cover`, wrap with
 `shadow-{color}` changes shadow color while preserving geometry from
 paired shadow size utility. Do not stack `theme.shadows.*` on top of it.
 Use explicit colored `box-shadow` layers with `color-mix()` as needed.
+
+## E10) Framer Motion: `styled(motion.*)`
+
+When a component uses both Framer Motion and styled-components, wrap
+the `motion.*` primitive with `styled()` in the `.styles.ts` file.
+All Framer Motion props (`animate`, `initial`, `whileHover`, `layoutId`,
+etc.) are forwarded correctly through the styled wrapper.
+
+```ts
+// hero.styles.ts
+import { motion } from 'framer-motion'
+import styled from 'styled-components'
+
+export const HeroCard = styled(motion.div)`
+  border-radius: ${({ theme }) => theme.radii.xl};
+  background: ${({ theme }) => theme.colors.card};
+`
+```
+
+```tsx
+// hero.tsx
+<HeroCard
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  whileHover={{ scale: 1.02 }}
+>
+  ...
+</HeroCard>
+```
+
+Use the parent-reference selector pattern (MAPPING-CORE.md §5) for
+hover-triggered child styling. The styled motion component acts as a
+regular styled component for selector purposes:
+
+```ts
+export const BubbleWrapper = styled(motion.div)``
+export const BubbleInner = styled.div`
+  ${BubbleWrapper}:hover & {
+    box-shadow: ...;
+  }
+`
+```
+
+## E11) Responsive Lucide icon sizing
+
+When a Lucide icon has responsive Tailwind sizing (`h-5 w-5 sm:h-6 sm:w-6`), the `size` prop cannot vary at runtime via CSS alone, instead:
+
+**Wrap with `styled()`** and override `width`/`height` in the
+`belowMobile` media query. Use only when the size delta is visually
+significant and the icon is a prominent UI element.

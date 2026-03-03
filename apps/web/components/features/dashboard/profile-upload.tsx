@@ -3,14 +3,6 @@
 import type React from 'react'
 
 import { useState } from 'react'
-import { CardDescription } from '@/components/ui/card'
-import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardHeader,
-  GlassCardTitle,
-} from '@/components/ui/glass-card'
-import { Button } from '@/components/ui/button'
 import {
   Upload,
   FileText,
@@ -22,6 +14,56 @@ import {
   Linkedin,
   ExternalLink,
 } from 'lucide-react'
+import {
+  AnalyzeButton,
+  BlobBottomRight,
+  BlobTopLeft,
+  Column,
+  DefaultStateContent,
+  Divider,
+  DropHint,
+  DropTitle,
+  ErrorBox,
+  FastestBadge,
+  GhostLinkButton,
+  HeaderIconBox,
+  HeaderInner,
+  HeaderTextGroup,
+  HiddenInput,
+  MainGrid,
+  NextStepBody,
+  NextStepCard,
+  NextStepIconBox,
+  NextStepLabel,
+  NextStepText,
+  OrBadge,
+  SelectFileSpan,
+  SelectFilePt,
+  StepHint,
+  StepIntro,
+  StepNumBadgeMuted,
+  StepNumBadgePrimary,
+  StepNumRow,
+  StepTitle,
+  StepTitleMuted,
+  SuccessIconBox,
+  TipBody,
+  TipCard,
+  TipIconBox,
+  TipInner,
+  TipText,
+  TipTitle,
+  TipTitleRow,
+  UploadCard,
+  UploadContent,
+  UploadDescription,
+  UploadHeader,
+  UploadIconBox,
+  UploadLabel,
+  UploadTitle,
+  UploadedFileName,
+  UploadedStateContent,
+} from './profile-upload.styles'
 
 const MAX_FILE_SIZE = 10 // 10MB
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE * 1024 * 1024
@@ -82,256 +124,252 @@ export function ProfileUpload({
   }
 
   return (
-    <GlassCard interactive={false} className="relative overflow-hidden">
+    <UploadCard interactive={false}>
       {/* Decorative background elements */}
-      <div className="absolute -bottom-12 -right-12 h-64 w-64 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute -top-12 -left-12 h-64 w-64 bg-primary/5 rounded-full blur-3xl" />
+      <BlobBottomRight />
+      <BlobTopLeft />
 
-      <GlassCardHeader className="border-b border-border/50 pb-6 bg-primary/[0.02]">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center shadow-sm shrink-0 border border-primary/20">
-            <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-          </div>
-          <div className="space-y-1">
-            <GlassCardTitle className="text-xl sm:text-2xl font-bold tracking-tight">
+      <UploadHeader>
+        <HeaderInner>
+          <HeaderIconBox>
+            <Sparkles size={24} color="var(--primary)" />
+          </HeaderIconBox>
+          <HeaderTextGroup>
+            <UploadTitle>
               Recommended: Share your experience up-to-date
-            </GlassCardTitle>
-            <CardDescription className="text-sm sm:text-base font-medium">
+            </UploadTitle>
+            <UploadDescription>
               This is a necessary step to help ApplyMate tailor your resume and
               cover letter to each job description accurately.
-            </CardDescription>
-          </div>
-        </div>
-      </GlassCardHeader>
+            </UploadDescription>
+          </HeaderTextGroup>
+        </HeaderInner>
+      </UploadHeader>
 
-      <GlassCardContent className="p-6 sm:p-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 relative">
+      <UploadContent>
+        <MainGrid>
           {/* Vertical Divider with OR Badge */}
-          <div className="hidden lg:flex absolute left-1/2 top-0 bottom-0 w-px bg-border/50 -translate-x-1/2 items-center justify-center">
-            <div className="bg-background border border-border h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold text-muted-foreground shadow-sm">
-              OR
-            </div>
-          </div>
+          <Divider>
+            <OrBadge>OR</OrBadge>
+          </Divider>
 
           {/* Left Column: File Upload (Primary Path) */}
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[10px] font-bold">
-                  1
-                </span>
-                <h4 className="font-bold text-foreground">
-                  I have a resume file
-                </h4>
-              </div>
-              <p className="text-xs text-muted-foreground ml-8">
-                PDF or TXT file | Max size: {MAX_FILE_SIZE}MB
-              </p>
-            </div>
+          <Column>
+            <StepIntro>
+              <StepNumRow>
+                <StepNumBadgePrimary>1</StepNumBadgePrimary>
+                <StepTitle>I have a resume file</StepTitle>
+              </StepNumRow>
+              <StepHint>PDF or TXT file | Max size: {MAX_FILE_SIZE}MB</StepHint>
+            </StepIntro>
 
-            <label
-              htmlFor="resume-upload"
-              className={`block border-2 border-dashed rounded-2xl p-10 text-center transition-all cursor-pointer group/upload relative ${
-                uploadedFile
-                  ? 'border-green-500 bg-green-500/[0.03]'
-                  : 'border-primary/30 bg-primary/[0.01] hover:border-primary/60 hover:bg-primary/[0.04]'
-              }`}
-            >
-              <input
+            <UploadLabel htmlFor="resume-upload" $hasFile={!!uploadedFile}>
+              <HiddenInput
                 id="resume-upload"
                 type="file"
                 accept=".pdf,.txt"
-                className="hidden"
                 onChange={handleFileUpload}
                 disabled={isResumeUploading}
               />
               {uploadedFile ? (
-                <div className="space-y-4">
-                  <div className="h-14 w-14 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto ring-1 ring-green-500/20">
-                    <CheckCircle2 className="h-7 w-7 text-green-600" />
-                  </div>
+                <UploadedStateContent>
+                  <SuccessIconBox>
+                    <CheckCircle2 size={28} color="#16a34a" />
+                  </SuccessIconBox>
                   <div>
-                    <p className="font-bold text-foreground truncate max-w-[240px] mx-auto text-lg">
-                      {uploadedFile.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1 font-medium">
-                      File verified. Click to change.
-                    </p>
+                    <UploadedFileName>{uploadedFile.name}</UploadedFileName>
+                    <DropHint>File verified. Click to change.</DropHint>
                   </div>
-                </div>
+                </UploadedStateContent>
               ) : (
-                <div className="space-y-4">
-                  <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto group-hover/upload:scale-110 transition-transform ring-1 ring-primary/20">
-                    <Upload className="h-7 w-7 text-primary" />
-                  </div>
+                <DefaultStateContent>
+                  <UploadIconBox>
+                    <Upload size={28} color="var(--primary)" />
+                  </UploadIconBox>
                   <div>
-                    <p className="font-bold text-foreground text-lg">
-                      Drop your resume here
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1 font-medium">
-                      or click to browse your computer
-                    </p>
+                    <DropTitle>Drop your resume here</DropTitle>
+                    <DropHint>or click to browse your computer</DropHint>
                   </div>
-                  <div className="pt-2">
-                    <span className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold shadow-md group-hover/upload:bg-primary/90 transition-colors">
-                      <FileText className="h-4 w-4" />
+                  <SelectFilePt>
+                    <SelectFileSpan>
+                      <FileText size={16} />
                       Select File
-                    </span>
-                  </div>
-                </div>
+                    </SelectFileSpan>
+                  </SelectFilePt>
+                </DefaultStateContent>
               )}
-            </label>
+            </UploadLabel>
 
             {(resumeError || fileError) && (
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-xs text-red-600 font-medium">
-                <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+              <ErrorBox>
+                <AlertCircle
+                  size={16}
+                  style={{ marginTop: '0.125rem', flexShrink: 0 }}
+                />
                 <span>{resumeError || fileError}</span>
-              </div>
+              </ErrorBox>
             )}
 
             {uploadMethod === 'file' && (
-              <Button
+              <AnalyzeButton
                 onClick={handleResumeUpload}
                 size="lg"
-                className="w-full bg-primary hover:bg-primary/90 shadow-xl shadow-primary/25 h-12 text-base font-bold"
                 disabled={isResumeUploading || !uploadedFile || !!fileError}
               >
                 {isResumeUploading ? (
                   <>
-                    <Loader2 className="h-5 w-5 mr-3 animate-spin" />
+                    <Loader2 size={20} />
                     Analyzing Experience...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-5 w-5 mr-3" />
+                    <Sparkles size={20} />
                     Analyze my Experience
                   </>
                 )}
-              </Button>
+              </AnalyzeButton>
             )}
-          </div>
+          </Column>
 
           {/* Right Column: Quick Import Guide (Supportive Path) */}
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="h-6 w-6 rounded-full bg-muted-foreground/20 text-muted-foreground flex items-center justify-center text-[10px] font-bold">
-                  2
-                </span>
-                <h4 className="font-bold text-muted-foreground">
-                  I don&apos;t have a file yet
-                </h4>
-              </div>
-              <p className="text-xs text-muted-foreground ml-8">
+          <Column>
+            <StepIntro>
+              <StepNumRow>
+                <StepNumBadgeMuted>2</StepNumBadgeMuted>
+                <StepTitleMuted>I don&apos;t have a file yet</StepTitleMuted>
+              </StepNumRow>
+              <StepHint>
                 No problem! We can help you get one in 30 seconds.
-              </p>
-            </div>
+              </StepHint>
+            </StepIntro>
 
-            <div className="space-y-4">
+            <Column>
               {/* LinkedIn Tip */}
-              <div className="group/tip p-5 rounded-2xl border border-border bg-card/20 hover:bg-card/40 transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 h-10 w-10 shrink-0 rounded-xl bg-[#0077b5]/10 flex items-center justify-center text-[#0077b5] border border-[#0077b5]/20">
-                    <Linkedin className="h-5 w-5" />
-                  </div>
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center justify-between">
-                      <h5 className="text-sm font-bold flex items-center gap-2">
+              <TipCard>
+                <TipInner>
+                  <TipIconBox $color="#0077b5">
+                    <Linkedin size={20} />
+                  </TipIconBox>
+                  <TipBody>
+                    <TipTitleRow>
+                      <TipTitle>
                         Get LinkedIn PDF
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-black uppercase tracking-tighter">
-                          Fastest
-                        </span>
-                      </h5>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 px-2 text-[10px] font-bold text-primary hover:bg-primary/5"
-                        asChild
-                      >
+                        <FastestBadge>Fastest</FastestBadge>
+                      </TipTitle>
+                      <GhostLinkButton variant="ghost" size="sm" asChild>
                         <a
                           href="https://www.linkedin.com/feed/"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           Go to LinkedIn{' '}
-                          <ExternalLink className="h-3 w-3 ml-1" />
+                          <ExternalLink
+                            size={12}
+                            style={{ marginLeft: '0.25rem' }}
+                          />
                         </a>
-                      </Button>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed font-medium">
+                      </GhostLinkButton>
+                    </TipTitleRow>
+                    <TipText>
                       Log in &gt; Your{' '}
-                      <span className="text-foreground font-bold italic">
+                      <span
+                        style={{
+                          color: 'var(--foreground)',
+                          fontWeight: 700,
+                          fontStyle: 'italic',
+                        }}
+                      >
                         Profile
                       </span>{' '}
                       &gt;{' '}
-                      <span className="text-foreground font-bold">
+                      <span
+                        style={{
+                          color: 'var(--foreground)',
+                          fontWeight: 700,
+                        }}
+                      >
                         More / Resources
                       </span>{' '}
                       &gt; Select{' '}
-                      <span className="text-primary font-bold">
+                      <span
+                        style={{
+                          color: 'var(--primary)',
+                          fontWeight: 700,
+                        }}
+                      >
                         Save to PDF
                       </span>
                       .
-                    </p>
-                  </div>
-                </div>
-              </div>
+                    </TipText>
+                  </TipBody>
+                </TipInner>
+              </TipCard>
 
               {/* Indeed Tip */}
-              <div className="group/tip p-5 rounded-2xl border border-border bg-card/20 hover:bg-card/40 transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 h-10 w-10 shrink-0 rounded-xl bg-[#2164f3]/10 flex items-center justify-center text-[#2164f3] border border-[#2164f3]/20">
-                    <Download className="h-5 w-5" />
-                  </div>
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center justify-between">
-                      <h5 className="text-sm font-bold">Indeed Resume</h5>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 px-2 text-[10px] font-bold text-primary hover:bg-primary/5"
-                        asChild
-                      >
+              <TipCard>
+                <TipInner>
+                  <TipIconBox $color="#2164f3">
+                    <Download size={20} />
+                  </TipIconBox>
+                  <TipBody>
+                    <TipTitleRow>
+                      <TipTitle>Indeed Resume</TipTitle>
+                      <GhostLinkButton variant="ghost" size="sm" asChild>
                         <a
                           href="https://www.indeed.com/"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Go to Indeed <ExternalLink className="h-3 w-3 ml-1" />
+                          Go to Indeed{' '}
+                          <ExternalLink
+                            size={12}
+                            style={{ marginLeft: '0.25rem' }}
+                          />
                         </a>
-                      </Button>
-                    </div>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed font-medium">
+                      </GhostLinkButton>
+                    </TipTitleRow>
+                    <TipText>
                       Log in &gt; Your{' '}
-                      <span className="text-foreground font-bold italic">
+                      <span
+                        style={{
+                          color: 'var(--foreground)',
+                          fontWeight: 700,
+                          fontStyle: 'italic',
+                        }}
+                      >
                         Profile
                       </span>{' '}
                       &gt; Find{' '}
-                      <span className="text-primary font-bold">
+                      <span
+                        style={{
+                          color: 'var(--primary)',
+                          fontWeight: 700,
+                        }}
+                      >
                         Download Resume
                       </span>
                       .
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+                    </TipText>
+                  </TipBody>
+                </TipInner>
+              </TipCard>
+            </Column>
 
-            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 flex items-start gap-4">
-              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
-                <Sparkles className="h-5 w-5 text-primary" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs font-bold text-foreground">Next Step</p>
-                <p className="text-[11px] text-muted-foreground leading-snug font-medium italic">
+            <NextStepCard>
+              <NextStepIconBox>
+                <Sparkles size={20} color="var(--primary)" />
+              </NextStepIconBox>
+              <NextStepBody>
+                <NextStepLabel>Next Step</NextStepLabel>
+                <NextStepText>
                   &ldquo;Once you have that PDF, just drag it into the box on
                   the left and we&apos;ll handle the rest!&rdquo;
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </GlassCardContent>
-    </GlassCard>
+                </NextStepText>
+              </NextStepBody>
+            </NextStepCard>
+          </Column>
+        </MainGrid>
+      </UploadContent>
+    </UploadCard>
   )
 }

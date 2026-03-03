@@ -2,15 +2,53 @@
 
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import {
-  GlassCard,
-  GlassCardContent,
-  GlassCardHeader,
-  GlassCardTitle,
-} from '@/components/ui/glass-card'
-import { Badge } from '@/components/ui/badge'
 import { ChevronLeft, Orbit } from 'lucide-react'
 import { getCategorizedSkills, SkillCategory } from './utils'
+import {
+  AiBadge,
+  AmbientCircleLg,
+  AmbientCircleSm,
+  BackButton,
+  BounceDot,
+  BubbleInner,
+  BubbleName,
+  BubbleWrapper,
+  BubblesContainer,
+  CardTitle,
+  CategoryColorDot,
+  CategoryContainer,
+  CategoryHeader,
+  CategoryHeaderLeft,
+  CategoryTitle,
+  ColorDot,
+  DotsRow,
+  EmptyState,
+  EmptyStateText,
+  FloatingDot,
+  Footer,
+  FooterText,
+  GridPattern,
+  HeaderLeft,
+  HeaderRow,
+  HoverDots,
+  InnerGlow,
+  MonoBadge,
+  ProgressFill,
+  ProgressTrack,
+  ScorePill,
+  ScoreText,
+  SkillCard,
+  SkillHeader,
+  SkillItem,
+  SkillName,
+  SkillScore,
+  SkillsCard,
+  SkillsContent,
+  SkillsGrid,
+  SkillsHeader,
+  SubTitle,
+  UniverseWrapper,
+} from './technical-skills.styles'
 
 export function TechnicalSkills() {
   const categories = useMemo(() => getCategorizedSkills(), [])
@@ -18,25 +56,21 @@ export function TechnicalSkills() {
     useState<SkillCategory | null>(null)
 
   return (
-    <GlassCard
-      variant="primary"
-      className="h-full min-h-[450px] flex flex-col overflow-hidden bg-white/50"
-    >
-      <GlassCardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+    <SkillsCard variant="primary">
+      <SkillsHeader>
+        <HeaderRow>
+          <HeaderLeft>
             <AnimatePresence mode="wait">
               {selectedCategory ? (
-                <motion.button
+                <BackButton
                   key="back"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
                   onClick={() => setSelectedCategory(null)}
-                  className="p-1 hover:bg-secondary rounded-full transition-colors"
                 >
-                  <ChevronLeft className="h-5 w-5" />
-                </motion.button>
+                  <ChevronLeft size={20} />
+                </BackButton>
               ) : (
                 <motion.div
                   key="icon"
@@ -44,38 +78,34 @@ export function TechnicalSkills() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                 >
-                  <Orbit className="h-5 w-5 text-primary" />
+                  <Orbit size={20} color="var(--primary)" />
                 </motion.div>
               )}
             </AnimatePresence>
             <div>
-              <GlassCardTitle className="text-base font-bold">
+              <CardTitle>
                 {selectedCategory
                   ? selectedCategory.name
                   : 'Technical Universe'}
-              </GlassCardTitle>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
+              </CardTitle>
+              <SubTitle>
                 {selectedCategory
                   ? 'Skill Breakdown'
                   : 'Select a domain to explore'}
-              </p>
+              </SubTitle>
             </div>
-          </div>
+          </HeaderLeft>
           {!selectedCategory && (
-            <div className="flex gap-1">
+            <DotsRow>
               {categories.map((c) => (
-                <div
-                  key={c.id}
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{ backgroundColor: c.color }}
-                />
+                <ColorDot key={c.id} style={{ backgroundColor: c.color }} />
               ))}
-            </div>
+            </DotsRow>
           )}
-        </div>
-      </GlassCardHeader>
+        </HeaderRow>
+      </SkillsHeader>
 
-      <GlassCardContent className="flex-1 relative p-6 overflow-hidden">
+      <SkillsContent>
         <AnimatePresence mode="wait">
           {!selectedCategory ? (
             <GlobalUniverse
@@ -87,20 +117,13 @@ export function TechnicalSkills() {
             <CategoryDetails key="details" category={selectedCategory} />
           )}
         </AnimatePresence>
-      </GlassCardContent>
+      </SkillsContent>
 
-      <div className="p-3 border-t border-border/10 bg-white/40 backdrop-blur-md flex justify-between items-center">
-        <span className="text-[10px] font-medium text-muted-foreground">
-          Computed from achievements
-        </span>
-        <Badge
-          variant="outline"
-          className="text-[9px] h-4 px-1.5 font-bold bg-primary/5 border-primary/20 text-primary"
-        >
-          AI-POWERED
-        </Badge>
-      </div>
-    </GlassCard>
+      <Footer>
+        <FooterText>Computed from achievements</FooterText>
+        <AiBadge variant="outline">AI-POWERED</AiBadge>
+      </Footer>
+    </SkillsCard>
   )
 }
 
@@ -112,16 +135,16 @@ function GlobalUniverse({
   onSelect: (c: SkillCategory) => void
 }) {
   return (
-    <div className="w-full h-full flex items-center justify-center relative">
-      <div className="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none" />
+    <UniverseWrapper>
+      <GridPattern />
 
       {/* Ambient Background Circles */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-primary/5 rounded-full animate-pulse" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-primary/5 rounded-full" />
+      <AmbientCircleSm />
+      <AmbientCircleLg />
 
-      <div className="flex flex-wrap items-center justify-center gap-8 relative z-10">
+      <BubblesContainer>
         {categories.map((category, idx) => (
-          <motion.div
+          <BubbleWrapper
             key={category.id}
             layoutId={`bubble-${category.id}`}
             initial={{ opacity: 0, scale: 0.5 }}
@@ -141,126 +164,96 @@ function GlobalUniverse({
             whileHover={{ scale: 1.1, zIndex: 20 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => onSelect(category)}
-            className="cursor-pointer group relative"
           >
             {/* Bubble Style */}
-            <div
-              className="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex flex-col items-center justify-center p-4 relative overflow-hidden transition-all duration-500 shadow-xl group-hover:shadow-2xl"
+            <BubbleInner
               style={{
                 background: `radial-gradient(circle at 30% 30%, white 0%, ${category.color} 50%, color-mix(in oklch, ${category.color}, black 20%) 100%)`,
                 boxShadow: `0 10px 30px -5px color-mix(in oklch, ${category.color}, transparent 60%), inset 0 -4px 10px rgba(0,0,0,0.2)`,
               }}
             >
               {/* Inner Glow */}
-              <div className="absolute inset-0 opacity-20 bg-white mix-blend-overlay rounded-full" />
+              <InnerGlow />
 
-              <span className="text-white font-bold text-xs sm:text-sm text-center drop-shadow-md mb-2">
-                {category.name}
-              </span>
+              <BubbleName>{category.name}</BubbleName>
 
               {/* Score Pill */}
-              <div className="bg-black/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20 shadow-lg">
-                <span className="text-[10px] font-mono font-bold text-white leading-none">
-                  {category.totalScore}
-                </span>
-              </div>
+              <ScorePill>
+                <ScoreText>{category.totalScore}</ScoreText>
+              </ScorePill>
 
               {/* Hover Details Hint */}
-              <div className="absolute bottom-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-0.5">
-                <div
-                  className="w-1 h-1 rounded-full bg-white animate-bounce"
-                  style={{ animationDelay: '0ms' }}
-                />
-                <div
-                  className="w-1 h-1 rounded-full bg-white animate-bounce"
-                  style={{ animationDelay: '150ms' }}
-                />
-                <div
-                  className="w-1 h-1 rounded-full bg-white animate-bounce"
-                  style={{ animationDelay: '300ms' }}
-                />
-              </div>
-            </div>
-          </motion.div>
+              <HoverDots>
+                <BounceDot style={{ animationDelay: '0ms' }} />
+                <BounceDot style={{ animationDelay: '150ms' }} />
+                <BounceDot style={{ animationDelay: '300ms' }} />
+              </HoverDots>
+            </BubbleInner>
+          </BubbleWrapper>
         ))}
-      </div>
-    </div>
+      </BubblesContainer>
+    </UniverseWrapper>
   )
 }
 
 function CategoryDetails({ category }: { category: SkillCategory }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="w-full h-full flex flex-col"
-    >
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: category.color }}
-          />
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
-            {category.name} Skills
-          </h3>
-        </div>
-        <Badge variant="secondary" className="font-mono text-[10px]">
-          Total: {category.totalScore}
-        </Badge>
-      </div>
+    <CategoryContainer initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <CategoryHeader>
+        <CategoryHeaderLeft>
+          <CategoryColorDot style={{ backgroundColor: category.color }} />
+          <CategoryTitle>{category.name} Skills</CategoryTitle>
+        </CategoryHeaderLeft>
+        <MonoBadge variant="secondary">Total: {category.totalScore}</MonoBadge>
+      </CategoryHeader>
 
-      <div className="grid grid-cols-2 gap-4">
+      <SkillsGrid>
         {category.skills.map((skill, idx) => (
-          <motion.div
+          <SkillItem
             key={skill.name}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="group relative"
           >
-            <div className="bg-white border border-border/50 rounded-2xl p-3 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-              <div className="flex justify-between items-start mb-2">
-                <span className="font-bold text-xs group-hover:text-primary transition-colors">
-                  {skill.name}
-                </span>
-                <span className="text-[10px] font-mono text-muted-foreground">
-                  {skill.score}
-                </span>
-              </div>
+            <SkillCard>
+              <SkillHeader>
+                <SkillName>{skill.name}</SkillName>
+                <SkillScore>{skill.score}</SkillScore>
+              </SkillHeader>
 
               {/* Mini Progress Bar */}
-              <div className="h-1.5 w-full bg-secondary/50 rounded-full overflow-hidden">
-                <motion.div
+              <ProgressTrack>
+                <ProgressFill
                   initial={{ width: 0 }}
                   animate={{
                     width: `${Math.min(100, (skill.score / category.totalScore) * 300)}%`,
                   }}
-                  className="h-full rounded-full"
                   style={{ backgroundColor: category.color }}
                 />
-              </div>
-            </div>
+              </ProgressTrack>
+            </SkillCard>
 
             {/* Staggered Floating Elements (Visual Decoration) */}
             {idx % 3 === 0 && (
-              <motion.div
+              <FloatingDot
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-1 -right-1 w-2 h-2 rounded-full opacity-40"
-                style={{ backgroundColor: category.color, filter: 'blur(2px)' }}
+                style={{
+                  backgroundColor: category.color,
+                  filter: 'blur(2px)',
+                }}
               />
             )}
-          </motion.div>
+          </SkillItem>
         ))}
-      </div>
+      </SkillsGrid>
 
-      {/* Empty state or "More" hint if many skills */}
+      {/* Empty state */}
       {category.skills.length === 0 && (
-        <div className="flex-1 flex flex-col items-center justify-center opacity-50">
-          <p className="text-xs italic">No specific skills extracted yet</p>
-        </div>
+        <EmptyState>
+          <EmptyStateText>No specific skills extracted yet</EmptyStateText>
+        </EmptyState>
       )}
-    </motion.div>
+    </CategoryContainer>
   )
 }
