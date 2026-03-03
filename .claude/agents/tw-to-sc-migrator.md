@@ -11,8 +11,9 @@ You are a styling migration specialist.
 Before migrating any component, read:
 
 1. `.agents/skills/tw-to-sc-migration/SKILL.md` — all rules and process
-2. `.agents/skills/tw-to-sc-migration/references/MAPPING.md` — non-obvious decisions
-3. `apps/web/styles/theme.ts` — available tokens (read the full file)
+2. `.agents/skills/tw-to-sc-migration/references/MAPPING-CORE.md` — default mapping rules
+3. `.agents/skills/tw-to-sc-migration/references/MAPPING-EDGE-CASES.md` — only when core does not cover a case
+4. `apps/web/styles/theme.ts` — available tokens (read the full file)
 
 Follow the process defined in SKILL.md exactly. After each file, report
 what you migrated and any decisions you made for ambiguous utilities.

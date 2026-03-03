@@ -17,9 +17,11 @@ Read these files to understand the codebase conventions:
 - `.cursor/rules/styled-components-rsc-boundary.mdc` — RSC vs Client
   Component decision guide (styled-components requires `'use client'`)
 
-For non-obvious mapping decisions (opacity, gradients, responsive
-inversion, group-hover, layout utilities), see
-[references/MAPPING.md](references/MAPPING.md).
+For non-obvious mapping decisions, read:
+
+- [references/MAPPING-CORE.md](references/MAPPING-CORE.md) first
+- [references/MAPPING-EDGE-CASES.md](references/MAPPING-EDGE-CASES.md)
+  only when a case is not covered by core guidance
 
 ## Scope
 
@@ -51,7 +53,8 @@ For each component file:
 4. **Create** a co-located `*.styles.ts` file with styled component
    definitions (e.g., `hero.styles.ts` next to `hero.tsx`).
 5. **Map** each Tailwind utility to its theme-token equivalent using
-   `references/MAPPING.md`.
+   `references/MAPPING-CORE.md`. If unresolved, consult
+   `references/MAPPING-EDGE-CASES.md`.
 6. **Replace** Tailwind-styled HTML elements with styled components in
    the component file.
 7. **Convert** conditional classes (`cn(base, cond && cls)`) to transient
@@ -143,8 +146,8 @@ removed. In order of preference:
 
 ## Before/After Example
 
-See the full worked example in [references/MAPPING.md](references/MAPPING.md)
-under "Worked Example".
+See the worked transform in
+[references/MAPPING-EXAMPLES.md](references/MAPPING-EXAMPLES.md).
 
 ## Validation
 
@@ -154,7 +157,7 @@ under "Worked Example".
 - [ ] No `cn()` import from `@/lib/utils`
 - [ ] Design tokens (colors, spacing, typography, radii, shadows) use `theme.*`
 - [ ] Layout dimensions (`width`, `height`, `max-width`, `min-height`, etc.)
-      use plain CSS values — these are not design tokens (see MAPPING.md §6)
+      use plain CSS values — these are not design tokens
 - [ ] Responsive styles use `theme.media.belowTablet` / `belowMobile`
 - [ ] Transient props use `$` prefix
 - [ ] `*.styles.ts` file is co-located with the component
