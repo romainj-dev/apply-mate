@@ -79,6 +79,11 @@ export const StepIconWrapper = styled.div`
   border: 1px solid
     color-mix(in oklch, ${({ theme }) => theme.colors.accent} 20%, transparent);
   color: ${({ theme }) => theme.colors.accent};
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
 `
 
 export const StepLabel = styled.div`

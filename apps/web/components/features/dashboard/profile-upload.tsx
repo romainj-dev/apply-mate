@@ -4,18 +4,9 @@ import type React from 'react'
 
 import { useState } from 'react'
 import {
-  Upload,
-  FileText,
-  Download,
-  CheckCircle2,
-  Sparkles,
-  Loader2,
-  AlertCircle,
-  Linkedin,
-  ExternalLink,
-} from 'lucide-react'
-import {
   AnalyzeButton,
+  AnalyzeLoaderIcon,
+  AnalyzeSparklesIcon,
   BlobBottomRight,
   BlobTopLeft,
   Column,
@@ -23,9 +14,12 @@ import {
   Divider,
   DropHint,
   DropTitle,
+  ErrorAlertIcon,
   ErrorBox,
+  ExternalLinkIcon,
   FastestBadge,
   GhostLinkButton,
+  HeaderSparklesIcon,
   HeaderIconBox,
   HeaderInner,
   HeaderTextGroup,
@@ -36,7 +30,9 @@ import {
   NextStepIconBox,
   NextStepLabel,
   NextStepText,
+  NextStepSparklesIcon,
   OrBadge,
+  SelectFileTextIcon,
   SelectFileSpan,
   SelectFilePt,
   StepHint,
@@ -46,10 +42,16 @@ import {
   StepNumRow,
   StepTitle,
   StepTitleMuted,
+  SuccessCheckIcon,
   SuccessIconBox,
+  TipDownloadIcon,
   TipBody,
   TipCard,
+  TipLinkedinIcon,
   TipIconBox,
+  TipPrimaryStrong,
+  TipStrong,
+  TipStrongItalic,
   TipInner,
   TipText,
   TipTitle,
@@ -58,6 +60,7 @@ import {
   UploadContent,
   UploadDescription,
   UploadHeader,
+  UploadFileIcon,
   UploadIconBox,
   UploadLabel,
   UploadTitle,
@@ -132,7 +135,7 @@ export function ProfileUpload({
       <UploadHeader>
         <HeaderInner>
           <HeaderIconBox>
-            <Sparkles size={24} color="var(--primary)" />
+            <HeaderSparklesIcon />
           </HeaderIconBox>
           <HeaderTextGroup>
             <UploadTitle>
@@ -174,7 +177,7 @@ export function ProfileUpload({
               {uploadedFile ? (
                 <UploadedStateContent>
                   <SuccessIconBox>
-                    <CheckCircle2 size={28} color="#16a34a" />
+                    <SuccessCheckIcon />
                   </SuccessIconBox>
                   <div>
                     <UploadedFileName>{uploadedFile.name}</UploadedFileName>
@@ -184,7 +187,7 @@ export function ProfileUpload({
               ) : (
                 <DefaultStateContent>
                   <UploadIconBox>
-                    <Upload size={28} color="var(--primary)" />
+                    <UploadFileIcon />
                   </UploadIconBox>
                   <div>
                     <DropTitle>Drop your resume here</DropTitle>
@@ -192,7 +195,7 @@ export function ProfileUpload({
                   </div>
                   <SelectFilePt>
                     <SelectFileSpan>
-                      <FileText size={16} />
+                      <SelectFileTextIcon />
                       Select File
                     </SelectFileSpan>
                   </SelectFilePt>
@@ -202,10 +205,7 @@ export function ProfileUpload({
 
             {(resumeError || fileError) && (
               <ErrorBox>
-                <AlertCircle
-                  size={16}
-                  style={{ marginTop: '0.125rem', flexShrink: 0 }}
-                />
+                <ErrorAlertIcon />
                 <span>{resumeError || fileError}</span>
               </ErrorBox>
             )}
@@ -218,12 +218,12 @@ export function ProfileUpload({
               >
                 {isResumeUploading ? (
                   <>
-                    <Loader2 size={20} />
+                    <AnalyzeLoaderIcon />
                     Analyzing Experience...
                   </>
                 ) : (
                   <>
-                    <Sparkles size={20} />
+                    <AnalyzeSparklesIcon />
                     Analyze my Experience
                   </>
                 )}
@@ -247,8 +247,8 @@ export function ProfileUpload({
               {/* LinkedIn Tip */}
               <TipCard>
                 <TipInner>
-                  <TipIconBox $color="#0077b5">
-                    <Linkedin size={20} />
+                  <TipIconBox $brand="linkedin">
+                    <TipLinkedinIcon />
                   </TipIconBox>
                   <TipBody>
                     <TipTitleRow>
@@ -262,44 +262,15 @@ export function ProfileUpload({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Go to LinkedIn{' '}
-                          <ExternalLink
-                            size={12}
-                            style={{ marginLeft: '0.25rem' }}
-                          />
+                          Go to LinkedIn <ExternalLinkIcon />
                         </a>
                       </GhostLinkButton>
                     </TipTitleRow>
                     <TipText>
                       Log in &gt; Your{' '}
-                      <span
-                        style={{
-                          color: 'var(--foreground)',
-                          fontWeight: 700,
-                          fontStyle: 'italic',
-                        }}
-                      >
-                        Profile
-                      </span>{' '}
-                      &gt;{' '}
-                      <span
-                        style={{
-                          color: 'var(--foreground)',
-                          fontWeight: 700,
-                        }}
-                      >
-                        More / Resources
-                      </span>{' '}
-                      &gt; Select{' '}
-                      <span
-                        style={{
-                          color: 'var(--primary)',
-                          fontWeight: 700,
-                        }}
-                      >
-                        Save to PDF
-                      </span>
-                      .
+                      <TipStrongItalic>Profile</TipStrongItalic> &gt;{' '}
+                      <TipStrong>More / Resources</TipStrong> &gt; Select{' '}
+                      <TipPrimaryStrong>Save to PDF</TipPrimaryStrong>.
                     </TipText>
                   </TipBody>
                 </TipInner>
@@ -308,8 +279,8 @@ export function ProfileUpload({
               {/* Indeed Tip */}
               <TipCard>
                 <TipInner>
-                  <TipIconBox $color="#2164f3">
-                    <Download size={20} />
+                  <TipIconBox $brand="indeed">
+                    <TipDownloadIcon />
                   </TipIconBox>
                   <TipBody>
                     <TipTitleRow>
@@ -320,35 +291,14 @@ export function ProfileUpload({
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Go to Indeed{' '}
-                          <ExternalLink
-                            size={12}
-                            style={{ marginLeft: '0.25rem' }}
-                          />
+                          Go to Indeed <ExternalLinkIcon />
                         </a>
                       </GhostLinkButton>
                     </TipTitleRow>
                     <TipText>
                       Log in &gt; Your{' '}
-                      <span
-                        style={{
-                          color: 'var(--foreground)',
-                          fontWeight: 700,
-                          fontStyle: 'italic',
-                        }}
-                      >
-                        Profile
-                      </span>{' '}
-                      &gt; Find{' '}
-                      <span
-                        style={{
-                          color: 'var(--primary)',
-                          fontWeight: 700,
-                        }}
-                      >
-                        Download Resume
-                      </span>
-                      .
+                      <TipStrongItalic>Profile</TipStrongItalic> &gt; Find{' '}
+                      <TipPrimaryStrong>Download Resume</TipPrimaryStrong>.
                     </TipText>
                   </TipBody>
                 </TipInner>
@@ -357,7 +307,7 @@ export function ProfileUpload({
 
             <NextStepCard>
               <NextStepIconBox>
-                <Sparkles size={20} color="var(--primary)" />
+                <NextStepSparklesIcon />
               </NextStepIconBox>
               <NextStepBody>
                 <NextStepLabel>Next Step</NextStepLabel>

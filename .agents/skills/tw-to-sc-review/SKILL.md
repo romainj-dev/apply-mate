@@ -62,6 +62,12 @@ Run only these checks.
 - Flag clearly tokenizable hardcoded values:
   - colors (`#`, `rgb`, `oklch`) that should be `theme.colors.*`
   - obvious spacing/radius/shadow values that should use theme tokens
+- Flag any style-related JSX props/inline styles that should be in
+  `*.styles.ts` (for example `size`, `color`, `style={{ ... }}`, CSS-variable
+  values in JSX props).
+- Exception: allow visual prop overrides only on clearly reusable icon
+  abstractions with documented intent (applies to size, color, and other
+  visual props).
 - Do not enforce exhaustive token substitution in sanity mode.
 
 ### S4. Styled-Components Correctness

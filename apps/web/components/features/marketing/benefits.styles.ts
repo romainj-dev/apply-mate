@@ -90,6 +90,11 @@ export const IconWrapper = styled.div`
     transparent
   );
   color: ${({ theme }) => theme.colors.accent};
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `
 
 export const CardTitle = styled.h3`

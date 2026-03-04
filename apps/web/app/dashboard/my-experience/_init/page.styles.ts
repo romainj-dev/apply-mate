@@ -98,7 +98,7 @@ export const ChecklistItem = styled.div`
 `
 
 export const CompletedItem = styled(ChecklistItem)`
-  color: #16a34a;
+  color: ${({ theme }) => theme.colors.status.success.fg};
 `
 
 export const ActiveItem = styled(ChecklistItem)`

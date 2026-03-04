@@ -1,6 +1,5 @@
 'use client'
 
-import { Building2, Calendar, AlertCircle } from 'lucide-react'
 import { Role } from './data'
 import {
   RoleCard,
@@ -12,8 +11,11 @@ import {
   StatusBadge,
   CurrentBadge,
   RoleTitle,
+  CompanyIcon,
   CompanyLine,
+  MissingDetailsIcon,
   PeriodLine,
+  PeriodIcon,
   TechStack,
   TechBadge,
   SummaryRow,
@@ -51,13 +53,13 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
               </BadgeRow>
               <RoleTitle>{role.title}</RoleTitle>
               <CompanyLine>
-                <Building2 size={14} />
+                <CompanyIcon />
                 {role.company}
               </CompanyLine>
             </CardHeaderContent>
           </CardHeader>
           <PeriodLine>
-            <Calendar size={14} />
+            <PeriodIcon />
             {role.period} · {role.duration}
           </PeriodLine>
 
@@ -82,7 +84,7 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
           ) : (
             <>
               <MissingDetails>
-                <AlertCircle size={14} />
+                <MissingDetailsIcon />
                 {role.missingDetails}
               </MissingDetails>
               <SummaryRow>

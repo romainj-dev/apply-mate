@@ -2,8 +2,6 @@
 
 import Link from 'next/link'
 
-import { AlertCircle } from 'lucide-react'
-
 import {
   Card,
   GlowBlob,
@@ -14,6 +12,7 @@ import {
   TextContent,
   Heading,
   Body,
+  PromptAlertIcon,
   SetupButton,
 } from './profile-setup-prompt.styles'
 
@@ -25,7 +24,7 @@ export function ProfileSetupPrompt() {
       <ContentRow>
         <IconShrink>
           <IconBox>
-            <AlertCircle size={24} color="rgb(234 88 12)" />
+            <PromptAlertIcon />
           </IconBox>
         </IconShrink>
 

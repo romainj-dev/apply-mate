@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Badge } from '@/components/ui/badge'
 import { GlassCard, GlassCardContent } from '@/components/ui/glass-card'
+import { AlertCircle, Building2, Calendar } from 'lucide-react'
 
 export const RoleCard = styled(GlassCard)`
   flex-shrink: 0;
@@ -64,12 +65,22 @@ export const CompanyLine = styled.p`
   margin-top: ${({ theme }) => theme.space.xs};
 `
 
+export const CompanyIcon = styled(Building2)`
+  width: 0.875rem;
+  height: 0.875rem;
+`
+
 export const PeriodLine = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.space.sm};
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   color: ${({ theme }) => theme.colors.mutedForeground};
+`
+
+export const PeriodIcon = styled(Calendar)`
+  width: 0.875rem;
+  height: 0.875rem;
 `
 
 export const TechStack = styled.div`
@@ -105,4 +116,9 @@ export const MissingDetails = styled.div`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   color: #ea580c;
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+`
+
+export const MissingDetailsIcon = styled(AlertCircle)`
+  width: 0.875rem;
+  height: 0.875rem;
 `

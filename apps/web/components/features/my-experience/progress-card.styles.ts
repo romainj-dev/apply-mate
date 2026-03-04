@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Progress } from '@radix-ui/react-progress'
 import { Badge } from '@/components/ui/badge'
 import { GlassCardContent } from '@/components/ui/glass-card'
+import { AlertCircle } from 'lucide-react'
 
 export const CardBody = styled(GlassCardContent)`
   padding: ${({ theme }) => theme.space.lg};
@@ -15,10 +16,15 @@ export const ContentRow = styled.div`
 
 export const IconWrapper = styled.div`
   border-radius: ${({ theme }) => theme.radii.full};
-  background-color: #ffedd5;
+  background-color: ${({ theme }) => theme.colors.status.attention.bg};
   padding: ${({ theme }) => theme.space.sm};
   flex-shrink: 0;
-  color: #ea580c;
+  color: ${({ theme }) => theme.colors.status.attention.fg};
+`
+
+export const ProgressAlertIcon = styled(AlertCircle)`
+  width: 1.25rem;
+  height: 1.25rem;
 `
 
 export const ContentBody = styled.div`
@@ -52,14 +58,14 @@ export const BadgeRow = styled.div`
 
 export const GreenBadge = styled(Badge)`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  background-color: #dcfce7;
-  color: #15803d;
-  border-color: #bbf7d0;
+  background-color: ${({ theme }) => theme.colors.status.success.bg};
+  color: ${({ theme }) => theme.colors.status.success.fg};
+  border-color: ${({ theme }) => theme.colors.status.success.border};
 `
 
 export const OrangeBadge = styled(Badge)`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  background-color: #ffedd5;
-  color: #c2410c;
-  border-color: #fed7aa;
+  background-color: ${({ theme }) => theme.colors.status.attention.bg};
+  color: ${({ theme }) => theme.colors.status.attention.fg};
+  border-color: ${({ theme }) => theme.colors.status.attention.border};
 `

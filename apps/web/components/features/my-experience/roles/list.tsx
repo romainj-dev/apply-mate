@@ -1,6 +1,5 @@
 'use client'
 
-import { Plus } from 'lucide-react'
 import { Role } from './data'
 import { RolesCard } from './card'
 import {
@@ -9,6 +8,7 @@ import {
   AddCardBody,
   AddContent,
   AddIconCircle,
+  AddRolePlusIcon,
   AddLabel,
   AddSubLabel,
 } from './list.styles'
@@ -46,7 +46,7 @@ export function RolesList({
         <AddCardBody>
           <AddContent>
             <AddIconCircle>
-              <Plus size={24} />
+              <AddRolePlusIcon />
             </AddIconCircle>
             <AddLabel>Add New Role</AddLabel>
             <AddSubLabel>Document another position</AddSubLabel>

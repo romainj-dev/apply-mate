@@ -45,27 +45,27 @@ const navItems = [
   {
     label: 'Dashboard',
     href: '/dashboard',
-    icon: LayoutDashboard,
+    Icon: LayoutDashboard,
   },
   {
     label: 'My Experience',
     href: '/dashboard/my-experience',
-    icon: List,
+    Icon: List,
   },
   {
     label: 'My Goal',
     href: '/dashboard/my-goal',
-    icon: Rocket,
+    Icon: Rocket,
   },
   {
     label: 'Statistics',
     href: '/dashboard/statistics',
-    icon: BarChart3,
+    Icon: BarChart3,
   },
   {
     label: 'Settings',
     href: '/dashboard/settings',
-    icon: Settings,
+    Icon: Settings,
   },
 ]
 
@@ -94,20 +94,16 @@ export function DashboardSidebar() {
         <Nav>
           <NavLabel>Menu</NavLabel>
           {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive = pathname === item.href
+            const { Icon, href, label } = item
+            const isActive = pathname === href
 
             return (
-              <NavLinkItem
-                key={item.href}
-                href={item.href}
-                $isActive={isActive}
-              >
+              <NavLinkItem key={href} href={href} $isActive={isActive}>
                 {isActive && <ActiveIndicator />}
                 <NavIcon $isActive={isActive}>
-                  <Icon size={20} />
+                  <Icon />
                 </NavIcon>
-                <NavText>{item.label}</NavText>
+                <NavText>{label}</NavText>
                 {isActive && <ActivePulseOverlay />}
               </NavLinkItem>
             )

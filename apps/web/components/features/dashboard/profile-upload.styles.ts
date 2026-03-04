@@ -1,5 +1,16 @@
 import styled from 'styled-components'
 import {
+  AlertCircle,
+  CheckCircle2,
+  Download,
+  ExternalLink,
+  FileText,
+  Linkedin,
+  Loader2,
+  Sparkles,
+  Upload,
+} from 'lucide-react'
+import {
   GlassCard,
   GlassCardContent,
   GlassCardHeader,
@@ -7,6 +18,8 @@ import {
 } from '@/components/ui/glass-card'
 import { CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+
+type TipBrand = 'linkedin' | 'indeed'
 
 /* ── Card shell ──────────────────────────────────────────────────────── */
 
@@ -85,6 +98,12 @@ export const HeaderIconBox = styled.div`
     width: 2.5rem;
     height: 2.5rem;
   }
+`
+
+export const HeaderSparklesIcon = styled(Sparkles)`
+  width: 1.5rem;
+  height: 1.5rem;
+  color: ${({ theme }) => theme.colors.primary};
 `
 
 export const HeaderTextGroup = styled.div`
@@ -254,8 +273,8 @@ export const UploadLabel = styled.label<{ $hasFile: boolean }>`
   ${({ theme, $hasFile }) =>
     $hasFile
       ? `
-    border-color: #22c55e; /* green-500 */
-    background: color-mix(in oklch, #22c55e 3%, transparent);
+    border-color: ${theme.colors.status.success.border};
+    background: ${theme.colors.status.success.bg};
   `
       : `
     border-color: color-mix(in oklch, ${theme.colors.primary} 30%, transparent);
@@ -284,13 +303,18 @@ export const SuccessIconBox = styled.div`
   height: 3.5rem;
   width: 3.5rem;
   border-radius: ${({ theme }) => theme.radii['2xl']};
-  background: color-mix(in oklch, #22c55e 10%, transparent); /* green-500/10 */
+  background: ${({ theme }) => theme.colors.status.success.bg};
   display: flex;
   align-items: center;
   justify-content: center;
   margin-inline: auto;
-  /* ring-1 ring-green-500/20 */
-  box-shadow: 0 0 0 1px color-mix(in oklch, #22c55e 20%, transparent);
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.status.success.border};
+`
+
+export const SuccessCheckIcon = styled(CheckCircle2)`
+  width: 1.75rem;
+  height: 1.75rem;
+  color: ${({ theme }) => theme.colors.status.success.fg};
 `
 
 export const UploadedFileName = styled.p`
@@ -335,6 +359,12 @@ export const UploadIconBox = styled.div`
   }
 `
 
+export const UploadFileIcon = styled(Upload)`
+  width: 1.75rem;
+  height: 1.75rem;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
 export const DropTitle = styled.p`
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   color: ${({ theme }) => theme.colors.foreground};
@@ -375,6 +405,11 @@ export const SelectFileSpan = styled.span`
   }
 `
 
+export const SelectFileTextIcon = styled(FileText)`
+  width: 1rem;
+  height: 1rem;
+`
+
 /* ── Error message ───────────────────────────────────────────────────── */
 
 export const ErrorBox = styled.div`
@@ -383,12 +418,18 @@ export const ErrorBox = styled.div`
   gap: ${({ theme }) => theme.spaceCalc(3)};
   padding: ${({ theme }) => theme.space.md};
   border-radius: ${({ theme }) => theme.radii.xl};
-  /* red-500/5 bg, red-500/10 border */
-  background: color-mix(in oklch, #ef4444 5%, transparent);
-  border: 1px solid color-mix(in oklch, #ef4444 10%, transparent);
+  background: ${({ theme }) => theme.colors.status.danger.bg};
+  border: 1px solid ${({ theme }) => theme.colors.status.danger.border};
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: #dc2626; /* red-600 */
+  color: ${({ theme }) => theme.colors.status.danger.fg};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+`
+
+export const ErrorAlertIcon = styled(AlertCircle)`
+  width: 1rem;
+  height: 1rem;
+  margin-top: ${({ theme }) => theme.space.xs};
+  flex-shrink: 0;
 `
 
 /* ── Analyze button ──────────────────────────────────────────────────── */
@@ -413,6 +454,16 @@ export const AnalyzeButton = styled(Button)`
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       );
+`
+
+export const AnalyzeLoaderIcon = styled(Loader2)`
+  width: 1.25rem;
+  height: 1.25rem;
+`
+
+export const AnalyzeSparklesIcon = styled(Sparkles)`
+  width: 1.25rem;
+  height: 1.25rem;
 `
 
 /* ── Right column: tip cards ─────────────────────────────────────────── */
@@ -443,7 +494,7 @@ export const TipInner = styled.div`
   gap: ${({ theme }) => theme.space.md};
 `
 
-export const TipIconBox = styled.div<{ $color: string }>`
+export const TipIconBox = styled.div<{ $brand: TipBrand }>`
   margin-top: 0.25rem;
   height: 2.5rem;
   width: 2.5rem;
@@ -452,11 +503,28 @@ export const TipIconBox = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Brand color passed via prop — extended palette, no theme token */
-  background: color-mix(in oklch, ${({ $color }) => $color} 10%, transparent);
-  color: ${({ $color }) => $color};
+  background: color-mix(
+    in oklch,
+    ${({ $brand }) => ($brand === 'linkedin' ? '#0077b5' : '#2164f3')} 10%,
+    transparent
+  );
+  color: ${({ $brand }) => ($brand === 'linkedin' ? '#0077b5' : '#2164f3')};
   border: 1px solid
-    color-mix(in oklch, ${({ $color }) => $color} 20%, transparent);
+    color-mix(
+      in oklch,
+      ${({ $brand }) => ($brand === 'linkedin' ? '#0077b5' : '#2164f3')} 20%,
+      transparent
+    );
+`
+
+export const TipLinkedinIcon = styled(Linkedin)`
+  width: 1.25rem;
+  height: 1.25rem;
+`
+
+export const TipDownloadIcon = styled(Download)`
+  width: 1.25rem;
+  height: 1.25rem;
 `
 
 export const TipBody = styled.div`
@@ -519,6 +587,26 @@ export const GhostLinkButton = styled(Button)`
   }
 `
 
+export const ExternalLinkIcon = styled(ExternalLink)`
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: 0.25rem;
+`
+
+export const TipStrong = styled.span`
+  color: ${({ theme }) => theme.colors.foreground};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+`
+
+export const TipStrongItalic = styled(TipStrong)`
+  font-style: italic;
+`
+
+export const TipPrimaryStrong = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+`
+
 /* ── Next-step callout ───────────────────────────────────────────────── */
 
 export const NextStepCard = styled.div`
@@ -551,6 +639,12 @@ export const NextStepIconBox = styled.div`
   flex-shrink: 0;
   border: 1px solid
     color-mix(in oklch, ${({ theme }) => theme.colors.primary} 20%, transparent);
+`
+
+export const NextStepSparklesIcon = styled(Sparkles)`
+  width: 1.25rem;
+  height: 1.25rem;
+  color: ${({ theme }) => theme.colors.primary};
 `
 
 export const NextStepBody = styled.div`

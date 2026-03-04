@@ -5,10 +5,15 @@ import { AdventureIllustration } from './adventure-illustration'
 import {
   ActionMenuItem,
   ActionsCell,
+  ActionDownloadIcon,
+  ActionEyeIcon,
+  ActionTrashIcon,
   BodyRow,
+  CompanyBuildingIcon,
   CompanyCell,
   CompanyContent,
   CompanyIconBox,
+  DateCalendarIcon,
   DateMeta,
   DestructiveMenuItem,
   EmptyDescription,
@@ -17,12 +22,14 @@ import {
   EmptyStateContainer,
   EmptyTitle,
   FilterButton,
+  FilterIcon,
   FloatingLabelBottom,
   FloatingLabelTop,
   HeaderActions,
   HeaderCell,
   HeaderCellActions,
   HeaderCellCompany,
+  HeaderBriefcaseIcon,
   HeaderRow,
   HeaderSection,
   HeaderSubtitle,
@@ -39,6 +46,8 @@ import {
   PositionText,
   PulseDot,
   RowActionButton,
+  RowMoreIcon,
+  SearchIcon,
   SearchField,
   SearchIconWrap,
   SearchInput,
@@ -58,18 +67,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu'
-import {
-  Search,
-  Filter,
-  MoreHorizontal,
-  Download,
-  Eye,
-  Trash2,
-  Calendar,
-  Building2,
-  Briefcase,
-} from 'lucide-react'
-
 export type ApplicationStatus =
   | 'Pending'
   | 'Accepted'
@@ -121,7 +118,7 @@ export function ApplicationsTable({ items }: { items: null | Application[] }) {
       <HeaderSection>
         <HeaderText>
           <HeaderTitle>
-            <Briefcase size={20} color="var(--primary)" />
+            <HeaderBriefcaseIcon />
             Applications
           </HeaderTitle>
           <HeaderSubtitle>
@@ -132,7 +129,7 @@ export function ApplicationsTable({ items }: { items: null | Application[] }) {
         <HeaderActions>
           <SearchField>
             <SearchIconWrap>
-              <Search size={16} />
+              <SearchIcon />
             </SearchIconWrap>
             <SearchInput
               placeholder="Search..."
@@ -145,7 +142,7 @@ export function ApplicationsTable({ items }: { items: null | Application[] }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <FilterButton variant="outline" disabled={isEmpty}>
-                <Filter size={16} />
+                <FilterIcon />
                 {statusFilter === 'All' ? 'Filter' : statusFilter}
               </FilterButton>
             </DropdownMenuTrigger>
@@ -225,7 +222,7 @@ export function ApplicationsTable({ items }: { items: null | Application[] }) {
                   <CompanyCell>
                     <CompanyContent>
                       <CompanyIconBox>
-                        <Building2 size={16} color="var(--muted-foreground)" />
+                        <CompanyBuildingIcon />
                       </CompanyIconBox>
                       {app.company}
                     </CompanyContent>
@@ -240,7 +237,7 @@ export function ApplicationsTable({ items }: { items: null | Application[] }) {
                   </TableCell>
                   <TableCell>
                     <DateMeta>
-                      <Calendar size={14} />
+                      <DateCalendarIcon />
                       {new Date(app.dateApplied).toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',
@@ -261,23 +258,23 @@ export function ApplicationsTable({ items }: { items: null | Application[] }) {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <RowActionButton variant="ghost" size="sm">
-                          <MoreHorizontal size={16} />
+                          <RowMoreIcon />
                         </RowActionButton>
                       </DropdownMenuTrigger>
                       <MenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <MenuSeparator />
                         <ActionMenuItem>
-                          <Eye size={16} color="var(--primary)" />
+                          <ActionEyeIcon />
                           View Details
                         </ActionMenuItem>
                         <ActionMenuItem>
-                          <Download size={16} />
+                          <ActionDownloadIcon />
                           Documents
                         </ActionMenuItem>
                         <MenuSeparator />
                         <DestructiveMenuItem>
-                          <Trash2 size={16} />
+                          <ActionTrashIcon />
                           Delete
                         </DestructiveMenuItem>
                       </MenuContent>

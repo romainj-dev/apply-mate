@@ -23,28 +23,28 @@ import {
 
 const features = [
   {
-    icon: FileText,
+    Icon: FileText,
     title: 'Resume tailoring',
     description:
       'AI analyzes each job posting and automatically customizes your resume to match requirements and keywords.',
     image: '/feature-resume.png',
   },
   {
-    icon: Mail,
+    Icon: Mail,
     title: 'AI cover letter writing',
     description:
       'Generate compelling, personalized cover letters that highlight your relevant experience for each position.',
     image: '/feature-cover-letter.png',
   },
   {
-    icon: MessageSquare,
+    Icon: MessageSquare,
     title: 'Application Q&A assistant',
     description:
       'Get AI-generated answers to common application questions, perfectly aligned with the job description.',
     image: '/feature-qa.png',
   },
   {
-    icon: BarChart,
+    Icon: BarChart,
     title: 'Application tracking dashboard',
     description:
       'Manage all your applications in one place. Search, filter, and access your materials anytime.',
@@ -71,7 +71,7 @@ export function Features() {
               <FeatureRow key={index}>
                 <ContentCol $reversed={reversed}>
                   <IconBox>
-                    <feature.icon size={28} color="var(--primary)" />
+                    <feature.Icon />
                   </IconBox>
                   <FeatureTitle>{feature.title}</FeatureTitle>
                   <FeatureDescription>{feature.description}</FeatureDescription>

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ArrowRight } from 'lucide-react'
+import { AlertCircle, ArrowRight } from 'lucide-react'
 
 import { GlassCard } from '@/components/ui/glass-card'
 import { Button } from '@/components/ui/button'
@@ -48,6 +48,12 @@ export const IconBox = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: ${({ theme }) => theme.shadows.sm};
+`
+
+export const PromptAlertIcon = styled(AlertCircle)`
+  width: 1.5rem;
+  height: 1.5rem;
+  color: ${({ theme }) => theme.colors.status.attention.fg};
 `
 
 export const TextContent = styled.div`

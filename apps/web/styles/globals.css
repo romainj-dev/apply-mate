@@ -39,6 +39,30 @@
   --sidebar-accent-foreground: oklch(0.15 0 0);
   --sidebar-border: oklch(0.9 0.01 265);
   --sidebar-ring: oklch(0.55 0.18 265);
+
+  --status-success-fg: #15803d;
+  --status-success-bg: rgb(34 197 94 / 0.15);
+  --status-success-border: #bbf7d0;
+
+  --status-warning-fg: #a16207;
+  --status-warning-bg: rgb(234 179 8 / 0.15);
+  --status-warning-border: #fde68a;
+
+  --status-info-fg: #1d4ed8;
+  --status-info-bg: rgb(59 130 246 / 0.15);
+  --status-info-border: #bfdbfe;
+
+  --status-progress-fg: #4338ca;
+  --status-progress-bg: rgb(99 102 241 / 0.15);
+  --status-progress-border: #c7d2fe;
+
+  --status-attention-fg: #c2410c;
+  --status-attention-bg: rgb(249 115 22 / 0.15);
+  --status-attention-border: #fed7aa;
+
+  --status-danger-fg: #b91c1c;
+  --status-danger-bg: rgb(239 68 68 / 0.15);
+  --status-danger-border: #fecaca;
 }
 
 @theme inline {
@@ -138,6 +162,25 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-status-success-fg: var(--status-success-fg);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-success-border: var(--status-success-border);
+  --color-status-warning-fg: var(--status-warning-fg);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-border: var(--status-warning-border);
+  --color-status-info-fg: var(--status-info-fg);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-info-border: var(--status-info-border);
+  --color-status-progress-fg: var(--status-progress-fg);
+  --color-status-progress-bg: var(--status-progress-bg);
+  --color-status-progress-border: var(--status-progress-border);
+  --color-status-attention-fg: var(--status-attention-fg);
+  --color-status-attention-bg: var(--status-attention-bg);
+  --color-status-attention-border: var(--status-attention-border);
+  --color-status-danger-fg: var(--status-danger-fg);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-danger-border: var(--status-danger-border);
 
   /* Shared animation token. Source: app motion style. Scope: utility animation use. */
   --animate-float: float 6s ease-in-out infinite;

@@ -2,13 +2,14 @@
 
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, Orbit } from 'lucide-react'
 import { getCategorizedSkills, SkillCategory } from './utils'
 import {
   AiBadge,
   AmbientCircleLg,
   AmbientCircleSm,
+  BackChevronIcon,
   BackButton,
+  OrbitIcon,
   BounceDot,
   BubbleInner,
   BubbleName,
@@ -69,7 +70,7 @@ export function TechnicalSkills() {
                   exit={{ opacity: 0, x: -10 }}
                   onClick={() => setSelectedCategory(null)}
                 >
-                  <ChevronLeft size={20} />
+                  <BackChevronIcon />
                 </BackButton>
               ) : (
                 <motion.div
@@ -78,7 +79,7 @@ export function TechnicalSkills() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                 >
-                  <Orbit size={20} color="var(--primary)" />
+                  <OrbitIcon />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -98,7 +99,7 @@ export function TechnicalSkills() {
           {!selectedCategory && (
             <DotsRow>
               {categories.map((c) => (
-                <ColorDot key={c.id} style={{ backgroundColor: c.color }} />
+                <ColorDot key={c.id} $color={c.color} />
               ))}
             </DotsRow>
           )}
@@ -166,12 +167,7 @@ function GlobalUniverse({
             onClick={() => onSelect(category)}
           >
             {/* Bubble Style */}
-            <BubbleInner
-              style={{
-                background: `radial-gradient(circle at 30% 30%, white 0%, ${category.color} 50%, color-mix(in oklch, ${category.color}, black 20%) 100%)`,
-                boxShadow: `0 10px 30px -5px color-mix(in oklch, ${category.color}, transparent 60%), inset 0 -4px 10px rgba(0,0,0,0.2)`,
-              }}
-            >
+            <BubbleInner $color={category.color}>
               {/* Inner Glow */}
               <InnerGlow />
 
@@ -184,9 +180,9 @@ function GlobalUniverse({
 
               {/* Hover Details Hint */}
               <HoverDots>
-                <BounceDot style={{ animationDelay: '0ms' }} />
-                <BounceDot style={{ animationDelay: '150ms' }} />
-                <BounceDot style={{ animationDelay: '300ms' }} />
+                <BounceDot $delay="0ms" />
+                <BounceDot $delay="150ms" />
+                <BounceDot $delay="300ms" />
               </HoverDots>
             </BubbleInner>
           </BubbleWrapper>
@@ -201,7 +197,7 @@ function CategoryDetails({ category }: { category: SkillCategory }) {
     <CategoryContainer initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <CategoryHeader>
         <CategoryHeaderLeft>
-          <CategoryColorDot style={{ backgroundColor: category.color }} />
+          <CategoryColorDot $color={category.color} />
           <CategoryTitle>{category.name} Skills</CategoryTitle>
         </CategoryHeaderLeft>
         <MonoBadge variant="secondary">Total: {category.totalScore}</MonoBadge>
@@ -228,7 +224,7 @@ function CategoryDetails({ category }: { category: SkillCategory }) {
                   animate={{
                     width: `${Math.min(100, (skill.score / category.totalScore) * 300)}%`,
                   }}
-                  style={{ backgroundColor: category.color }}
+                  $color={category.color}
                 />
               </ProgressTrack>
             </SkillCard>
@@ -238,10 +234,7 @@ function CategoryDetails({ category }: { category: SkillCategory }) {
               <FloatingDot
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                style={{
-                  backgroundColor: category.color,
-                  filter: 'blur(2px)',
-                }}
+                $color={category.color}
               />
             )}
           </SkillItem>

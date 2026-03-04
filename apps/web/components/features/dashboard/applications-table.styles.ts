@@ -1,4 +1,15 @@
 import styled, { css, keyframes } from 'styled-components'
+import {
+  Briefcase,
+  Building2,
+  Calendar,
+  Download,
+  Eye,
+  Filter,
+  MoreHorizontal,
+  Search,
+  Trash2,
+} from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -69,40 +80,16 @@ const glassPanel = css`
   box-shadow: ${({ theme }) => theme.shadows.xl};
 `
 
-const statusToneStyles: Record<
+const STATUS_TONE_BY_APPLICATION_STATUS: Record<
   StatusTone,
-  { bg: string; text: string; border: string }
+  'warning' | 'info' | 'progress' | 'attention' | 'danger' | 'success'
 > = {
-  Pending: {
-    bg: 'rgb(234 179 8 / 0.15)',
-    text: '#a16207', // text-yellow-700
-    border: '#fde68a', // border-yellow-200
-  },
-  Accepted: {
-    bg: 'rgb(59 130 246 / 0.15)',
-    text: '#1d4ed8', // text-blue-700
-    border: '#bfdbfe', // border-blue-200
-  },
-  Applied: {
-    bg: 'rgb(99 102 241 / 0.15)',
-    text: '#4338ca', // text-indigo-700
-    border: '#c7d2fe', // border-indigo-200
-  },
-  Interview: {
-    bg: 'rgb(249 115 22 / 0.15)',
-    text: '#c2410c', // text-orange-700
-    border: '#fed7aa', // border-orange-200
-  },
-  Rejected: {
-    bg: 'rgb(239 68 68 / 0.15)',
-    text: '#b91c1c', // text-red-700
-    border: '#fecaca', // border-red-200
-  },
-  Offer: {
-    bg: 'rgb(34 197 94 / 0.15)',
-    text: '#15803d', // text-green-700
-    border: '#bbf7d0', // border-green-200
-  },
+  Pending: 'warning',
+  Accepted: 'info',
+  Applied: 'progress',
+  Interview: 'attention',
+  Rejected: 'danger',
+  Offer: 'success',
 }
 
 export const TableCard = styled(GlassCard)<CardProps>`
@@ -142,6 +129,12 @@ export const HeaderTitle = styled.h2`
   color: ${({ theme }) => theme.colors.foreground};
 `
 
+export const HeaderBriefcaseIcon = styled(Briefcase)`
+  width: 1.25rem;
+  height: 1.25rem;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
 export const HeaderSubtitle = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   color: ${({ theme }) => theme.colors.mutedForeground};
@@ -174,6 +167,11 @@ export const SearchIconWrap = styled.div`
   }
 `
 
+export const SearchIcon = styled(Search)`
+  width: 1rem;
+  height: 1rem;
+`
+
 export const SearchInput = styled(Input)`
   padding-left: 2.25rem;
   width: 16rem;
@@ -201,6 +199,11 @@ export const FilterButton = styled(Button)`
     background: rgb(255 255 255);
     color: ${({ theme }) => theme.colors.primary};
   }
+`
+
+export const FilterIcon = styled(Filter)`
+  width: 1rem;
+  height: 1rem;
 `
 
 export const MenuContent = styled(DropdownMenuContent)`
@@ -325,21 +328,21 @@ export const LabelRow = styled.p`
   gap: ${({ theme }) => theme.spaceCalc(1.5)};
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: #334155; // text-slate-700
+  color: ${({ theme }) => theme.colors.foreground};
 `
 
 export const PulseDot = styled.span`
   width: 0.5rem;
   height: 0.5rem;
   border-radius: ${({ theme }) => theme.radii.full};
-  background: rgb(16 185 129); /* emerald-500 — active/success indicator */
+  background: ${({ theme }) => theme.colors.status.success.fg};
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `
 
 export const SecondaryLabelText = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
-  color: #64748b; // text-slate-500
+  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const LabelPointer = styled.div`
@@ -414,6 +417,12 @@ export const CompanyIconBox = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.sm};
 `
 
+export const CompanyBuildingIcon = styled(Building2)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.mutedForeground};
+`
+
 export const PositionText = styled.span`
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   color: color-mix(
@@ -424,9 +433,13 @@ export const PositionText = styled.span`
 `
 
 export const StatusBadge = styled(Badge)<StatusBadgeProps>`
-  border: 1px solid ${({ $status }) => statusToneStyles[$status].border};
-  background: ${({ $status }) => statusToneStyles[$status].bg};
-  color: ${({ $status }) => statusToneStyles[$status].text};
+  border: 1px solid
+    ${({ theme, $status }) =>
+      theme.colors.status[STATUS_TONE_BY_APPLICATION_STATUS[$status]].border};
+  background: ${({ theme, $status }) =>
+    theme.colors.status[STATUS_TONE_BY_APPLICATION_STATUS[$status]].bg};
+  color: ${({ theme, $status }) =>
+    theme.colors.status[STATUS_TONE_BY_APPLICATION_STATUS[$status]].fg};
   backdrop-filter: blur(12px);
   box-shadow: ${({ theme }) => theme.shadows.sm};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
@@ -438,6 +451,11 @@ export const DateMeta = styled.div`
   gap: ${({ theme }) => theme.space.sm};
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   color: ${({ theme }) => theme.colors.mutedForeground};
+`
+
+export const DateCalendarIcon = styled(Calendar)`
+  width: 0.875rem;
+  height: 0.875rem;
 `
 
 export const TagsWrap = styled.div`
@@ -480,15 +498,36 @@ export const RowActionButton = styled(Button)`
   }
 `
 
+export const RowMoreIcon = styled(MoreHorizontal)`
+  width: 1rem;
+  height: 1rem;
+`
+
 export const ActionMenuItem = styled(DropdownMenuItem)`
   cursor: pointer;
 `
 
+export const ActionEyeIcon = styled(Eye)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+export const ActionDownloadIcon = styled(Download)`
+  width: 1rem;
+  height: 1rem;
+`
+
 export const DestructiveMenuItem = styled(ActionMenuItem)`
-  color: #dc2626; // text-red-600
+  color: ${({ theme }) => theme.colors.status.danger.fg};
 
   &:focus {
-    color: #b91c1c; // text-red-700
-    background: #fef2f2; // bg-red-50
+    color: ${({ theme }) => theme.colors.status.danger.fg};
+    background: ${({ theme }) => theme.colors.status.danger.bg};
   }
+`
+
+export const ActionTrashIcon = styled(Trash2)`
+  width: 1rem;
+  height: 1rem;
 `

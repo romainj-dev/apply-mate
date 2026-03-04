@@ -70,6 +70,56 @@ const colors = {
     /** `oklch(0.55 0.18 265)` */
     ring: 'var(--sidebar-ring)',
   },
+  status: {
+    success: {
+      /** `#15803d` */
+      fg: 'var(--status-success-fg)',
+      /** `rgb(34 197 94 / 0.15)` */
+      bg: 'var(--status-success-bg)',
+      /** `#bbf7d0` */
+      border: 'var(--status-success-border)',
+    },
+    warning: {
+      /** `#a16207` */
+      fg: 'var(--status-warning-fg)',
+      /** `rgb(234 179 8 / 0.15)` */
+      bg: 'var(--status-warning-bg)',
+      /** `#fde68a` */
+      border: 'var(--status-warning-border)',
+    },
+    info: {
+      /** `#1d4ed8` */
+      fg: 'var(--status-info-fg)',
+      /** `rgb(59 130 246 / 0.15)` */
+      bg: 'var(--status-info-bg)',
+      /** `#bfdbfe` */
+      border: 'var(--status-info-border)',
+    },
+    progress: {
+      /** `#4338ca` */
+      fg: 'var(--status-progress-fg)',
+      /** `rgb(99 102 241 / 0.15)` */
+      bg: 'var(--status-progress-bg)',
+      /** `#c7d2fe` */
+      border: 'var(--status-progress-border)',
+    },
+    attention: {
+      /** `#c2410c` */
+      fg: 'var(--status-attention-fg)',
+      /** `rgb(249 115 22 / 0.15)` */
+      bg: 'var(--status-attention-bg)',
+      /** `#fed7aa` */
+      border: 'var(--status-attention-border)',
+    },
+    danger: {
+      /** `#b91c1c` */
+      fg: 'var(--status-danger-fg)',
+      /** `rgb(239 68 68 / 0.15)` */
+      bg: 'var(--status-danger-bg)',
+      /** `#fecaca` */
+      border: 'var(--status-danger-border)',
+    },
+  },
 } as const
 
 /** Typography tokens from `globals.css @theme inline` (Tailwind v4 scale). */

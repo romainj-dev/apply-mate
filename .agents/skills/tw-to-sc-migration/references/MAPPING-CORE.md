@@ -124,24 +124,26 @@ height: 3rem; /* h-12 */
 
 ## 7) Lucide icons: default handling
 
-Sizing:
+Default:
 
-- `h-X w-X` -> `size={X * 4}`
+- Keep style-related icon values in `*.styles.ts`, not JSX props
+  (`size`, `color`, inline `style`, CSS variable values, etc.)
+- Map Tailwind icon sizing (`h-X w-X`) to wrapper CSS:
+  - `h-5 w-5` -> `width: 1.25rem; height: 1.25rem;`
+- Prefer inherited `currentColor` when parent already controls color
+- Prefer parent `gap` for spacing; otherwise style icon wrappers in
+  `*.styles.ts`
 
-Color:
+Exception:
 
-- Use `color="var(--token)"` for theme-like token colors in JSX props
-- If icon is inside a styled wrapper setting `color`, prefer inherited
-  `currentColor` and omit icon `color` prop
-
-Spacing:
-
-- Prefer parent `gap` over inline icon styles
-- Use `styled(Icon)` only when parent gap cannot express the layout
+- Allow visual prop overrides only on clearly reusable icon abstractions
+  with documented intent (applies to size, color, and other visual props)
 
 ## 8) Tailwind extended palette without theme tokens
 
 Extended palette colors like `green-100`, `orange-700` may not exist in
-`theme.ts`. Using raw hex/rgb is acceptable for these semantic status colors.
+`theme.ts`. For semantic/app-state usage, prefer adding a token to
+`globals.css` + `theme.ts` and consume it from styled-components.
 
-Document intent with a short comment when using raw literals.
+Use raw literals only for truly one-off visual details that are not semantic
+and not expected to be reused.

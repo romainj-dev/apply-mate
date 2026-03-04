@@ -105,6 +105,12 @@ export const IconBox = styled.div`
   border: 1px solid
     color-mix(in oklch, ${({ theme }) => theme.colors.primary} 10%, transparent);
   box-shadow: ${({ theme }) => theme.shadows.sm};
+
+  svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
 `
 
 export const FeatureTitle = styled.h3`

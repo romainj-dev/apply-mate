@@ -5,13 +5,13 @@ import type React from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Link2, Lock } from 'lucide-react'
-
 import {
   Card,
   Form,
   InputWrapper,
   IconHolder,
+  LinkIcon,
+  LockIcon,
   StyledInput,
   DisabledBadge,
   SubmitButton,
@@ -36,7 +36,7 @@ export function QuickApplicationInput({ disabled }: { disabled?: boolean }) {
       <Form onSubmit={handleSubmit}>
         <InputWrapper>
           <IconHolder>
-            <Link2 size={16} />
+            <LinkIcon />
           </IconHolder>
           <StyledInput
             type="url"
@@ -49,7 +49,7 @@ export function QuickApplicationInput({ disabled }: { disabled?: boolean }) {
         </InputWrapper>
         {disabled ? (
           <DisabledBadge>
-            <Lock size={16} />
+            <LockIcon />
             <span>Complete profile to unlock</span>
           </DisabledBadge>
         ) : (

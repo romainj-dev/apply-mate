@@ -16,25 +16,25 @@ import {
 
 const benefits = [
   {
-    icon: Target,
+    Icon: Target,
     title: 'Beat AI filters',
     description:
       'Generate applications optimized with the right keywords and formatting to pass automated screening.',
   },
   {
-    icon: Zap,
+    Icon: Zap,
     title: 'Save hours of work',
     description:
       'Stop manually customizing every resume and cover letter. Get professional results in seconds.',
   },
   {
-    icon: FolderCheck,
+    Icon: FolderCheck,
     title: 'Stay organized',
     description:
       'Track all your applications in one dashboard. Never lose track of where you applied or what you sent.',
   },
   {
-    icon: Shield,
+    Icon: Shield,
     title: 'Maintain quality',
     description:
       'Every document maintains professional quality while being perfectly tailored to each opportunity.',
@@ -54,7 +54,7 @@ export function Benefits() {
           {benefits.map((benefit, index) => (
             <Card key={index}>
               <IconWrapper>
-                <benefit.icon size={24} />
+                <benefit.Icon />
               </IconWrapper>
               <CardTitle>{benefit.title}</CardTitle>
               <CardDescription>{benefit.description}</CardDescription>

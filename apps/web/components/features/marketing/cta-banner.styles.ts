@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Button } from '@/components/ui/button'
+import { ArrowRight } from 'lucide-react'
 
 export const Section = styled.section`
   padding-block: ${({ theme }) => theme.spaceCalc(32)};
@@ -73,6 +74,11 @@ export const ButtonRow = styled.div`
 export const PrimaryButton = styled(Button)`
   height: 3rem;
   padding-inline: ${({ theme }) => theme.space.xl};
+`
+
+export const CtaArrowIcon = styled(ArrowRight)`
+  width: 1rem;
+  height: 1rem;
 `
 
 export const OutlineButton = styled(Button)`

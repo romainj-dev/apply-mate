@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import styled, { keyframes } from 'styled-components'
+import { ArrowRight, Play, Sparkles } from 'lucide-react'
 
 const float = keyframes`
   0%, 100% {
@@ -114,6 +115,11 @@ export const Badge = styled.div`
   backdrop-filter: blur(4px);
 `
 
+export const BadgeSparklesIcon = styled(Sparkles)`
+  width: 1rem;
+  height: 1rem;
+`
+
 export const Heading = styled.h1`
   margin-bottom: ${({ theme }) => theme.space.lg};
   font-size: ${({ theme }) => theme.typography.fontSize['7xl']};
@@ -186,6 +192,11 @@ export const PrimaryButton = styled(Button)`
   }
 `
 
+export const PrimaryArrowIcon = styled(ArrowRight)`
+  width: 1rem;
+  height: 1rem;
+`
+
 export const OutlineButton = styled(Button)`
   height: 3rem;
   padding-inline: ${({ theme }) => theme.space.xl};
@@ -210,6 +221,12 @@ export const OutlineButton = styled(Button)`
       transparent
     );
   }
+`
+
+export const OutlinePlayIcon = styled(Play)`
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
 `
 
 export const ImageContainer = styled.div`

@@ -1,6 +1,16 @@
 import styled from 'styled-components'
 import { GlassCardContent, GlassCardTitle } from '@/components/ui/glass-card'
 import { Badge } from '@/components/ui/badge'
+import {
+  AlertCircle,
+  Calendar,
+  Code2,
+  Edit2,
+  FolderGit2,
+  Plus,
+  Target,
+  Users,
+} from 'lucide-react'
 
 /* ── Header ──────────────────────────────────────────────────────────── */
 
@@ -40,6 +50,17 @@ export const PeriodItem = styled.span`
   gap: ${({ theme }) => theme.space.xs};
 `
 
+export const PeriodCalendarIcon = styled(Calendar)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+export const HeaderEditIcon = styled(Edit2)`
+  width: 1rem;
+  height: 1rem;
+`
+
 /* ── Content ─────────────────────────────────────────────────────────── */
 
 export const ContentArea = styled(GlassCardContent)`
@@ -51,8 +72,8 @@ export const ContentArea = styled(GlassCardContent)`
 /* ── Incomplete Warning ───────────────────────────────────────────────── */
 
 export const IncompleteWarning = styled.div`
-  background: rgb(255 247 237 / 0.5); /* orange-50/50 */
-  border: 1px solid #fed7aa; /* orange-200 */
+  background: ${({ theme }) => theme.colors.status.attention.bg};
+  border: 1px solid ${({ theme }) => theme.colors.status.attention.border};
   border-radius: ${({ theme }) => theme.radii.lg};
   padding: ${({ theme }) => theme.space.md};
   display: flex;
@@ -76,6 +97,25 @@ export const WarningText = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   color: ${({ theme }) => theme.colors.mutedForeground};
   margin-top: ${({ theme }) => theme.space.xs};
+`
+
+export const WarningAlertIcon = styled(AlertCircle)`
+  width: 1.25rem;
+  height: 1.25rem;
+  color: ${({ theme }) => theme.colors.status.attention.fg};
+  flex-shrink: 0;
+  margin-top: ${({ theme }) => theme.space.xs};
+`
+
+export const SmallEditIcon = styled(Edit2)`
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: ${({ theme }) => theme.space.xs};
+`
+
+export const IconOnlyEditIcon = styled(Edit2)`
+  width: 0.75rem;
+  height: 0.75rem;
 `
 
 export const ButtonRow = styled.div`
@@ -103,6 +143,36 @@ export const SectionTitleFlex = styled.h4<{ $mb3?: boolean }>`
   gap: ${({ theme }) => theme.space.sm};
   margin-bottom: ${({ theme, $mb3 }) =>
     $mb3 ? theme.spaceCalc(3) : theme.space.sm};
+`
+
+export const SectionCodeIcon = styled(Code2)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+export const SectionTargetIcon = styled(Target)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.mutedForeground};
+`
+
+export const SectionUsersIcon = styled(Users)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.mutedForeground};
+`
+
+export const SectionProjectsIcon = styled(FolderGit2)`
+  width: 1rem;
+  height: 1rem;
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+export const AddProjectIcon = styled(Plus)`
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: ${({ theme }) => theme.space.xs};
 `
 
 /* ── Text blocks ─────────────────────────────────────────────────────── */
@@ -164,8 +234,7 @@ export const AchievementItem = styled.li`
 `
 
 export const CheckMark = styled.span`
-  /* green-600 */
-  color: #16a34a;
+  color: ${({ theme }) => theme.colors.status.success.fg};
   margin-top: 0.125rem;
 `
 
@@ -230,7 +299,6 @@ export const ProjectAchievementItem = styled.li`
 `
 
 export const BulletMark = styled.span`
-  /* green-600 */
-  color: #16a34a;
+  color: ${({ theme }) => theme.colors.status.success.fg};
   margin-top: 0.125rem;
 `

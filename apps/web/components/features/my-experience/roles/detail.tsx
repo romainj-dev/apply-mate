@@ -1,15 +1,5 @@
 'use client'
 
-import {
-  Calendar,
-  Edit2,
-  Code2,
-  Target,
-  Users,
-  FolderGit2,
-  Plus,
-  AlertCircle,
-} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { GlassCard, GlassCardHeader } from '@/components/ui/glass-card'
 import { Role } from './data'
@@ -22,12 +12,16 @@ import {
   BulletMark,
   ButtonRow,
   CheckMark,
+  AddProjectIcon,
   CompanyName,
   ContentArea,
   FlexFill,
+  HeaderEditIcon,
   HeaderRow,
+  IconOnlyEditIcon,
   IncompleteWarning,
   MetaText,
+  PeriodCalendarIcon,
   PeriodItem,
   PeriodRow,
   ProjectAchievementItem,
@@ -39,10 +33,16 @@ import {
   ProjectTitle,
   ProjectsHeader,
   RoleTitle,
+  SectionCodeIcon,
+  SectionProjectsIcon,
+  SectionTargetIcon,
   SectionTitle,
   SectionTitleFlex,
+  SectionUsersIcon,
+  SmallEditIcon,
   TechBadge,
   TwoColGrid,
+  WarningAlertIcon,
   WarningRow,
   WarningText,
   WarningTitle,
@@ -65,13 +65,13 @@ export function RolesDetail({ role }: RolesDetailProps) {
             <CompanyName>{role.company}</CompanyName>
             <PeriodRow>
               <PeriodItem>
-                <Calendar size={16} color="var(--primary)" />
+                <PeriodCalendarIcon />
                 {role.period} · {role.duration}
               </PeriodItem>
             </PeriodRow>
           </FlexFill>
           <Button variant="ghost" size="sm">
-            <Edit2 size={16} />
+            <HeaderEditIcon />
           </Button>
         </HeaderRow>
       </GlassCardHeader>
@@ -80,14 +80,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
         {!isComplete ? (
           <IncompleteWarning>
             <WarningRow>
-              <AlertCircle
-                size={20}
-                style={{
-                  color: '#ea580c',
-                  flexShrink: 0,
-                  marginTop: '0.125rem',
-                }}
-              />
+              <WarningAlertIcon />
               <FlexFill>
                 <WarningTitle>This role needs more details</WarningTitle>
                 <WarningText>
@@ -98,7 +91,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
             </WarningRow>
             <ButtonRow>
               <Button variant="outline" size="sm">
-                <Edit2 size={12} style={{ marginRight: '0.25rem' }} />
+                <SmallEditIcon />
                 Edit
               </Button>
             </ButtonRow>
@@ -116,7 +109,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
             {/* Tech Stack */}
             <div>
               <SectionTitleFlex $mb3>
-                <Code2 size={16} color="var(--primary)" />
+                <SectionCodeIcon />
                 Tech Stack
               </SectionTitleFlex>
               <BadgesRow>
@@ -132,7 +125,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
             <TwoColGrid>
               <div>
                 <SectionTitleFlex>
-                  <Target size={16} color="var(--muted-foreground)" />
+                  <SectionTargetIcon />
                   Methodology
                 </SectionTitleFlex>
                 <BadgesRow>
@@ -145,7 +138,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
               </div>
               <div>
                 <SectionTitleFlex>
-                  <Users size={16} color="var(--muted-foreground)" />
+                  <SectionUsersIcon />
                   Team
                 </SectionTitleFlex>
                 <MetaText>{role.teamStructure}</MetaText>
@@ -169,11 +162,11 @@ export function RolesDetail({ role }: RolesDetailProps) {
             <div>
               <ProjectsHeader>
                 <SectionTitleFlex>
-                  <FolderGit2 size={16} color="var(--primary)" />
+                  <SectionProjectsIcon />
                   Notable Projects
                 </SectionTitleFlex>
                 <Button variant="ghost" size="sm">
-                  <Plus size={12} style={{ marginRight: '0.25rem' }} />
+                  <AddProjectIcon />
                   Add Project
                 </Button>
               </ProjectsHeader>
@@ -187,7 +180,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
                           <ProjectPeriod>{project.period}</ProjectPeriod>
                         </FlexFill>
                         <Button variant="ghost" size="sm">
-                          <Edit2 size={12} />
+                          <IconOnlyEditIcon />
                         </Button>
                       </ProjectHeader>
                       <BodyText>{project.description}</BodyText>

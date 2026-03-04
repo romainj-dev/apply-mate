@@ -149,8 +149,12 @@ export const BubbleInner = styled.div`
 
 ## E11) Responsive Lucide icon sizing
 
-When a Lucide icon has responsive Tailwind sizing (`h-5 w-5 sm:h-6 sm:w-6`), the `size` prop cannot vary at runtime via CSS alone, instead:
+When a Lucide icon has responsive Tailwind sizing (`h-5 w-5 sm:h-6 sm:w-6`),
+keep sizing in CSS (not JSX props) and:
 
 **Wrap with `styled()`** and override `width`/`height` in the
 `belowMobile` media query. Use only when the size delta is visually
 significant and the icon is a prominent UI element.
+
+If a reusable icon abstraction genuinely needs runtime visual overrides,
+document that intent and allow overrides there (consistent with core rule §7).

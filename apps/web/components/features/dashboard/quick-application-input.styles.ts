@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Link2, Lock } from 'lucide-react'
 
 import { GlassCard } from '@/components/ui/glass-card'
 import { Input } from '@/components/ui/input'
@@ -40,6 +40,11 @@ export const IconHolder = styled.div`
   color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
+export const LinkIcon = styled(Link2)`
+  width: 1rem;
+  height: 1rem;
+`
+
 export const StyledInput = styled(Input)<DisabledProps>`
   padding-left: 3.5rem;
   height: 3.5rem;
@@ -77,6 +82,11 @@ export const DisabledBadge = styled.div`
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   border: 1px solid
     color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+`
+
+export const LockIcon = styled(Lock)`
+  width: 1rem;
+  height: 1rem;
 `
 
 export const SubmitButton = styled(Button)`

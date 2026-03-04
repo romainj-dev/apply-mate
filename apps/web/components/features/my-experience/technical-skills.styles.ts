@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { motion } from 'framer-motion'
+import { ChevronLeft, Orbit } from 'lucide-react'
 import {
   GlassCard,
   GlassCardHeader,
@@ -23,6 +24,14 @@ const bounce = keyframes`
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 `
+
+interface ColorValueProps {
+  $color: string
+}
+
+interface DelayProps {
+  $delay: string
+}
 
 /* ── TechnicalSkills ─────────────────────────────────────────────────── */
 
@@ -59,6 +68,19 @@ export const BackButton = styled(motion.button)`
   &:hover {
     background: ${({ theme }) => theme.colors.secondary};
   }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+`
+
+export const BackChevronIcon = styled(ChevronLeft)``
+
+export const OrbitIcon = styled(Orbit)`
+  width: 1.25rem;
+  height: 1.25rem;
+  color: ${({ theme }) => theme.colors.primary};
 `
 
 export const CardTitle = styled(GlassCardTitle)`
@@ -79,10 +101,11 @@ export const DotsRow = styled.div`
   gap: ${({ theme }) => theme.space.xs};
 `
 
-export const ColorDot = styled.div`
+export const ColorDot = styled.div<ColorValueProps>`
   width: 0.375rem;
   height: 0.375rem;
   border-radius: ${({ theme }) => theme.radii.full};
+  background-color: ${({ $color }) => $color};
 `
 
 export const SkillsContent = styled(GlassCardContent)`
@@ -199,7 +222,7 @@ export const BubbleWrapper = styled(motion.div)`
   position: relative;
 `
 
-export const BubbleInner = styled.div`
+export const BubbleInner = styled.div<ColorValueProps>`
   width: 7rem;
   height: 7rem;
   border-radius: ${({ theme }) => theme.radii.full};
@@ -211,7 +234,16 @@ export const BubbleInner = styled.div`
   position: relative;
   overflow: hidden;
   transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: ${({ theme }) => theme.shadows.xl};
+  background: radial-gradient(
+    circle at 30% 30%,
+    white 0%,
+    ${({ $color }) => $color} 50%,
+    color-mix(in oklch, ${({ $color }) => $color}, black 20%) 100%
+  );
+  box-shadow:
+    0 10px 30px -5px
+      color-mix(in oklch, ${({ $color }) => $color}, transparent 60%),
+    inset 0 -4px 10px rgb(0 0 0 / 0.2);
 
   ${({ theme }) => theme.media.belowMobile} {
     width: 6rem;
@@ -278,12 +310,13 @@ export const HoverDots = styled.div`
   }
 `
 
-export const BounceDot = styled.div`
+export const BounceDot = styled.div<DelayProps>`
   width: 0.25rem;
   height: 0.25rem;
   border-radius: ${({ theme }) => theme.radii.full};
   background: white;
   animation: ${bounce} 1s infinite;
+  animation-delay: ${({ $delay }) => $delay};
 `
 
 /* ── CategoryDetails ─────────────────────────────────────────────────── */
@@ -308,10 +341,11 @@ export const CategoryHeaderLeft = styled.div`
   gap: ${({ theme }) => theme.space.sm};
 `
 
-export const CategoryColorDot = styled.div`
+export const CategoryColorDot = styled.div<ColorValueProps>`
   width: 0.75rem;
   height: 0.75rem;
   border-radius: ${({ theme }) => theme.radii.full};
+  background-color: ${({ $color }) => $color};
 `
 
 export const CategoryTitle = styled.h3`
@@ -387,12 +421,13 @@ export const ProgressTrack = styled.div`
   overflow: hidden;
 `
 
-export const ProgressFill = styled(motion.div)`
+export const ProgressFill = styled(motion.div)<ColorValueProps>`
   height: 100%;
   border-radius: ${({ theme }) => theme.radii.full};
+  background-color: ${({ $color }) => $color};
 `
 
-export const FloatingDot = styled(motion.div)`
+export const FloatingDot = styled(motion.div)<ColorValueProps>`
   position: absolute;
   top: -0.25rem;
   right: -0.25rem;
@@ -400,6 +435,8 @@ export const FloatingDot = styled(motion.div)`
   height: 0.5rem;
   border-radius: ${({ theme }) => theme.radii.full};
   opacity: 0.4;
+  filter: blur(2px);
+  background-color: ${({ $color }) => $color};
 `
 
 export const EmptyState = styled.div`

@@ -1,6 +1,5 @@
 'use client'
 
-import { ArrowRight } from 'lucide-react'
 import {
   Section,
   Container,
@@ -9,6 +8,7 @@ import {
   Heading,
   SubText,
   ButtonRow,
+  CtaArrowIcon,
   PrimaryButton,
   OutlineButton,
 } from './cta-banner.styles'
@@ -28,7 +28,7 @@ export function CTABanner() {
             <ButtonRow>
               <PrimaryButton size="lg">
                 Start for free
-                <ArrowRight size={16} />
+                <CtaArrowIcon />
               </PrimaryButton>
               <OutlineButton size="lg" variant="outline">
                 Schedule a demo

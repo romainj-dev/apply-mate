@@ -201,6 +201,11 @@ export const NavIcon = styled.span<NavLinkProps>`
     transform: scale(1.1);
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 `
 
 export const NavText = styled.span`

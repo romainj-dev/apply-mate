@@ -16,24 +16,24 @@ import {
 
 const securityFeatures = [
   {
-    icon: Lock,
+    Icon: Lock,
     title: 'Encrypted storage',
     description:
       'All your documents and data are encrypted at rest and in transit.',
   },
   {
-    icon: Shield,
+    Icon: Shield,
     title: 'GDPR compliant',
     description:
       'Full compliance with data protection regulations and user privacy rights.',
   },
   {
-    icon: Eye,
+    Icon: Eye,
     title: 'Your data, your control',
     description: 'Delete your applications and data anytime with one click.',
   },
   {
-    icon: FileCheck,
+    Icon: FileCheck,
     title: 'Secure authentication',
     description:
       'OAuth-only login via trusted providers like Google and LinkedIn.',
@@ -56,7 +56,7 @@ export function Security() {
           {securityFeatures.map((feature, index) => (
             <FeatureItem key={index}>
               <FeatureIconWrapper>
-                <feature.icon size={24} />
+                <feature.Icon />
               </FeatureIconWrapper>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>

@@ -156,6 +156,10 @@ See the worked transform in
 - [ ] No Tailwind `className` on any element (plain HTML or ui component consumers)
 - [ ] No `cn()` import from `@/lib/utils`
 - [ ] Design tokens (colors, spacing, typography, radii, shadows) use `theme.*`
+- [ ] Style-related values are in `*.styles.ts` (including icon visual props
+      like `size`/`color` and inline `style={{ ... }}`).
+- [ ] Exception only for clearly reusable icon abstractions with documented
+      visual-prop override intent.
 - [ ] Layout dimensions (`width`, `height`, `max-width`, `min-height`, etc.)
       use plain CSS values — these are not design tokens
 - [ ] Responsive styles use `theme.media.belowTablet` / `belowMobile`

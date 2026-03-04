@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import styled, { keyframes } from 'styled-components'
+import { Check, RefreshCw } from 'lucide-react'
 
 const pulse = keyframes`
   0%, 100% {
@@ -108,6 +109,11 @@ export const RetryButton = styled(Button)`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.space.sm};
+`
+
+export const RetryRefreshIcon = styled(RefreshCw)`
+  width: 1rem;
+  height: 1rem;
 `
 
 export const PlansGrid = styled.div`
@@ -226,6 +232,11 @@ export const CheckIconWrapper = styled.span`
   flex-shrink: 0;
   margin-top: ${({ theme }) => theme.spaceCalc(0.5)};
   color: ${({ theme }) => theme.colors.accent};
+`
+
+export const FeatureCheckIcon = styled(Check)`
+  width: 1.25rem;
+  height: 1.25rem;
 `
 
 export const FeatureText = styled.span`

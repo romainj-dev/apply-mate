@@ -1,7 +1,6 @@
 'use client'
 
 import { GlassCard } from '@/components/ui/glass-card'
-import { AlertCircle } from 'lucide-react'
 import {
   CardBody,
   ContentRow,
@@ -13,6 +12,7 @@ import {
   BadgeRow,
   GreenBadge,
   OrangeBadge,
+  ProgressAlertIcon,
 } from './progress-card.styles'
 
 export function ProgressCard() {
@@ -23,7 +23,7 @@ export function ProgressCard() {
       <CardBody>
         <ContentRow>
           <IconWrapper>
-            <AlertCircle size={20} />
+            <ProgressAlertIcon />
           </IconWrapper>
           <ContentBody>
             <div>

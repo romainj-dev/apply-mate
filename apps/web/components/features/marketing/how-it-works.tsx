@@ -19,19 +19,19 @@ import {
 
 const steps = [
   {
-    icon: Upload,
+    Icon: Upload,
     title: 'Upload resume & profile setup',
     description:
       'Upload your existing resume and connect your LinkedIn profile to get started in seconds.',
   },
   {
-    icon: FileText,
+    Icon: FileText,
     title: 'Paste job description',
     description:
       'Simply paste the job posting URL or description for any role you want to apply to.',
   },
   {
-    icon: Sparkles,
+    Icon: Sparkles,
     title: 'Get AI-generated materials',
     description:
       'Receive a tailored resume, cover letter, and application answers optimized for AI filters.',
@@ -54,7 +54,7 @@ export function HowItWorks() {
             <StepItem key={index}>
               <StepContent>
                 <StepIconWrapper>
-                  <step.icon size={32} />
+                  <step.Icon />
                 </StepIconWrapper>
                 <StepLabel>Step {index + 1}</StepLabel>
                 <StepTitle>{step.title}</StepTitle>

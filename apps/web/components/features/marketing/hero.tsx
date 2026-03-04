@@ -1,11 +1,11 @@
 'use client'
 
-import { ArrowRight, Play, Sparkles } from 'lucide-react'
 import {
   AuroraBlob1,
   AuroraBlob2,
   AuroraContainer,
   Badge,
+  BadgeSparklesIcon,
   ButtonGroup,
   Container,
   DashboardImage,
@@ -18,6 +18,8 @@ import {
   ImageOverlay,
   Inner,
   OutlineButton,
+  OutlinePlayIcon,
+  PrimaryArrowIcon,
   PrimaryButton,
   Section,
   Subtitle,
@@ -36,7 +38,7 @@ export function Hero() {
       <Container>
         <Inner>
           <Badge>
-            <Sparkles size={16} />
+            <BadgeSparklesIcon />
             <span>Powered by advanced AI</span>
           </Badge>
 
@@ -54,10 +56,10 @@ export function Hero() {
           <ButtonGroup>
             <PrimaryButton size="lg">
               Start for free
-              <ArrowRight size={16} />
+              <PrimaryArrowIcon />
             </PrimaryButton>
             <OutlineButton size="lg" variant="outline">
-              <Play size={16} fill="currentColor" />
+              <OutlinePlayIcon />
               See how it works
             </OutlineButton>
           </ButtonGroup>

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { GlassCard, GlassCardContent } from '@/components/ui/glass-card'
+import { Plus } from 'lucide-react'
 
 export const ScrollContainer = styled.div`
   display: flex;
@@ -45,6 +46,11 @@ export const AddIconCircle = styled.div`
   justify-content: center;
   margin-inline: auto;
   color: ${({ theme }) => theme.colors.primary};
+`
+
+export const AddRolePlusIcon = styled(Plus)`
+  width: 1.5rem;
+  height: 1.5rem;
 `
 
 export const AddLabel = styled.p`

@@ -3,8 +3,8 @@
 import { GetPlanPricingDocument } from '@/graphql/generated'
 import { useQuery } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
-import { Check, RefreshCw } from 'lucide-react'
 import {
+  FeatureCheckIcon,
   CheckIconWrapper,
   Container,
   EmptyCard,
@@ -27,6 +27,7 @@ import {
   PricePeriod,
   PriceWrapper,
   RetryButton,
+  RetryRefreshIcon,
   Section,
   SectionHeader,
   StateText,
@@ -129,7 +130,7 @@ export function Pricing() {
               We couldn&apos;t load pricing information. Please try again.
             </StateText>
             <RetryButton onClick={() => refetch()} variant="outline">
-              <RefreshCw size={16} />
+              <RetryRefreshIcon />
               Retry
             </RetryButton>
           </ErrorCard>
@@ -167,7 +168,7 @@ export function Pricing() {
                   {plan.features.map((feature, featureIndex) => (
                     <FeatureItem key={featureIndex}>
                       <CheckIconWrapper>
-                        <Check size={20} />
+                        <FeatureCheckIcon />
                       </CheckIconWrapper>
                       <FeatureText>{feature}</FeatureText>
                     </FeatureItem>

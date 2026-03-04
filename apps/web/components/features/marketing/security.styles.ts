@@ -75,6 +75,11 @@ export const FeatureIconWrapper = styled.div`
   );
   margin-inline: auto;
   color: ${({ theme }) => theme.colors.accent};
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `
 
 export const FeatureTitle = styled.h3`
