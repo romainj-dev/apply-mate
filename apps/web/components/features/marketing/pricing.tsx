@@ -4,16 +4,19 @@ import { GetPlanPricingDocument } from '@/graphql/generated'
 import { useQuery } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
 import {
+  Container,
+  Heading,
+  Lead,
+  SectionHeader,
+} from './commons/section-patterns/SectionPatterns'
+import {
   FeatureCheckIcon,
   CheckIconWrapper,
-  Container,
   EmptyCard,
   ErrorCard,
   FeatureItem,
   FeatureList,
   FeatureText,
-  Heading,
-  Lead,
   LoadingCard,
   PlanButton,
   PlanCard,
@@ -29,7 +32,6 @@ import {
   RetryButton,
   RetryRefreshIcon,
   Section,
-  SectionHeader,
   StateText,
 } from './pricing.styles'
 
@@ -83,6 +85,78 @@ const PLAN_METADATA = {
   },
 } as const
 
+interface PricingStateCardProps {
+  variant: 'loading' | 'error' | 'empty'
+  message: string
+  onRetry?: () => void
+}
+
+function PricingStateCard({
+  variant,
+  message,
+  onRetry,
+}: PricingStateCardProps) {
+  const CardComponent =
+    variant === 'loading'
+      ? LoadingCard
+      : variant === 'error'
+        ? ErrorCard
+        : EmptyCard
+
+  return (
+    <CardComponent>
+      <StateText>{message}</StateText>
+      {variant === 'error' && onRetry && (
+        <RetryButton onClick={onRetry} variant="outline">
+          <RetryRefreshIcon />
+          Retry
+        </RetryButton>
+      )}
+    </CardComponent>
+  )
+}
+
+interface PricingPlanCardProps {
+  plan: PlanCard
+}
+
+function PricingPlanCard({ plan }: PricingPlanCardProps) {
+  return (
+    <PlanCard $popular={plan.popular}>
+      {plan.popular && (
+        <PopularBadgeWrapper>
+          <PopularBadge>Most popular</PopularBadge>
+        </PopularBadgeWrapper>
+      )}
+
+      <PlanHeader>
+        <PlanName>{plan.name}</PlanName>
+        <PlanDescription>{plan.description}</PlanDescription>
+      </PlanHeader>
+
+      <PriceWrapper>
+        <PriceAmount>{plan.price}</PriceAmount>
+        {plan.period && <PricePeriod>{plan.period}</PricePeriod>}
+      </PriceWrapper>
+
+      <PlanButton $popular={plan.popular} size="lg">
+        {plan.cta}
+      </PlanButton>
+
+      <FeatureList>
+        {plan.features.map((feature, featureIndex) => (
+          <FeatureItem key={featureIndex}>
+            <CheckIconWrapper>
+              <FeatureCheckIcon />
+            </CheckIconWrapper>
+            <FeatureText>{feature}</FeatureText>
+          </FeatureItem>
+        ))}
+      </FeatureList>
+    </PlanCard>
+  )
+}
+
 export function Pricing() {
   const { data, isLoading, isError, refetch } = useQuery(
     GetPlanPricingDocument,
@@ -121,60 +195,22 @@ export function Pricing() {
         </SectionHeader>
 
         {isLoading ? (
-          <LoadingCard>
-            <StateText>Loading plans…</StateText>
-          </LoadingCard>
+          <PricingStateCard variant="loading" message="Loading plans…" />
         ) : isError ? (
-          <ErrorCard>
-            <StateText>
-              We couldn&apos;t load pricing information. Please try again.
-            </StateText>
-            <RetryButton onClick={() => refetch()} variant="outline">
-              <RetryRefreshIcon />
-              Retry
-            </RetryButton>
-          </ErrorCard>
+          <PricingStateCard
+            variant="error"
+            message="We couldn't load pricing information. Please try again."
+            onRetry={() => refetch()}
+          />
         ) : planCards.length === 0 ? (
-          <EmptyCard>
-            <StateText>
-              Plans will appear here once they&apos;re configured in Supabase.
-            </StateText>
-          </EmptyCard>
+          <PricingStateCard
+            variant="empty"
+            message="Plans will appear here once they're configured in Supabase."
+          />
         ) : (
           <PlansGrid>
             {planCards.map((plan) => (
-              <PlanCard key={plan.id ?? plan.name} $popular={plan.popular}>
-                {plan.popular && (
-                  <PopularBadgeWrapper>
-                    <PopularBadge>Most popular</PopularBadge>
-                  </PopularBadgeWrapper>
-                )}
-
-                <PlanHeader>
-                  <PlanName>{plan.name}</PlanName>
-                  <PlanDescription>{plan.description}</PlanDescription>
-                </PlanHeader>
-
-                <PriceWrapper>
-                  <PriceAmount>{plan.price}</PriceAmount>
-                  {plan.period && <PricePeriod>{plan.period}</PricePeriod>}
-                </PriceWrapper>
-
-                <PlanButton $popular={plan.popular} size="lg">
-                  {plan.cta}
-                </PlanButton>
-
-                <FeatureList>
-                  {plan.features.map((feature, featureIndex) => (
-                    <FeatureItem key={featureIndex}>
-                      <CheckIconWrapper>
-                        <FeatureCheckIcon />
-                      </CheckIconWrapper>
-                      <FeatureText>{feature}</FeatureText>
-                    </FeatureItem>
-                  ))}
-                </FeatureList>
-              </PlanCard>
+              <PricingPlanCard key={plan.id ?? plan.name} plan={plan} />
             ))}
           </PlansGrid>
         )}

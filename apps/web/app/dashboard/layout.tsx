@@ -1,4 +1,4 @@
-import { DashboardSidebar } from '@/components/features/dashboard/commons/dashboard-sidebar'
+import { DashboardSidebar } from '@/components/features/dashboard/commons/dashboard-sidebar/DashboardSidebar'
 import { DashboardLayoutClient } from './layout-client'
 
 export default function DashboardLayout({

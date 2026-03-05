@@ -29,6 +29,9 @@ Prioritize:
 - Keeping sub-component props interfaces minimal (≤ 5 props)
 - Preserving all existing behavior — no functional regressions
 - Following naming conventions strictly (kebab-case folders, PascalCase files)
+- **Encapsulation:** a component folder is a private boundary. Never
+  import its internals (styles, queries, translations, utils) from
+  outside. If something needs reuse, create a component or shared hook / utils.
 
 After splitting, run `pnpm type-check` and `pnpm build` from `apps/web`.
 Fix any errors before reporting the split as complete.

@@ -1,5 +1,6 @@
 'use client'
 
+import { Container } from './commons/section-patterns/SectionPatterns'
 import {
   AuroraBlob1,
   AuroraBlob2,
@@ -7,7 +8,6 @@ import {
   Badge,
   BadgeSparklesIcon,
   ButtonGroup,
-  Container,
   DashboardImage,
   GlassCard,
   GradientText,

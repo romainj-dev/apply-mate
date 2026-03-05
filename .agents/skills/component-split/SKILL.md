@@ -65,7 +65,7 @@ enough to be understood independently.
    - Define a typed props interface for data/callbacks from the parent.
    - Add `'use client'` if the component uses styled-components (default).
    - Named exports only.
-3. **Create `SubComponent.styles.ts`:**
+3. **Create `{ComponentName}.styles.ts`** (PascalCase, e.g. `SidebarBrand.styles.ts`):
    - Move the styled-components that belong to this sub-component.
    - Keep theme token usage consistent.
 4. **Update the parent:**
@@ -74,7 +74,14 @@ enough to be understood independently.
 5. **Update all external imports** across the codebase if the parent's
    public API changed (renamed exports, moved types).
 
-### Phase 3: Deduplication Check
+### Phase 3: Encapsulation & Deduplication Check
+
+**Encapsulation rule:** a component folder is a private boundary. Its
+internal files (`.styles.ts`, queries, translations, utils,
+sub-components) must not be imported from outside. Only the main `.tsx`
+export is the public API. If something internal is needed elsewhere,
+create a reusable component or promote the logic to a shared hook /
+utility.
 
 After splitting, check if any extracted pattern already exists in or
 should be promoted to:
@@ -91,8 +98,10 @@ Follow `.cursor/rules/component-organization.mdc`:
 
 - Folders: `kebab-case`
 - Component files: `PascalCase.tsx`
-- Style files: `PascalCase.styles.ts`
+- Style files: `PascalCase.styles.ts` — use the **component name**, not the folder name (e.g. `SidebarBrand.styles.ts` in folder `sidebar-brand/`, not `sidebar-brand.styles.ts`)
 - Server components: `PascalCase.server.tsx`
+
+**Common mistake:** Do not name styles files after the folder (kebab-case). Always use the component's PascalCase name.
 
 ## Props Design
 

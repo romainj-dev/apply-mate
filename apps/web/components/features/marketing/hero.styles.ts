@@ -82,12 +82,6 @@ export const AuroraBlob2 = styled.div`
   filter: blur(80px);
 `
 
-export const Container = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  padding-inline: ${({ theme }) => theme.space.md};
-`
-
 export const Inner = styled.div`
   margin: 0 auto;
   max-width: 56rem;

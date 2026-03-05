@@ -1,10 +1,12 @@
 ---
 description: Component file structure, splitting, naming, and deduplication rules. Apply when creating, moving, or refactoring components.
-globs: apps/web/components/**/*.tsx
+globs: apps/web/components/**/*.tsx,apps/web/app/**/*.tsx
 alwaysApply: false
 ---
 
 # Component Organization
+
+> **Scope:** sections below apply to `components/`. Route files in `app/` follow different conventions — see [Route Files](#route-files-app) at the bottom.
 
 ## Folder Structure
 
@@ -15,7 +17,7 @@ components/
   commons/              # Cross-cutting shared components
     icon-box/
       IconBox.tsx
-      icon-box.styles.ts
+      IconBox.styles.ts
   layout/               # App-level layout (header, footer)
   features/<domain>/    # Feature components grouped by domain
     commons/            # Shared within that feature domain
@@ -58,6 +60,20 @@ profile-upload/
     UploadDropzone.styles.ts
 ```
 
+## Component Encapsulation
+
+A component's internal files (`.styles.ts`, utils, sub-components) must **not** be imported by sibling or external components. Only the main `.tsx` export is public.
+
+```tsx
+// ❌ Anti-pattern — importing styles from another component's folder
+import { Container } from './commons/section-patterns/SectionPatterns.styles'
+
+// ✅ Import the component itself, or create a reusable component
+import { SectionLayout } from './commons/section-layout/SectionLayout'
+```
+
+If a styled-component needs to be reused, wrap it in a proper component and export that.
+
 ## When to Extract for Reuse
 
 If a styled-component or UI pattern appears in **2+ files**, extract it to `commons/` at the appropriate scope:
@@ -66,3 +82,13 @@ If a styled-component or UI pattern appears in **2+ files**, extract it to `comm
 - Used within one feature → `components/features/<domain>/commons/`
 
 Examples of patterns that must be shared, not duplicated: section layouts, icon containers, empty states, spinners, background patterns.
+
+## Route Files (`app/`)
+
+Route files follow **Next.js conventions**, not the component rules above.
+
+- **Reserved names:** `page.tsx`, `layout.tsx`, `error.tsx`, `route.ts` — don't rename.
+- **Server/client split is inverted:** `page.tsx` is server by default; client companions use a `-client` suffix (`page-client.tsx`) or descriptive kebab-case (`profile-page-content.tsx`).
+- **Minimal layout styles only:** a co-located `.styles.ts` is fine for small page-level glue (~30 lines — a `Root` + a few wrappers). If styles exceed ~30 lines or define distinct UI patterns (cards, animations, lists), extract into a component in `components/`. File naming: `kebab-case.styles.ts` matching the source (`page.styles.ts`).
+- **Private data utilities:** `_data/` subfolder (Next.js underscore convention).
+- **Pages should be thin orchestrators** — metadata, data fetching, auth guards, then render feature components from `components/`. If a co-located page content file exceeds ~100 lines or becomes reusable, promote it to `components/`.
