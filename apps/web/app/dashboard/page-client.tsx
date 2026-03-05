@@ -5,7 +5,7 @@ import { QuickApplicationInput } from '@/components/features/dashboard/quick-app
 import {
   ApplicationsTable,
   type Application,
-} from '@/components/features/dashboard/applications-table'
+} from '@/components/features/dashboard/applications-table/ApplicationsTable'
 import { DashboardHeader } from '@/components/features/dashboard/commons/header'
 import { HighlightName, Root } from './page.styles'
 

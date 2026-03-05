@@ -119,23 +119,28 @@ After completing the split:
 ## Component: `<path>`
 
 ### Split Plan
+
 - Original: N lines TSX, M lines styles
 - Sub-components extracted: N
 
 ### Extracted Components
+
 | Sub-component | Responsibility | Lines |
-|---------------|---------------|-------|
-| `name/` | description | N |
+| ------------- | -------------- | ----- |
+| `name/`       | description    | N     |
 
 ### Parent After Split
+
 - Lines: N (was M)
 - Styles: N (was M)
 
 ### Deduplication
+
 - Patterns promoted to commons: N
 - Existing commons reused: N
 
 ### Validation
+
 - Type check: pass/fail
 - Build: pass/fail
 ```

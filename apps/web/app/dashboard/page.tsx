@@ -1,4 +1,4 @@
-import { type Application } from '@/components/features/dashboard/applications-table'
+import { type Application } from '@/components/features/dashboard/applications-table/ApplicationsTable'
 import { DashboardEmptyPageClient } from './page-client'
 
 export const metadata = {
