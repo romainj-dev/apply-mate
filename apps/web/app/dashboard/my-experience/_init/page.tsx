@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { DashboardHeader } from '@/components/features/dashboard/commons/header'
-import { ProfileUpload } from '@/components/features/dashboard/profile-upload'
+import { ProfileUpload } from '@/components/features/dashboard/profile-upload/ProfileUpload'
 import {
   type Step,
   ProgressSteps,

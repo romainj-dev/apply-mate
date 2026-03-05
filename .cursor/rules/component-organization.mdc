@@ -1,0 +1,68 @@
+---
+description: Component file structure, splitting, naming, and deduplication rules. Apply when creating, moving, or refactoring components.
+globs: apps/web/components/**/*.tsx
+alwaysApply: false
+---
+
+# Component Organization
+
+## Folder Structure
+
+Each component lives in its own folder: one `.tsx`, one `.styles.ts`, colocated.
+
+```
+components/
+  commons/              # Cross-cutting shared components
+    icon-box/
+      IconBox.tsx
+      icon-box.styles.ts
+  layout/               # App-level layout (header, footer)
+  features/<domain>/    # Feature components grouped by domain
+    commons/            # Shared within that feature domain
+    profile-upload/
+      ProfileUpload.tsx
+      ProfileUpload.styles.ts
+  ui/                   # Primitives (flat, no folders — too small)
+    Button.tsx
+```
+
+## Naming
+
+- **Folders:** `kebab-case` (avoids macOS case-sensitivity issues)
+- **Component files:** `PascalCase.tsx` (immediately identifiable as a component)
+- **Styles / utils:** `PascalCase.styles.ts` (matches the component: `ProfileUpload.tsx` → `ProfileUpload.styles.ts`)
+- **Server components:** suffix with `.server.tsx` (e.g., `HeaderAuth.server.tsx`). No suffix = client component (the de-facto default with styled-components).
+- **No barrel exports** — import directly from source files.
+
+## When to Split
+
+| Condition                              | Action                                 |
+| -------------------------------------- | -------------------------------------- |
+| TSX > 250 lines                        | Look for split opportunities           |
+| Styles > 400 lines                     | Look for split opportunities (styled-components are ~2-3x more verbose than the JSX using them) |
+| Sub-section has its own state/handlers | Extract into nested subfolder          |
+| Conditional block > ~30 lines of JSX   | Extract (empty state, loading, error)  |
+| Sub-component < 20 lines, used once    | Leave inline — don't over-split        |
+| Repeated JSX blocks, same structure, different data | Same-file component with props — no new folder |
+
+**Litmus test:** "Can someone understand this sub-component without reading the parent?" If yes, extract to its own folder. If no, keep it in the same file.
+
+Split sub-components go into **nested folders** inside the parent:
+
+```
+profile-upload/
+  ProfileUpload.tsx
+  ProfileUpload.styles.ts
+  upload-dropzone/
+    UploadDropzone.tsx
+    UploadDropzone.styles.ts
+```
+
+## When to Extract for Reuse
+
+If a styled-component or UI pattern appears in **2+ files**, extract it to `commons/` at the appropriate scope:
+
+- Used across features → `components/commons/`
+- Used within one feature → `components/features/<domain>/commons/`
+
+Examples of patterns that must be shared, not duplicated: section layouts, icon containers, empty states, spinners, background patterns.
