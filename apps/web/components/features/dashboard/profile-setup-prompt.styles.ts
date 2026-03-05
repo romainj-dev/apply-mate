@@ -71,7 +71,7 @@ export const Body = styled.p`
   color: ${({ theme }) => theme.colors.mutedForeground};
   margin-bottom: ${({ theme }) => theme.space.lg};
   max-width: 42rem;
-  line-height: 1.625; /* leading-relaxed */
+  line-height: 1.625;
 `
 
 export const ArrowIcon = styled(ArrowRight)`
@@ -84,12 +84,12 @@ export const SetupButton = styled(Button)`
   border-radius: ${({ theme }) => theme.radii.xl};
   box-shadow:
     0 10px 15px -3px rgb(249 115 22 / 0.2),
-    0 4px 6px -4px rgb(249 115 22 / 0.2); /* shadow-lg shadow-orange/20 */
+    0 4px 6px -4px rgb(249 115 22 / 0.2);
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
     box-shadow:
       0 10px 15px -3px rgb(249 115 22 / 0.3),
-      0 4px 6px -4px rgb(249 115 22 / 0.3); /* hover:shadow-orange/30 */
+      0 4px 6px -4px rgb(249 115 22 / 0.3);
   }
 `

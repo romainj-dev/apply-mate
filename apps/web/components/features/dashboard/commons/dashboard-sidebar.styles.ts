@@ -281,8 +281,8 @@ export const UserAvatar = styled(Avatar)`
 export const UserAvatarFallback = styled(AvatarFallback)`
   background: linear-gradient(
     to bottom right,
-    /* blue-100 */ rgb(219 234 254),
-    /* indigo-100 */ rgb(224 231 255)
+    rgb(219 234 254),
+    rgb(224 231 255)
   );
   color: ${({ theme }) => theme.colors.primary};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
@@ -295,7 +295,7 @@ export const UserStatus = styled.span`
   width: 0.75rem;
   height: 0.75rem;
   border-radius: ${({ theme }) => theme.radii.full};
-  background: rgb(34 197 94); /* green-500 — online status indicator */
+  background: rgb(34 197 94);
   border: 2px solid rgb(255 255 255);
 `
 

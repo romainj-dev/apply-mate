@@ -350,7 +350,6 @@ export const UploadIconBox = styled.div`
   justify-content: center;
   margin-inline: auto;
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  /* ring-1 ring-primary/20 */
   box-shadow: 0 0 0 1px
     color-mix(in srgb, ${({ theme }) => theme.colors.primary} 20%, transparent);
 
@@ -440,7 +439,6 @@ export const AnalyzeButton = styled(Button)`
   font-size: ${({ theme }) => theme.typography.fontSize.base};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   gap: ${({ theme }) => theme.spaceCalc(3)};
-  /* shadow-xl shadow-primary/25 — colored shadow geometry */
   box-shadow:
     0 20px 25px -5px
       color-mix(
@@ -559,7 +557,7 @@ export const FastestBadge = styled.span`
     transparent
   );
   color: ${({ theme }) => theme.colors.primary};
-  font-weight: 900; /* font-black — no theme token */
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.025em;
 `

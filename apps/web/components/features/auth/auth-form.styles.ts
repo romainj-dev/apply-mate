@@ -45,7 +45,6 @@ export const GradientTitle = styled.h1`
   font-size: ${({ theme }) => theme.typography.fontSize['3xl']};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   letter-spacing: -0.025em;
-  /* bg-gradient-to-r from-primary via-purple-500 to-accent bg-clip-text text-transparent */
   background: linear-gradient(
     to right,
     ${({ theme }) => theme.colors.primary},
@@ -64,11 +63,6 @@ export const SubText = styled.p`
 
 /* ── Card shell ──────────────────────────────────────────────────────── */
 
-/**
- * Recreates .glass-card (bg-card/50 backdrop-blur-sm border-border/50 shadow-sm
- * hover:bg-card/80 hover:shadow-md) plus the component-level overrides
- * (border-muted/50 shadow-xl).
- */
 export const AuthCard = styled(Card)`
   background: color-mix(
     in srgb,
@@ -144,7 +138,6 @@ const OAuthButton = styled(Button)`
 
 export const GoogleButton = styled(OAuthButton)`
   &:hover {
-    /* red-500/50 border, red-500/10 shadow */
     border-color: color-mix(in srgb, #ef4444 50%, transparent);
     box-shadow:
       0 10px 15px -3px color-mix(in srgb, #ef4444 10%, transparent),
@@ -154,7 +147,6 @@ export const GoogleButton = styled(OAuthButton)`
 
 export const LinkedInButton = styled(OAuthButton)`
   &:hover {
-    /* blue-600/50 border, blue-600/10 shadow */
     border-color: color-mix(in srgb, #2563eb 50%, transparent);
     box-shadow:
       0 10px 15px -3px color-mix(in srgb, #2563eb 10%, transparent),
@@ -164,7 +156,6 @@ export const LinkedInButton = styled(OAuthButton)`
 
 export const GitHubButton = styled(OAuthButton)`
   &:hover {
-    /* violet-600/50 border, violet-600/10 shadow */
     border-color: color-mix(in srgb, #7c3aed 50%, transparent);
     box-shadow:
       0 10px 15px -3px color-mix(in srgb, #7c3aed 10%, transparent),

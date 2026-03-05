@@ -45,14 +45,12 @@ For plain white/black + opacity, use 8-digit hex:
 ## 3) Gradients -> `linear-gradient()` with theme colors
 
 ```css
-/* bg-gradient-to-br from-primary to-accent */
 background: linear-gradient(
   to bottom right,
   $ {({theme}) => theme.colors.primary},
   $ {({theme}) => theme.colors.accent}
 );
 
-/* bg-clip-text text-transparent */
 background-clip: text;
 -webkit-background-clip: text;
 color: transparent;
@@ -82,11 +80,9 @@ Tailwind prefix mapping:
 Conversion pattern — always invert the logic:
 
 ```css
-/* Tailwind (mobile-first): default column, row at sm+ */
 flex-direction: column;
 @media (min-width: 640px) { flex-direction: row; }
 
-/* styled-components (desktop-first): default row, column below mobile */
 flex-direction: row;
 ${({ theme }) => theme.media.belowMobile} { flex-direction: column; }
 ```
@@ -116,10 +112,10 @@ not design tokens.
 Example:
 
 ```css
-max-width: 42rem; /* max-w-2xl */
-width: 100%; /* w-full */
-min-height: 100vh; /* min-h-screen */
-height: 3rem; /* h-12 */
+max-width: 42rem;
+width: 100%;
+min-height: 100vh;
+height: 3rem;
 ```
 
 ## 7) Lucide icons: default handling

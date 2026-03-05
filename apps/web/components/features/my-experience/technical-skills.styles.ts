@@ -166,7 +166,6 @@ export const GridPattern = styled.div`
   inset: 0;
   opacity: 0.1;
   pointer-events: none;
-  /* Recreated from .bg-grid-pattern in globals.css */
   background-size: 40px 40px;
   background-image:
     linear-gradient(
@@ -269,7 +268,6 @@ export const BubbleName = styled.span`
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   text-align: center;
-  /* drop-shadow-md */
   filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
     drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
   margin-bottom: ${({ theme }) => theme.space.sm};

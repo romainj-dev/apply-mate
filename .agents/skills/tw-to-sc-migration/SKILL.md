@@ -55,6 +55,8 @@ For each component file:
 5. **Map** each Tailwind utility to its theme-token equivalent using
    `references/MAPPING-CORE.md`. If unresolved, consult
    `references/MAPPING-EDGE-CASES.md`.
+   Do not add Tailwind trace comments in output code (for example
+   `/* max-w-2xl */` or `/* shadow-xl shadow-primary/25 */`).
 6. **Replace** Tailwind-styled HTML elements with styled components in
    the component file.
 7. **Convert** conditional classes (`cn(base, cond && cls)`) to transient
@@ -81,6 +83,9 @@ features/marketing/
 - Named exports only — no default exports.
 - Prefix styled components with `Styled` only when a name collision
   exists. Prefer semantic names: `Section`, `Container`, `Title`.
+- Do not add Tailwind trace comments in output code (for example
+  `/* max-w-2xl */` or `/* shadow-xl shadow-primary/25 */`). Keep
+  comments only for non-obvious rationale.
 
 ### Transient props
 

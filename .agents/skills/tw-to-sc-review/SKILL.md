@@ -56,6 +56,9 @@ Run only these checks.
 
 - No Tailwind utility strings left in `className`.
 - No stale `cn()` usage that only existed for Tailwind composition.
+- No Tailwind trace comments left in `*.styles.ts` (for example
+  `/* max-w-2xl */`, `/* shadow-xl shadow-primary/25 */`) unless they
+  explain non-obvious rationale.
 
 ### S3. Tokenization (high signal only)
 
