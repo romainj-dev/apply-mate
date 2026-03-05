@@ -92,7 +92,7 @@ export const TechStack = styled.div`
 export const TechBadge = styled(Badge)`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   background-color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );

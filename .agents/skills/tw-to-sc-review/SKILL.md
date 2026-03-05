@@ -60,7 +60,7 @@ Run only these checks.
 ### S3. Tokenization (high signal only)
 
 - Flag clearly tokenizable hardcoded values:
-  - colors (`#`, `rgb`, `oklch`) that should be `theme.colors.*`
+  - colors (`#`) that should be `theme.colors.*`
   - obvious spacing/radius/shadow values that should use theme tokens
 - Flag any style-related JSX props/inline styles that should be in
   `*.styles.ts` (for example `size`, `color`, `style={{ ... }}`, CSS-variable
@@ -130,13 +130,16 @@ Use a concise report:
 # Migration Review Report
 
 ## Summary
+
 - Files reviewed: N
 - Correctness issues: N (fixed: N)
 - Undocumented decisions: N
 - Skill updates made: N
 
 ## Per-File Results
+
 ### `<component-path>`
+
 - Status: pass | issues-found
 - Critical findings:
   - [Sx] description - severity - action
@@ -144,6 +147,7 @@ Use a concise report:
   - description - verdict - skill update (if any)
 
 ## Validation
+
 - Checks run: ...
 - Result: pass | issues
 ```

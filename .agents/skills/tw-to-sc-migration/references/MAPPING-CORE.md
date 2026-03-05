@@ -27,8 +27,8 @@ Tailwind `bg-primary/20` or `border-border/50`:
 
 ```css
 background: color-mix(
-  in oklch,
-  ${({ theme }) => theme.colors.primary} 20%,
+  in srgb,
+  $ {({theme}) => theme.colors.primary} 20%,
   transparent
 );
 ```
@@ -36,11 +36,11 @@ background: color-mix(
 Pattern:
 
 - `<theme-color>/<opacity>` ->
-  `color-mix(in oklch, <theme-color> <opacity>%, transparent)`
+  `color-mix(in srgb, <theme-color> <opacity>%, transparent)`
 
-For plain white/black + opacity, use `rgb()`:
+For plain white/black + opacity, use 8-digit hex:
 
-- `bg-white/50` -> `rgb(255 255 255 / 0.5)`
+- `bg-white/50` -> `#ffffff80`
 
 ## 3) Gradients -> `linear-gradient()` with theme colors
 
@@ -48,8 +48,8 @@ For plain white/black + opacity, use `rgb()`:
 /* bg-gradient-to-br from-primary to-accent */
 background: linear-gradient(
   to bottom right,
-  ${({ theme }) => theme.colors.primary},
-  ${({ theme }) => theme.colors.accent}
+  $ {({theme}) => theme.colors.primary},
+  $ {({theme}) => theme.colors.accent}
 );
 
 /* bg-clip-text text-transparent */

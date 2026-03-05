@@ -118,7 +118,7 @@ export const SkillsContent = styled(GlassCardContent)`
 export const Footer = styled.div`
   padding: ${({ theme }) => theme.spaceCalc(3)};
   border-top: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 10%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 10%, transparent);
   background: rgb(255 255 255 / 0.4);
   backdrop-filter: blur(12px);
   display: flex;
@@ -138,12 +138,12 @@ export const AiBadge = styled(Badge)`
   padding-inline: ${({ theme }) => theme.spaceCalc(1.5)};
   font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 5%,
     transparent
   );
   border-color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 20%,
     transparent
   );
@@ -190,7 +190,7 @@ export const AmbientCircleSm = styled.div`
   width: 16rem;
   height: 16rem;
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 5%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 5%, transparent);
   border-radius: ${({ theme }) => theme.radii.full};
   animation: ${pulse} 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 `
@@ -203,7 +203,7 @@ export const AmbientCircleLg = styled.div`
   width: 24rem;
   height: 24rem;
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 5%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 5%, transparent);
   border-radius: ${({ theme }) => theme.radii.full};
 `
 
@@ -238,11 +238,11 @@ export const BubbleInner = styled.div<ColorValueProps>`
     circle at 30% 30%,
     white 0%,
     ${({ $color }) => $color} 50%,
-    color-mix(in oklch, ${({ $color }) => $color}, black 20%) 100%
+    color-mix(in srgb, ${({ $color }) => $color}, black 20%) 100%
   );
   box-shadow:
     0 10px 30px -5px
-      color-mix(in oklch, ${({ $color }) => $color}, transparent 60%),
+      color-mix(in srgb, ${({ $color }) => $color}, transparent 60%),
     inset 0 -4px 10px rgb(0 0 0 / 0.2);
 
   ${({ theme }) => theme.media.belowMobile} {
@@ -374,7 +374,7 @@ export const SkillItem = styled(motion.div)`
 export const SkillCard = styled.div`
   background: white;
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 50%, transparent);
   border-radius: ${({ theme }) => theme.radii['2xl']};
   padding: ${({ theme }) => theme.spaceCalc(3)};
   box-shadow: ${({ theme }) => theme.shadows.sm};
@@ -413,7 +413,7 @@ export const ProgressTrack = styled.div`
   height: 0.375rem;
   width: 100%;
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.secondary} 50%,
     transparent
   );

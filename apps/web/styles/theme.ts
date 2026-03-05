@@ -14,67 +14,67 @@
 
 /** Semantic color tokens from `globals.css :root` (Tailwind v4-compatible). */
 const colors = {
-  /** `oklch(0.98 0.01 240)` */
+  /** `#f3faff` */
   background: 'var(--background)',
-  /** `oklch(0.12 0.04 260)` */
+  /** `#010515` */
   foreground: 'var(--foreground)',
-  /** `oklch(1 0 0)` */
+  /** `#ffffff` */
   card: 'var(--card)',
-  /** `oklch(0.12 0.04 260)` */
+  /** `#010515` */
   cardForeground: 'var(--card-foreground)',
-  /** `oklch(1 0 0)` */
+  /** `#ffffff` */
   popover: 'var(--popover)',
-  /** `oklch(0.12 0.04 260)` */
+  /** `#010515` */
   popoverForeground: 'var(--popover-foreground)',
-  /** `oklch(0.55 0.22 260)` */
+  /** `#0766ee` */
   primary: 'var(--primary)',
-  /** `oklch(0.98 0 0)` */
+  /** `#f8f8f8` */
   primaryForeground: 'var(--primary-foreground)',
-  /** `oklch(0.96 0.01 260)` */
+  /** `#eef2f9` */
   secondary: 'var(--secondary)',
-  /** `oklch(0.25 0.08 260)` */
+  /** `#082047` */
   secondaryForeground: 'var(--secondary-foreground)',
-  /** `oklch(0.96 0.01 260)` */
+  /** `#eef2f9` */
   muted: 'var(--muted)',
-  /** `oklch(0.5 0.04 260)` */
+  /** `#56647a` */
   mutedForeground: 'var(--muted-foreground)',
-  /** `oklch(0.65 0.22 30)` */
+  /** `#f84331` */
   accent: 'var(--accent)',
-  /** `oklch(0.98 0 0)` */
+  /** `#f8f8f8` */
   accentForeground: 'var(--accent-foreground)',
-  /** `oklch(0.577 0.245 27.325)` */
+  /** `#e7000b` */
   destructive: 'var(--destructive)',
-  /** `oklch(0.985 0 0)` */
+  /** `#fafafa` */
   destructiveForeground: 'var(--destructive-foreground)',
-  /** `oklch(0.92 0.01 260)` */
+  /** `#e1e5eb` */
   border: 'var(--border)',
-  /** `oklch(0.92 0.01 260)` */
+  /** `#e1e5eb` */
   input: 'var(--input)',
-  /** `oklch(0.55 0.22 260)` */
+  /** `#0766ee` */
   ring: 'var(--ring)',
   sidebar: {
-    /** `oklch(0.98 0 0)` */
+    /** `#f8f8f8` */
     DEFAULT: 'var(--sidebar)',
-    /** `oklch(0.15 0 0)` */
+    /** `#0b0b0b` */
     foreground: 'var(--sidebar-foreground)',
-    /** `oklch(0.55 0.18 265)` */
+    /** `#3c68d9` */
     primary: 'var(--sidebar-primary)',
-    /** `oklch(0.99 0 0)` */
+    /** `#fcfcfc` */
     primaryForeground: 'var(--sidebar-primary-foreground)',
-    /** `oklch(0.94 0.01 265)` */
+    /** `#e8ebf2` */
     accent: 'var(--sidebar-accent)',
-    /** `oklch(0.15 0 0)` */
+    /** `#0b0b0b` */
     accentForeground: 'var(--sidebar-accent-foreground)',
-    /** `oklch(0.9 0.01 265)` */
+    /** `#dbdee5` */
     border: 'var(--sidebar-border)',
-    /** `oklch(0.55 0.18 265)` */
+    /** `#3c68d9` */
     ring: 'var(--sidebar-ring)',
   },
   status: {
     success: {
       /** `#15803d` */
       fg: 'var(--status-success-fg)',
-      /** `rgb(34 197 94 / 0.15)` */
+      /** `#22c55e26` */
       bg: 'var(--status-success-bg)',
       /** `#bbf7d0` */
       border: 'var(--status-success-border)',
@@ -82,7 +82,7 @@ const colors = {
     warning: {
       /** `#a16207` */
       fg: 'var(--status-warning-fg)',
-      /** `rgb(234 179 8 / 0.15)` */
+      /** `#eab30826` */
       bg: 'var(--status-warning-bg)',
       /** `#fde68a` */
       border: 'var(--status-warning-border)',
@@ -90,7 +90,7 @@ const colors = {
     info: {
       /** `#1d4ed8` */
       fg: 'var(--status-info-fg)',
-      /** `rgb(59 130 246 / 0.15)` */
+      /** `#3b82f626` */
       bg: 'var(--status-info-bg)',
       /** `#bfdbfe` */
       border: 'var(--status-info-border)',
@@ -98,7 +98,7 @@ const colors = {
     progress: {
       /** `#4338ca` */
       fg: 'var(--status-progress-fg)',
-      /** `rgb(99 102 241 / 0.15)` */
+      /** `#6366f126` */
       bg: 'var(--status-progress-bg)',
       /** `#c7d2fe` */
       border: 'var(--status-progress-border)',
@@ -106,7 +106,7 @@ const colors = {
     attention: {
       /** `#c2410c` */
       fg: 'var(--status-attention-fg)',
-      /** `rgb(249 115 22 / 0.15)` */
+      /** `#f9731626` */
       bg: 'var(--status-attention-bg)',
       /** `#fed7aa` */
       border: 'var(--status-attention-border)',
@@ -114,7 +114,7 @@ const colors = {
     danger: {
       /** `#b91c1c` */
       fg: 'var(--status-danger-fg)',
-      /** `rgb(239 68 68 / 0.15)` */
+      /** `#ef444426` */
       bg: 'var(--status-danger-bg)',
       /** `#fecaca` */
       border: 'var(--status-danger-border)',

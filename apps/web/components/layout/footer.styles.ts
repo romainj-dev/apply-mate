@@ -5,7 +5,7 @@ import styled from 'styled-components'
 export const FooterRoot = styled.footer`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 30%,
     transparent
   );

@@ -71,19 +71,19 @@ export const SubText = styled.p`
  */
 export const AuthCard = styled(Card)`
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 50%,
     transparent
   );
   backdrop-filter: blur(4px);
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.muted} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.muted} 50%, transparent);
   box-shadow: ${({ theme }) => theme.shadows.xl};
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.card} 80%,
       transparent
     );
@@ -116,12 +116,12 @@ const OAuthButton = styled(Button)`
   height: 3rem;
   font-size: ${({ theme }) => theme.typography.fontSize.base};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.background} 50%,
     transparent
   );
   border-color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.mutedForeground} 20%,
     transparent
   );
@@ -145,30 +145,30 @@ const OAuthButton = styled(Button)`
 export const GoogleButton = styled(OAuthButton)`
   &:hover {
     /* red-500/50 border, red-500/10 shadow */
-    border-color: color-mix(in oklch, #ef4444 50%, transparent);
+    border-color: color-mix(in srgb, #ef4444 50%, transparent);
     box-shadow:
-      0 10px 15px -3px color-mix(in oklch, #ef4444 10%, transparent),
-      0 4px 6px -4px color-mix(in oklch, #ef4444 10%, transparent);
+      0 10px 15px -3px color-mix(in srgb, #ef4444 10%, transparent),
+      0 4px 6px -4px color-mix(in srgb, #ef4444 10%, transparent);
   }
 `
 
 export const LinkedInButton = styled(OAuthButton)`
   &:hover {
     /* blue-600/50 border, blue-600/10 shadow */
-    border-color: color-mix(in oklch, #2563eb 50%, transparent);
+    border-color: color-mix(in srgb, #2563eb 50%, transparent);
     box-shadow:
-      0 10px 15px -3px color-mix(in oklch, #2563eb 10%, transparent),
-      0 4px 6px -4px color-mix(in oklch, #2563eb 10%, transparent);
+      0 10px 15px -3px color-mix(in srgb, #2563eb 10%, transparent),
+      0 4px 6px -4px color-mix(in srgb, #2563eb 10%, transparent);
   }
 `
 
 export const GitHubButton = styled(OAuthButton)`
   &:hover {
     /* violet-600/50 border, violet-600/10 shadow */
-    border-color: color-mix(in oklch, #7c3aed 50%, transparent);
+    border-color: color-mix(in srgb, #7c3aed 50%, transparent);
     box-shadow:
-      0 10px 15px -3px color-mix(in oklch, #7c3aed 10%, transparent),
-      0 4px 6px -4px color-mix(in oklch, #7c3aed 10%, transparent);
+      0 10px 15px -3px color-mix(in srgb, #7c3aed 10%, transparent),
+      0 4px 6px -4px color-mix(in srgb, #7c3aed 10%, transparent);
   }
 `
 

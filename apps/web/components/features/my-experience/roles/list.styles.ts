@@ -37,7 +37,7 @@ export const AddIconCircle = styled.div`
   width: 3rem;
   border-radius: ${({ theme }) => theme.radii.full};
   background-color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );

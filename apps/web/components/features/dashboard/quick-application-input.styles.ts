@@ -55,7 +55,7 @@ export const StyledInput = styled(Input)<DisabledProps>`
 
   &::placeholder {
     color: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.mutedForeground} 50%,
       transparent
     );
@@ -73,7 +73,7 @@ export const DisabledBadge = styled.div`
   gap: ${({ theme }) => theme.space.sm};
   padding-inline: ${({ theme }) => theme.space.lg};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.muted} 50%,
     transparent
   );
@@ -81,7 +81,7 @@ export const DisabledBadge = styled.div`
   color: ${({ theme }) => theme.colors.mutedForeground};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 50%, transparent);
 `
 
 export const LockIcon = styled(Lock)`
@@ -97,13 +97,13 @@ export const SubmitButton = styled(Button)`
   box-shadow:
     0 10px 15px -3px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       ),
     0 4px 6px -4px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       );

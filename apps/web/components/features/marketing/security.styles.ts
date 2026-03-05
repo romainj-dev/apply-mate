@@ -69,7 +69,7 @@ export const FeatureIconWrapper = styled.div`
   justify-content: center;
   border-radius: ${({ theme }) => theme.radii.xl};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.accent} 10%,
     transparent
   );

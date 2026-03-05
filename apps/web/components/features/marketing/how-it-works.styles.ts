@@ -72,12 +72,12 @@ export const StepIconWrapper = styled.div`
   justify-content: center;
   border-radius: ${({ theme }) => theme.radii['2xl']};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.accent} 10%,
     transparent
   );
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.accent} 20%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.accent} 20%, transparent);
   color: ${({ theme }) => theme.colors.accent};
 
   svg {

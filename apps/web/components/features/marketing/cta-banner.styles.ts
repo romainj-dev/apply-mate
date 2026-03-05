@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 export const Section = styled.section`
   padding-block: ${({ theme }) => theme.spaceCalc(32)};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 50%,
     transparent
   );
@@ -31,7 +31,7 @@ export const Banner = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: linear-gradient(
     to bottom right,
-    color-mix(in oklch, ${({ theme }) => theme.colors.accent} 10%, transparent),
+    color-mix(in srgb, ${({ theme }) => theme.colors.accent} 10%, transparent),
     transparent
   );
   padding: ${({ theme }) => theme.space['2xl']};

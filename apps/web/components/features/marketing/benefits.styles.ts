@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Section = styled.section`
   padding-block: ${({ theme }) => theme.spaceCalc(32)};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 50%,
     transparent
   );
@@ -69,7 +69,7 @@ export const Card = styled.div`
 
   &:hover {
     border-color: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.accent} 30%,
       transparent
     );
@@ -85,7 +85,7 @@ export const IconWrapper = styled.div`
   justify-content: center;
   border-radius: ${({ theme }) => theme.radii.xl};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.accent} 10%,
     transparent
   );

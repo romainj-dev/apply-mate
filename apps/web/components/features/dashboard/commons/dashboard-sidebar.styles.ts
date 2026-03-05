@@ -60,13 +60,13 @@ export const BrandIcon = styled.div`
   box-shadow:
     0 10px 15px -3px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       ),
     0 4px 6px -4px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       );
@@ -136,7 +136,7 @@ export const NavLabel = styled.div`
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.mutedForeground} 50%,
     transparent
   );
@@ -157,7 +157,7 @@ export const NavLinkItem = styled(Link)<NavLinkProps>`
     $isActive ? theme.colors.primary : theme.colors.mutedForeground};
   background: ${({ theme, $isActive }) =>
     $isActive
-      ? `color-mix(in oklch, ${theme.colors.primary} 10%, transparent)`
+      ? `color-mix(in srgb, ${theme.colors.primary} 10%, transparent)`
       : 'transparent'};
   box-shadow: ${({ theme, $isActive }) =>
     $isActive ? theme.shadows.sm : 'none'};
@@ -165,7 +165,7 @@ export const NavLinkItem = styled(Link)<NavLinkProps>`
   &:hover {
     background: ${({ theme, $isActive }) =>
       $isActive
-        ? `color-mix(in oklch, ${theme.colors.primary} 15%, transparent)`
+        ? `color-mix(in srgb, ${theme.colors.primary} 15%, transparent)`
         : 'rgb(255 255 255 / 0.5)'};
     color: ${({ theme, $isActive }) =>
       $isActive ? theme.colors.primary : theme.colors.foreground};
@@ -192,7 +192,7 @@ export const NavIcon = styled.span<NavLinkProps>`
   color: ${({ theme, $isActive }) =>
     $isActive
       ? theme.colors.primary
-      : `color-mix(in oklch, ${theme.colors.mutedForeground} 70%, transparent)`};
+      : `color-mix(in srgb, ${theme.colors.mutedForeground} 70%, transparent)`};
   transition:
     transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
     color 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -219,7 +219,7 @@ export const ActivePulseOverlay = styled.div`
   z-index: 0;
   border-radius: ${({ theme }) => theme.radii['2xl']};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 5%,
     transparent
   );
@@ -271,7 +271,7 @@ export const UserAvatar = styled(Avatar)`
 
   ${UserInner}:hover & {
     border-color: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.primary} 20%,
       transparent
     );

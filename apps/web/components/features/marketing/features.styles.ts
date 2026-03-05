@@ -95,15 +95,11 @@ export const IconBox = styled.div`
   border-radius: ${({ theme }) => theme.radii['2xl']};
   background: linear-gradient(
     to bottom right,
-    color-mix(
-      in oklch,
-      ${({ theme }) => theme.colors.primary} 10%,
-      transparent
-    ),
-    color-mix(in oklch, ${({ theme }) => theme.colors.accent} 10%, transparent)
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 10%, transparent),
+    color-mix(in srgb, ${({ theme }) => theme.colors.accent} 10%, transparent)
   );
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 10%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 10%, transparent);
   box-shadow: ${({ theme }) => theme.shadows.sm};
 
   svg {
@@ -133,9 +129,9 @@ export const FeatureDescription = styled.p`
 export const ImageCard = styled.div`
   border-radius: ${({ theme }) => theme.radii['2xl']};
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 50%, transparent);
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 50%,
     transparent
   );

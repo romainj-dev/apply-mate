@@ -49,7 +49,7 @@ export const IconCircle = styled.div`
   justify-content: center;
   border-radius: ${({ theme }) => theme.radii.full};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );

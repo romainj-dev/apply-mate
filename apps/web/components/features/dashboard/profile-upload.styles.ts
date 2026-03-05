@@ -35,7 +35,7 @@ export const BlobBottomRight = styled.div`
   height: 16rem;
   width: 16rem;
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 5%,
     transparent
   );
@@ -50,7 +50,7 @@ export const BlobTopLeft = styled.div`
   height: 16rem;
   width: 16rem;
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 5%,
     transparent
   );
@@ -62,10 +62,10 @@ export const BlobTopLeft = styled.div`
 
 export const UploadHeader = styled(GlassCardHeader)`
   border-bottom: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 50%, transparent);
   padding-bottom: ${({ theme }) => theme.space.lg};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 2%,
     transparent
   );
@@ -82,7 +82,7 @@ export const HeaderIconBox = styled.div`
   height: 3rem;
   border-radius: ${({ theme }) => theme.radii.xl};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );
@@ -92,7 +92,7 @@ export const HeaderIconBox = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.sm};
   flex-shrink: 0;
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 20%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 20%, transparent);
 
   ${({ theme }) => theme.media.belowMobile} {
     width: 2.5rem;
@@ -163,7 +163,7 @@ export const Divider = styled.div`
   bottom: 0;
   width: 1px;
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.border} 50%,
     transparent
   );
@@ -229,7 +229,7 @@ export const StepNumBadgeMuted = styled.span`
   width: 1.5rem;
   border-radius: ${({ theme }) => theme.radii.full};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.mutedForeground} 20%,
     transparent
   );
@@ -277,12 +277,12 @@ export const UploadLabel = styled.label<{ $hasFile: boolean }>`
     background: ${theme.colors.status.success.bg};
   `
       : `
-    border-color: color-mix(in oklch, ${theme.colors.primary} 30%, transparent);
-    background: color-mix(in oklch, ${theme.colors.primary} 1%, transparent);
+    border-color: color-mix(in srgb, ${theme.colors.primary} 30%, transparent);
+    background: color-mix(in srgb, ${theme.colors.primary} 1%, transparent);
 
     &:hover {
-      border-color: color-mix(in oklch, ${theme.colors.primary} 60%, transparent);
-      background: color-mix(in oklch, ${theme.colors.primary} 4%, transparent);
+      border-color: color-mix(in srgb, ${theme.colors.primary} 60%, transparent);
+      background: color-mix(in srgb, ${theme.colors.primary} 4%, transparent);
     }
   `}
 `
@@ -341,7 +341,7 @@ export const UploadIconBox = styled.div`
   width: 3.5rem;
   border-radius: ${({ theme }) => theme.radii['2xl']};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );
@@ -352,7 +352,7 @@ export const UploadIconBox = styled.div`
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
   /* ring-1 ring-primary/20 */
   box-shadow: 0 0 0 1px
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 20%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 20%, transparent);
 
   ${UploadLabel}:hover & {
     transform: scale(1.1);
@@ -398,7 +398,7 @@ export const SelectFileSpan = styled.span`
 
   ${UploadLabel}:hover & {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.primary} 90%,
       transparent
     );
@@ -444,13 +444,13 @@ export const AnalyzeButton = styled(Button)`
   box-shadow:
     0 20px 25px -5px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       ),
     0 8px 10px -6px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       );
@@ -473,7 +473,7 @@ export const TipCard = styled.div`
   border-radius: ${({ theme }) => theme.radii['2xl']};
   border: 1px solid ${({ theme }) => theme.colors.border};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 20%,
     transparent
   );
@@ -481,7 +481,7 @@ export const TipCard = styled.div`
 
   &:hover {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.card} 40%,
       transparent
     );
@@ -504,14 +504,14 @@ export const TipIconBox = styled.div<{ $brand: TipBrand }>`
   align-items: center;
   justify-content: center;
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ $brand }) => ($brand === 'linkedin' ? '#0077b5' : '#2164f3')} 10%,
     transparent
   );
   color: ${({ $brand }) => ($brand === 'linkedin' ? '#0077b5' : '#2164f3')};
   border: 1px solid
     color-mix(
-      in oklch,
+      in srgb,
       ${({ $brand }) => ($brand === 'linkedin' ? '#0077b5' : '#2164f3')} 20%,
       transparent
     );
@@ -554,7 +554,7 @@ export const FastestBadge = styled.span`
   padding-block: 0.125rem;
   border-radius: ${({ theme }) => theme.radii.sm};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );
@@ -580,7 +580,7 @@ export const GhostLinkButton = styled(Button)`
 
   &:hover {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.primary} 5%,
       transparent
     );
@@ -613,12 +613,12 @@ export const NextStepCard = styled.div`
   padding: ${({ theme }) => theme.space.md};
   border-radius: ${({ theme }) => theme.radii['2xl']};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 5%,
     transparent
   );
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 10%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 10%, transparent);
   display: flex;
   align-items: flex-start;
   gap: ${({ theme }) => theme.space.md};
@@ -629,7 +629,7 @@ export const NextStepIconBox = styled.div`
   width: 2.5rem;
   border-radius: ${({ theme }) => theme.radii.xl};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );
@@ -638,7 +638,7 @@ export const NextStepIconBox = styled.div`
   justify-content: center;
   flex-shrink: 0;
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 20%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 20%, transparent);
 `
 
 export const NextStepSparklesIcon = styled(Sparkles)`

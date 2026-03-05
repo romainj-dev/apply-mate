@@ -71,7 +71,7 @@ const pulse = keyframes`
 
 const glassPanel = css`
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.background} 60%,
     transparent
   );
@@ -214,7 +214,7 @@ export const MenuContent = styled(DropdownMenuContent)`
 
 export const MenuSeparator = styled(DropdownMenuSeparator)`
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.border} 50%,
     transparent
   );
@@ -226,7 +226,7 @@ export const TableWrap = styled.div`
 
 export const StyledTableHeader = styled(TableHeader)`
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 5%,
     transparent
   );
@@ -426,7 +426,7 @@ export const CompanyBuildingIcon = styled(Building2)`
 export const PositionText = styled.span`
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
   color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.foreground} 80%,
     transparent
   );
@@ -490,7 +490,7 @@ export const RowActionButton = styled(Button)`
   &:hover,
   &[data-state='open'] {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.primary} 10%,
       transparent
     );

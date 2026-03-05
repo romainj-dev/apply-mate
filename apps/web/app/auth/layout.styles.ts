@@ -56,7 +56,7 @@ export const VibrancyOrb = styled.div`
   border-radius: ${({ theme }) => theme.radii.full};
   filter: blur(100px);
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 20%,
     transparent
   );

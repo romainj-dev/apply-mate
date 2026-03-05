@@ -198,7 +198,7 @@ export const BadgesRow = styled.div`
 
 export const TechBadge = styled(Badge)`
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );

@@ -60,7 +60,7 @@ export const AuroraBlob1 = styled.div`
   width: 800px;
   border-radius: ${({ theme }) => theme.radii.full};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 20%,
     transparent
   );
@@ -75,7 +75,7 @@ export const AuroraBlob2 = styled.div`
   width: 500px;
   border-radius: ${({ theme }) => theme.radii.full};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.accent} 20%,
     transparent
   );
@@ -103,9 +103,9 @@ export const Badge = styled.div`
   padding-block: ${({ theme }) => theme.spaceCalc(1.5)};
   border-radius: ${({ theme }) => theme.radii.full};
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.primary} 20%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 20%, transparent);
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 10%,
     transparent
   );
@@ -181,7 +181,7 @@ export const PrimaryButton = styled(Button)`
     ${({ theme }) => theme.shadows.lg},
     0 10px 15px -3px
       color-mix(
-        in oklch,
+        in srgb,
         ${({ theme }) => theme.colors.primary} 25%,
         transparent
       );
@@ -203,12 +203,12 @@ export const OutlineButton = styled(Button)`
   gap: ${({ theme }) => theme.space.sm};
   border-radius: ${({ theme }) => theme.radii.full};
   border-color: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.primary} 20%,
     transparent
   );
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.background} 50%,
     transparent
   );
@@ -216,7 +216,7 @@ export const OutlineButton = styled(Button)`
 
   &:hover {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.background} 80%,
       transparent
     );
@@ -242,12 +242,8 @@ export const ImageGlow = styled.div`
   inset: 0;
   background: linear-gradient(
     to top,
-    color-mix(
-      in oklch,
-      ${({ theme }) => theme.colors.primary} 20%,
-      transparent
-    ),
-    color-mix(in oklch, ${({ theme }) => theme.colors.accent} 20%, transparent)
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 20%, transparent),
+    color-mix(in srgb, ${({ theme }) => theme.colors.accent} 20%, transparent)
   );
   filter: blur(64px);
   z-index: -10;
@@ -259,20 +255,20 @@ export const GlassCard = styled.div`
   border-radius: ${({ theme }) => theme.radii['2xl']};
   padding: ${({ theme }) => theme.space.sm};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 50%,
     transparent
   );
   backdrop-filter: blur(4px);
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 50%, transparent);
   box-shadow: ${({ theme }) => theme.shadows.sm};
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   animation: ${float} 6s ease-in-out infinite;
 
   &:hover {
     background: color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.card} 80%,
       transparent
     );
@@ -287,7 +283,7 @@ export const VideoFrame = styled.div`
   background: ${({ theme }) => theme.colors.background};
   overflow: hidden;
   border: 1px solid
-    color-mix(in oklch, ${({ theme }) => theme.colors.border} 50%, transparent);
+    color-mix(in srgb, ${({ theme }) => theme.colors.border} 50%, transparent);
   box-shadow: ${({ theme }) => theme.shadows['2xl']};
 `
 
@@ -300,11 +296,7 @@ export const ImageOverlay = styled.div`
   inset: 0;
   background: linear-gradient(
     to top right,
-    color-mix(
-      in oklch,
-      ${({ theme }) => theme.colors.primary} 10%,
-      transparent
-    ),
+    color-mix(in srgb, ${({ theme }) => theme.colors.primary} 10%, transparent),
     transparent
   );
   pointer-events: none;

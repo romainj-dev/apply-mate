@@ -10,7 +10,7 @@ export const HeaderRoot = styled.header`
   z-index: 50;
   border: 1px solid rgb(255 255 255 / 0.1);
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.background} 60%,
     transparent
   );

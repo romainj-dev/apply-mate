@@ -49,6 +49,6 @@ export const RetryButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: color-mix(in oklch, var(--primary, #4f46e5) 90%, transparent);
+    background: color-mix(in srgb, var(--primary, #4f46e5) 90%, transparent);
   }
 `

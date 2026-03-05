@@ -14,7 +14,7 @@ const pulse = keyframes`
 export const Section = styled.section`
   padding-block: ${({ theme }) => theme.spaceCalc(32)};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.card} 50%,
     transparent
   );
@@ -66,7 +66,7 @@ const StateCardBase = styled.div`
 export const LoadingCard = styled(StateCardBase)`
   border: 1px dashed ${({ theme }) => theme.colors.border};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.background} 60%,
     transparent
   );
@@ -76,12 +76,12 @@ export const LoadingCard = styled(StateCardBase)`
 export const ErrorCard = styled(StateCardBase)`
   border: 1px solid
     color-mix(
-      in oklch,
+      in srgb,
       ${({ theme }) => theme.colors.destructive} 40%,
       transparent
     );
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.destructive} 5%,
     transparent
   );
@@ -94,7 +94,7 @@ export const ErrorCard = styled(StateCardBase)`
 export const EmptyCard = styled(StateCardBase)`
   border: 1px dashed ${({ theme }) => theme.colors.border};
   background: color-mix(
-    in oklch,
+    in srgb,
     ${({ theme }) => theme.colors.background} 60%,
     transparent
   );
@@ -142,7 +142,7 @@ export const PlanCard = styled.div<PlanCardProps>`
       $popular ? theme.colors.accent : theme.colors.border};
   box-shadow: ${({ $popular, theme }) =>
     $popular
-      ? `${theme.shadows.lg}, 0 10px 15px -3px color-mix(in oklch, ${theme.colors.accent} 10%, transparent)`
+      ? `${theme.shadows.lg}, 0 10px 15px -3px color-mix(in srgb, ${theme.colors.accent} 10%, transparent)`
       : 'none'};
 `
 
@@ -208,8 +208,8 @@ export const PlanButton = styled(Button)<PlanButtonProps>`
   &:hover {
     background: ${({ $popular, theme }) =>
       $popular
-        ? `color-mix(in oklch, ${theme.colors.primary} 90%, transparent)`
-        : `color-mix(in oklch, ${theme.colors.secondary} 90%, transparent)`};
+        ? `color-mix(in srgb, ${theme.colors.primary} 90%, transparent)`
+        : `color-mix(in srgb, ${theme.colors.secondary} 90%, transparent)`};
   }
 `
 
