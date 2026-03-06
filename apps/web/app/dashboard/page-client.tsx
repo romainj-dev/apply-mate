@@ -1,12 +1,12 @@
 'use client'
 
-import { ProfileSetupPrompt } from '@/components/features/dashboard/profile-setup-prompt'
-import { QuickApplicationInput } from '@/components/features/dashboard/quick-application-input'
+import { ProfileSetupPrompt } from '@/components/features/dashboard/profile-setup-prompt/ProfileSetupPrompt'
+import { QuickApplicationInput } from '@/components/features/dashboard/quick-application-input/QuickApplicationInput'
 import {
   ApplicationsTable,
   type Application,
 } from '@/components/features/dashboard/applications-table/ApplicationsTable'
-import { DashboardHeader } from '@/components/features/dashboard/commons/header'
+import { DashboardHeader } from '@/components/features/dashboard/commons/header/Header'
 import { HighlightName, Root } from './page.styles'
 
 interface DashboardEmptyPageClientProps {

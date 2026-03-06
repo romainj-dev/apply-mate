@@ -4,7 +4,7 @@ import {
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui/DropdownMenu'
 import {
   FilterButton,
   FilterIcon,
@@ -19,7 +19,8 @@ import {
   SearchIconWrap,
   SearchInput,
 } from './TableHeader.styles'
-import { MenuContent, MenuSeparator } from '../ApplicationsTable.styles'
+import { TableMenuContent } from '../../commons/table-menu-content/TableMenuContent'
+import { TableMenuSeparator } from '../../commons/table-menu-separator/TableMenuSeparator'
 
 export type ApplicationStatus =
   | 'Pending'
@@ -83,11 +84,11 @@ export function TableHeader({
               {statusFilter === 'All' ? 'Filter' : statusFilter}
             </FilterButton>
           </DropdownMenuTrigger>
-          <MenuContent align="end">
+          <TableMenuContent align="end">
             <DropdownMenuItem onClick={() => onStatusFilterChange('All')}>
               All Status
             </DropdownMenuItem>
-            <MenuSeparator />
+            <TableMenuSeparator />
             {(Object.keys(STATUS_CONFIG) as ApplicationStatus[]).map(
               (status) => (
                 <DropdownMenuItem
@@ -98,7 +99,7 @@ export function TableHeader({
                 </DropdownMenuItem>
               )
             )}
-          </MenuContent>
+          </TableMenuContent>
         </DropdownMenu>
       </HeaderActions>
     </HeaderSection>

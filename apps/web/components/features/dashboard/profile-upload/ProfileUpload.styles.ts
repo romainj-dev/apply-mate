@@ -5,8 +5,8 @@ import {
   GlassCardContent,
   GlassCardHeader,
   GlassCardTitle,
-} from '@/components/ui/glass-card'
-import { CardDescription } from '@/components/ui/card'
+} from '@/components/ui/GlassCard'
+import { CardDescription } from '@/components/ui/Card'
 
 /* ── Card shell ──────────────────────────────────────────────────────── */
 

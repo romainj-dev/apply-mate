@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Table, TableBody } from '@/components/ui/table'
+import { Table, TableBody } from '@/components/ui/Table'
 import { ApplicationRow } from './application-row/ApplicationRow'
 import { ApplicationsTableEmptyState } from './empty-state/ApplicationsTableEmptyState'
 import { TableHeader } from './table-header/TableHeader'

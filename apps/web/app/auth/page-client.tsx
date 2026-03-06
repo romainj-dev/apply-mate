@@ -1,6 +1,6 @@
 'use client'
 
-import { AuthForm } from '@/components/features/auth/auth-form'
+import { AuthForm } from '@/components/features/auth/auth-form/AuthForm'
 import { BackLink, BrandLink, Footer, Header, Root } from './page.styles'
 
 export function AuthPageClient() {

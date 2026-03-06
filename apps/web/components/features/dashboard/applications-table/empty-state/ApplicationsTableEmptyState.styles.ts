@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 
-import { TableCell, TableRow } from '@/components/ui/table'
+import { TableCell, TableRow } from '@/components/ui/Table'
 
 const fadeIn = keyframes`
   from {

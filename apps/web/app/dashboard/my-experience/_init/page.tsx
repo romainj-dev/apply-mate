@@ -3,12 +3,12 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { DashboardHeader } from '@/components/features/dashboard/commons/header'
+import { DashboardHeader } from '@/components/features/dashboard/commons/header/Header'
 import { ProfileUpload } from '@/components/features/dashboard/profile-upload/ProfileUpload'
 import {
   type Step,
   ProgressSteps,
-} from '@/components/features/my-experience/progress-steps'
+} from '@/components/features/my-experience/progress-steps/ProgressSteps'
 import { uploadResume } from './_actions/upload-resume'
 import {
   ActiveItem,

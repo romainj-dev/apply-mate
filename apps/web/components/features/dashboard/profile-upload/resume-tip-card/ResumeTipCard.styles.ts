@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 
 type TipBrand = 'linkedin' | 'indeed'
 

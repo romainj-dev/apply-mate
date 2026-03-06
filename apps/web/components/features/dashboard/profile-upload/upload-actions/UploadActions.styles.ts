@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Loader2, Sparkles } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 
 export const AnalyzeButton = styled(Button)`
   width: 100%;

@@ -1,4 +1,4 @@
-import { HeaderAuth } from '@/components/layout/header-auth'
+import { HeaderAuth } from '@/components/layout/header-auth/HeaderAuth.server'
 import { MarketingLayoutClient } from './layout-client'
 
 export default function MarketingLayout({

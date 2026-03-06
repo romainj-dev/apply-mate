@@ -8,10 +8,10 @@ import {
   Trash2,
 } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { TableCell, TableRow } from '@/components/ui/table'
+import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { DropdownMenuItem } from '@/components/ui/DropdownMenu'
+import { TableCell, TableRow } from '@/components/ui/Table'
 
 type StatusTone =
   | 'Pending'

@@ -1,7 +1,7 @@
 import { Check, Loader2 } from 'lucide-react'
 import styled, { keyframes } from 'styled-components'
 
-import { GlassCard } from '@/components/ui/glass-card'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 const spin = keyframes`
   to {

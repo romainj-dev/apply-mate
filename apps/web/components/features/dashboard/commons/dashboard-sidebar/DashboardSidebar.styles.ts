@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { GlassCard } from '@/components/ui/glass-card'
+import { GlassCard } from '@/components/ui/GlassCard'
 
 export const SidebarCard = styled(GlassCard)`
   position: fixed;

@@ -1,7 +1,7 @@
 'use client'
 
-import { TableRow } from '@/components/ui/table'
-import { AdventureIllustration } from '../../adventure-illustration'
+import { TableRow } from '@/components/ui/Table'
+import { AdventureIllustration } from '../../adventure-illustration/AdventureIllustration'
 import {
   EmptyDescription,
   EmptyRow,

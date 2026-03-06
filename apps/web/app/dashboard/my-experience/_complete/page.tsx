@@ -1,16 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/Button'
 import { GetExperienceProfileDocument } from '@/graphql/generated'
 import { useQuery } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
-import { DashboardHeader } from '@/components/features/dashboard/commons/header'
-import { ProgressCard } from '@/components/features/my-experience/progress-card'
+import { DashboardHeader } from '@/components/features/dashboard/commons/header/Header'
+import { ProgressCard } from '@/components/features/my-experience/progress-card/ProgressCard'
 import { TechnicalSkills } from '@/components/features/my-experience/technical-skills/TechnicalSkills'
 import { ROLES } from '@/components/features/my-experience/roles/data'
-import { RolesList } from '@/components/features/my-experience/roles/list'
-import { RolesDetail } from '@/components/features/my-experience/roles/detail'
+import { RolesList } from '@/components/features/my-experience/roles/list/RolesList'
+import { RolesDetail } from '@/components/features/my-experience/roles/detail/RolesDetail'
 import {
   AddIcon,
   PageContainer,

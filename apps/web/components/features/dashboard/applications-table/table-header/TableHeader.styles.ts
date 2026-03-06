@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { Briefcase, Filter, Search } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 
 export const HeaderSection = styled.div`
   padding: ${({ theme }) => theme.spaceCalc(6)};

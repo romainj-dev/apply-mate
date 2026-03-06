@@ -4,10 +4,11 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuLabel,
-} from '@/components/ui/dropdown-menu'
-import { TableCell } from '@/components/ui/table'
+} from '@/components/ui/DropdownMenu'
+import { TableCell } from '@/components/ui/Table'
+import { TableMenuContent } from '../../commons/table-menu-content/TableMenuContent'
+import { TableMenuSeparator } from '../../commons/table-menu-separator/TableMenuSeparator'
 import type { Application } from '../types'
-import { MenuContent, MenuSeparator } from '../ApplicationsTable.styles'
 import {
   ActionDownloadIcon,
   ActionEyeIcon,
@@ -83,9 +84,9 @@ export function ApplicationRow({
               <RowMoreIcon />
             </RowActionButton>
           </DropdownMenuTrigger>
-          <MenuContent align="end">
+          <TableMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <MenuSeparator />
+            <TableMenuSeparator />
             <ActionMenuItem>
               <ActionEyeIcon />
               View Details
@@ -94,12 +95,12 @@ export function ApplicationRow({
               <ActionDownloadIcon />
               Documents
             </ActionMenuItem>
-            <MenuSeparator />
+            <TableMenuSeparator />
             <DestructiveMenuItem>
               <ActionTrashIcon />
               Delete
             </DestructiveMenuItem>
-          </MenuContent>
+          </TableMenuContent>
         </DropdownMenu>
       </ActionsCell>
     </BodyRow>

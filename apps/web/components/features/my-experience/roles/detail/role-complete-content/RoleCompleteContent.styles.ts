@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { GlassCardContent } from '@/components/ui/glass-card'
-import { Badge } from '@/components/ui/badge'
+import { GlassCardContent } from '@/components/ui/GlassCard'
+import { Badge } from '@/components/ui/Badge'
 import { Code2, Edit2, FolderGit2, Plus, Target, Users } from 'lucide-react'
 
 /** Heading with leading icon and gap. mb can be overridden via $mb3. */
@@ -13,6 +13,19 @@ export const SectionTitleFlex = styled.h4<{ $mb3?: boolean }>`
   gap: ${({ theme }) => theme.space.sm};
   margin-bottom: ${({ theme, $mb3 }) =>
     $mb3 ? theme.spaceCalc(3) : theme.space.sm};
+`
+
+export const SectionTitle = styled.h4`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
+  color: ${({ theme }) => theme.colors.foreground};
+  margin-bottom: ${({ theme }) => theme.space.sm};
+`
+
+export const BodyText = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.mutedForeground};
+  line-height: ${({ theme }) => theme.typography.lineHeight.sm};
 `
 
 export const SectionCodeIcon = styled(Code2)`

@@ -6,8 +6,8 @@ import {
   GlassCardHeader,
   GlassCardContent,
   GlassCardTitle,
-} from '@/components/ui/glass-card'
-import { Badge } from '@/components/ui/badge'
+} from '@/components/ui/GlassCard'
+import { Badge } from '@/components/ui/Badge'
 
 interface ColorValueProps {
   $color: string

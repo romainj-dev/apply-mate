@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/Avatar'
+import { Badge } from '@/components/ui/Badge'
 
 export const UserSection = styled.div`
   margin-top: auto;

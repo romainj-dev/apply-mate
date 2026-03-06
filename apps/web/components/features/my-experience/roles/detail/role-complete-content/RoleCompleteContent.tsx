@@ -1,9 +1,8 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { GlassCard } from '@/components/ui/glass-card'
-import { Badge } from '@/components/ui/badge'
-import { BodyText, SectionTitle } from '../../detail.styles'
+import { Button } from '@/components/ui/Button'
+import { GlassCard } from '@/components/ui/GlassCard'
+import { Badge } from '@/components/ui/Badge'
 import type { Role } from '../../data'
 import {
   AchievementItem,
@@ -26,7 +25,9 @@ import {
   AchievementsLabel,
   SectionCodeIcon,
   SectionProjectsIcon,
+  SectionTitle,
   SectionTargetIcon,
+  BodyText,
   SectionTitleFlex,
   SectionUsersIcon,
   TechBadge,

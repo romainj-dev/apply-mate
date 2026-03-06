@@ -1,6 +1,6 @@
 'use client'
 
-import { AvatarImage } from '@/components/ui/avatar'
+import { AvatarImage } from '@/components/ui/Avatar'
 
 import {
   AvatarWrapper,

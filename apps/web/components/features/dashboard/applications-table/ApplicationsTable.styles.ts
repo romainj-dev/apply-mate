@@ -1,26 +1,11 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-import { GlassCard } from '@/components/ui/glass-card'
-import {
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu'
-import { TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { GlassCard } from '@/components/ui/GlassCard'
+import { TableHead, TableHeader, TableRow } from '@/components/ui/Table'
 
 interface CardProps {
   $isEmpty: boolean
 }
-
-const glassPanel = css`
-  background: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.background} 60%,
-    transparent
-  );
-  backdrop-filter: blur(24px);
-  border: 1px solid rgb(255 255 255 / 0.1);
-  box-shadow: ${({ theme }) => theme.shadows.xl};
-`
 
 export const TableCard = styled(GlassCard)<CardProps>`
   overflow: hidden;
@@ -62,18 +47,4 @@ export const HeaderCellCompany = styled(HeaderCell)`
 export const HeaderCellActions = styled(HeaderCell)`
   text-align: right;
   padding-right: ${({ theme }) => theme.spaceCalc(6)};
-`
-
-export const MenuContent = styled(DropdownMenuContent)`
-  border-radius: ${({ theme }) => theme.radii.xl};
-  border-color: rgb(255 255 255 / 0.2);
-  ${glassPanel};
-`
-
-export const MenuSeparator = styled(DropdownMenuSeparator)`
-  background: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.border} 50%,
-    transparent
-  );
 `
