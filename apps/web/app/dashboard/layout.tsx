@@ -1,14 +1,12 @@
 import { DashboardSidebar } from '@/components/features/dashboard/commons/dashboard-sidebar/DashboardSidebar'
-import { DashboardLayoutClient } from './layout-client'
+import { DashboardLayout } from '@/components/layout/dashboard-layout/DashboardLayout'
 
-export default function DashboardLayout({
+export default function DashboardLayoutRoute({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <DashboardLayoutClient sidebar={<DashboardSidebar />}>
-      {children}
-    </DashboardLayoutClient>
+    <DashboardLayout sidebar={<DashboardSidebar />}>{children}</DashboardLayout>
   )
 }

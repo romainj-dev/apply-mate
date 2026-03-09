@@ -1,7 +1,7 @@
 import { getSession, signOut } from '@/modules/session/server'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-import { ProfilePageContent } from './profile-page-content'
+import { ProfileContent } from '@/components/features/dashboard/profile-content/ProfileContent'
 
 export const metadata: Metadata = {
   title: 'Profile | ApplyMate',
@@ -20,5 +20,5 @@ export default async function ProfilePage() {
     await signOut({ redirectTo: '/' })
   }
 
-  return <ProfilePageContent user={user} onSignOut={handleSignOut} />
+  return <ProfileContent user={user} onSignOut={handleSignOut} />
 }

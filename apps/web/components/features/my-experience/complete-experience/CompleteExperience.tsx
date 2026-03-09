@@ -18,9 +18,9 @@ import {
   RolesHeader,
   RolesSection,
   RolesTitle,
-} from './page.styles'
+} from './CompleteExperience.styles'
 
-export default function ProfileOngoingPage() {
+export function CompleteExperience() {
   useQuery(GetExperienceProfileDocument, undefined, {
     queryKey: queryKeys.experienceProfile.get(),
   })
@@ -36,10 +36,8 @@ export default function ProfileOngoingPage() {
         subtitle="Build your tech profile by documenting roles, projects, and achievements"
       />
 
-      {/* Progress card */}
       <ProgressCard />
 
-      {/* Technical skills */}
       <TechnicalSkills />
 
       <RolesSection>
@@ -58,7 +56,6 @@ export default function ProfileOngoingPage() {
         />
       </RolesSection>
 
-      {/* Right: Selected role details */}
       <RoleDetailSection>
         {selectedRole && <RolesDetail role={selectedRole} />}
       </RoleDetailSection>

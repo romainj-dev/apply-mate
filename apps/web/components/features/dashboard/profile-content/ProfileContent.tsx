@@ -11,7 +11,7 @@ import {
   PageTitle,
   SectionTitle,
   SignOutForm,
-} from './profile-page-content.styles'
+} from './ProfileContent.styles'
 
 interface ProfileUser {
   id?: string
@@ -20,15 +20,12 @@ interface ProfileUser {
   image?: string | null
 }
 
-interface ProfilePageContentProps {
+interface ProfileContentProps {
   user: ProfileUser
   onSignOut: (_formData: FormData) => Promise<void>
 }
 
-export function ProfilePageContent({
-  user,
-  onSignOut,
-}: ProfilePageContentProps) {
+export function ProfileContent({ user, onSignOut }: ProfileContentProps) {
   return (
     <Main>
       <Container>

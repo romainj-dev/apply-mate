@@ -1,26 +1,23 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { BackgroundPattern } from '@/components/commons/background-pattern/BackgroundPattern'
 import {
-  BackgroundPattern,
   Content,
   Root,
   SidebarLayer,
   WhiteOverlay,
-} from './layout.styles'
+} from './DashboardLayout.styles'
 
-interface DashboardLayoutClientProps {
+interface DashboardLayoutProps {
   sidebar: ReactNode
   children: ReactNode
 }
 
-export function DashboardLayoutClient({
-  sidebar,
-  children,
-}: DashboardLayoutClientProps) {
+export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
   return (
     <Root>
-      <BackgroundPattern />
+      <BackgroundPattern position="fixed" zIndex={0} />
       <WhiteOverlay />
       <SidebarLayer>{sidebar}</SidebarLayer>
       <Content>{children}</Content>

@@ -1,5 +1,5 @@
-import InitExperiencePage from './_init/page'
-import CompleteExperiencePage from './_complete/page'
+import { InitExperience } from '@/components/features/my-experience/init-experience/InitExperience'
+import { CompleteExperience } from '@/components/features/my-experience/complete-experience/CompleteExperience'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
 import { createPrefetchQueryClient } from '@/modules/requests/server/create-prefetch-query-client'
 import { PrefetchHydrationBoundary } from '@/modules/requests/server/PrefetchHydrationBoundary'
@@ -22,10 +22,10 @@ export default async function MyExperiencePage() {
   const hasExperience = !!experienceProfileData?.experienceProfile?.profile?.id
 
   return !hasExperience ? (
-    <InitExperiencePage />
+    <InitExperience />
   ) : (
     <PrefetchHydrationBoundary queryClient={queryClient}>
-      <CompleteExperiencePage />
+      <CompleteExperience />
     </PrefetchHydrationBoundary>
   )
 }

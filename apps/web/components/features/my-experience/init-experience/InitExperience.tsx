@@ -9,7 +9,7 @@ import {
   type Step,
   ProgressSteps,
 } from '@/components/features/my-experience/progress-steps/ProgressSteps'
-import { uploadResume } from './_actions/upload-resume'
+import { uploadResume } from '@/app/dashboard/my-experience/_init/_actions/upload-resume'
 import {
   ActiveItem,
   Checklist,
@@ -26,9 +26,9 @@ import {
   ProcessingTitle,
   SpinningLargeLoader,
   SpinningSmallLoader,
-} from './page.styles'
+} from './InitExperience.styles'
 
-export default function InitExperiencePage() {
+export function InitExperience() {
   const [step, setStep] = useState<Step>('input')
   const [resumeError, setResumeError] = useState<string | null>(null)
   const [isResumePending, startResumeTransition] = useTransition()

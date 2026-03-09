@@ -33,8 +33,22 @@ components/
 - **Folders:** `kebab-case` (avoids macOS case-sensitivity issues)
 - **Component files:** `PascalCase.tsx` (immediately identifiable as a component)
 - **Styles / utils:** `PascalCase.styles.ts` (matches the component: `ProfileUpload.tsx` → `ProfileUpload.styles.ts`)
-- **Server components:** suffix with `.server.tsx` (e.g., `HeaderAuth.server.tsx`). No suffix = client component (the de-facto default with styled-components).
+- **Server components:** suffix with `.server.tsx` (e.g., `HeaderAuth.server.tsx`). **No suffix = client component** — this is the deliberate default: because styled-components requires `ThemeProvider` (React Context), every styled component must carry `'use client'`. Server components are the exception, used only when the component calls server-only APIs and has no styled markup. For the full decision flow see the `styled-components-rsc-boundary` rule.
 - **No barrel exports** — import directly from source files.
+
+## Styling System
+
+Two styling approaches are used; they must not be mixed:
+
+| Location | Approach | Why |
+| --- | --- | --- |
+| `components/ui/` | Tailwind CSS + CVA | Primitives need composable token-based variants; no theme context required |
+| Everything else | styled-components + theme | Feature and layout components use the design system via `ThemeProvider` |
+
+- **Never** use `className` with Tailwind utilities outside `ui/`.
+- **Never** create a `.styles.ts` file inside `ui/`.
+- `ui/` components use `cva()` for variants and `cn()` for class merging; they do not import `styled` from styled-components.
+- Outside `ui/`, all visual styling lives in the co-located `.styles.ts` file; no inline `style` props, no `className` for layout.
 
 ## When to Split
 
@@ -83,12 +97,56 @@ If a styled-component or UI pattern appears in **2+ files**, extract it to `comm
 
 Examples of patterns that must be shared, not duplicated: section layouts, icon containers, empty states, spinners, background patterns.
 
+## Co-located Utilities
+
+### Types
+
+- **Prop types** — define inline in the `.tsx` file; no separate file needed.
+- **Types shared across a feature domain** — define in `components/features/<domain>/types.ts` (flat file, not a folder).
+- **Types shared across domains** — promote to the appropriate shared module (e.g., a package-level `types/`).
+
+### Constants
+
+- Simple constants — define inline in the component.
+- Non-trivial constants / lookup tables (large arrays, mapping objects) — extract to a co-located `ComponentName.constants.ts` next to the `.tsx`.
+
+### Hooks
+
+- A hook used by one component — co-locate as `ComponentName.hook.ts` next to the `.tsx`. Keep it inline if it's < ~30 lines.
+- A hook shared across multiple components in a domain — place in `components/features/<domain>/commons/` as a standalone file (`use-hook-name.ts`).
+- A hook shared across domains — treat it like a shared component: place in `components/commons/`.
+
+### Utilities
+
+- Pure utility functions used by one component — co-locate as `ComponentName.utils.ts`.
+- Utilities shared within a feature domain — `components/features/<domain>/utils.ts` (flat file, not a folder).
+- Do not create a `utils/` folder — flat files are easier to discover.
+
 ## Route Files (`app/`)
 
 Route files follow **Next.js conventions**, not the component rules above.
 
 - **Reserved names:** `page.tsx`, `layout.tsx`, `error.tsx`, `route.ts` — don't rename.
-- **Server/client split is inverted:** `page.tsx` is server by default; client companions use a `-client` suffix (`page-client.tsx`) or descriptive kebab-case (`profile-page-content.tsx`).
+- **Pages should be thin orchestrators** — metadata, data fetching, auth guards, then render components from `components/`.
+- **`-client` companions vs components in `components/`:** a `-client` file (`page-client.tsx`) is justified only when the server page produces values that must cross the server→client boundary (fetched data, auth state, server actions, server-rendered slots). If the page only exports metadata and renders UI, skip the `-client` — import a component from `components/` directly.
 - **Minimal layout styles only:** a co-located `.styles.ts` is fine for small page-level glue (~30 lines — a `Root` + a few wrappers). If styles exceed ~30 lines or define distinct UI patterns (cards, animations, lists), extract into a component in `components/`. File naming: `kebab-case.styles.ts` matching the source (`page.styles.ts`).
-- **Private data utilities:** `_data/` subfolder (Next.js underscore convention).
-- **Pages should be thin orchestrators** — metadata, data fetching, auth guards, then render feature components from `components/`. If a co-located page content file exceeds ~100 lines or becomes reusable, promote it to `components/`.
+- **`_data/` subfolder:** private server-side data utilities (queries, GraphQL documents). Next.js underscore prefix excludes them from routing.
+- **`_actions/` subfolder:** server actions must remain inside `app/`. Group them in an `_actions/` folder next to the page that calls them — not in `components/`.
+- **Step-folder pattern:** use underscore-prefixed folders (`_init/`, `_complete/`, etc.) for multi-step page flows. Each step folder contains a `page.tsx` and its styles; the parent `page.tsx` imports them as components. These are **not routes** — Next.js excludes underscore-prefixed path segments from routing. Promote to `components/` once a step exceeds ~100 lines or becomes reusable elsewhere.
+
+```
+my-experience/
+  page.tsx                    # Thin orchestrator: fetches data, renders one step
+  _data/
+    experience-profile.graphql
+  _init/
+    page.tsx                  # Init step (not a route — imported as a component)
+    page.styles.ts
+    _actions/
+      upload-resume.ts        # Server action co-located with the step that uses it
+  _complete/
+    page.tsx                  # Complete step (not a route)
+    page.styles.ts
+```
+
+- If a co-located page content file exceeds ~100 lines or becomes reusable, promote it to `components/`.
