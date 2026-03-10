@@ -3,16 +3,18 @@ import { db } from '@/lib/db/client'
 
 async function getSessionUser() {
   const session = await auth()
-  return session?.user
-    ? {
-        id: session.user.id as string,
-        email: session.user.email as string,
-        name: session.user.name,
-      }
-    : null
+  if (!session?.user) {
+    return null
+  }
+  const { id, email, name } = session.user
+  // Narrow id and email: they are set in the jwt/session callbacks and must be strings
+  if (typeof id !== 'string' || typeof email !== 'string') {
+    return null
+  }
+  return { id, email, name }
 }
 
-export interface GraphqlContext {
+export type GraphqlContext = {
   db: typeof db
   user: {
     id: string

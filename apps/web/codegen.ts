@@ -21,6 +21,12 @@ const config: CodegenConfig = {
     },
     maybeValue: 'T | null | undefined',
     skipTypename: true,
+    scalars: {
+      // ISO 8601 date-time string — matches the scalar description in schema.graphql
+      DateTime: 'string',
+      // JSON object — use Record<string, unknown> instead of any for type safety
+      JSONObject: 'Record<string, unknown>',
+    },
   },
 }
 

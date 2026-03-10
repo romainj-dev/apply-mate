@@ -234,9 +234,11 @@ builder.mutationField('saveExperience', (t) =>
         throw new Error('Unauthorized')
       }
 
+      // TODO(ts-migration): Pothos input type and SaveExperienceInput are structurally equivalent
+      // but Pothos's generated type does not match directly — bridge via unknown
       return saveExperienceByUserId(
         context.user.id,
-        args.input as SaveExperienceInput
+        args.input as unknown as SaveExperienceInput
       )
     },
   })

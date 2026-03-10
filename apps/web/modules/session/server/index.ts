@@ -7,6 +7,12 @@ import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { upsertUserFromOAuth } from '@/lib/db/services/user-service'
 
+type OAuthProvider = 'google' | 'linkedin' | 'github'
+
+function isOAuthProvider(value: unknown): value is OAuthProvider {
+  return value === 'google' || value === 'linkedin' || value === 'github'
+}
+
 const env = parseBffEnv()
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -23,11 +29,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error('Email is required for authentication')
         }
 
-        token.provider = account.provider as 'google' | 'linkedin' | 'github'
+        if (!isOAuthProvider(account.provider)) {
+          throw new Error(`Unsupported OAuth provider: ${account.provider}`)
+        }
+
+        token.provider = account.provider
 
         // Upsert user in database and get UUID
         const dbUser = await upsertUserFromOAuth({
-          provider: account.provider as 'google' | 'linkedin' | 'github',
+          provider: account.provider,
           providerAccountId: account.providerAccountId ?? account.id,
           email: user.email,
           fullName: user.name ?? user.email,
@@ -47,14 +57,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     session({ session, token }) {
       if (session.user) {
-        session.user.id = token.dbUserId as string
-        session.user.email = token.email as string
-        session.user.name = token.name as string
-        session.user.provider = token.provider as
-          | 'google'
-          | 'linkedin'
-          | 'github'
-          | undefined
+        if (typeof token.dbUserId === 'string') {
+          session.user.id = token.dbUserId
+        }
+        if (typeof token.email === 'string') {
+          session.user.email = token.email
+        }
+        if (typeof token.name === 'string') {
+          session.user.name = token.name
+        }
+        if (isOAuthProvider(token.provider) || token.provider === undefined) {
+          session.user.provider = token.provider
+        }
       }
       return session
     },
@@ -92,20 +106,33 @@ async function clearInvalidSessionCookies() {
   }
 }
 
-export const getSession = cache(async () => {
-  try {
-    const session = await auth()
-    return { isAuth: !!session, user: session?.user }
-  } catch (error) {
-    // JWTSessionError occurs when session cookies were encrypted with a different AUTH_SECRET.
-    // Instead of crashing, clear the stale cookies and treat the user as unauthenticated.
-    if (error instanceof Error && error.name === 'JWTSessionError') {
-      await clearInvalidSessionCookies()
-      return { isAuth: false, user: undefined }
-    }
+type SessionUser = {
+  id?: string
+  email?: string | null
+  name?: string | null
+  image?: string | null
+  provider?: OAuthProvider
+}
 
-    throw error
+export const getSession = cache(
+  async (): Promise<{
+    isAuth: boolean
+    user: SessionUser | undefined
+  }> => {
+    try {
+      const session = await auth()
+      return { isAuth: !!session, user: session?.user }
+    } catch (error) {
+      // JWTSessionError occurs when session cookies were encrypted with a different AUTH_SECRET.
+      // Instead of crashing, clear the stale cookies and treat the user as unauthenticated.
+      if (error instanceof Error && error.name === 'JWTSessionError') {
+        await clearInvalidSessionCookies()
+        return { isAuth: false, user: undefined }
+      }
+
+      throw error
+    }
   }
-})
+)
 
 export type Session = Awaited<ReturnType<typeof auth>>

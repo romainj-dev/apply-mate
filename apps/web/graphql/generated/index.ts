@@ -14,9 +14,9 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: { input: any; output: any; }
+  DateTime: { input: string; output: string; }
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSONObject: { input: any; output: any; }
+  JSONObject: { input: Record<string, unknown>; output: Record<string, unknown>; }
 };
 
 export type ExperienceLearningInput = {
@@ -194,7 +194,7 @@ export type GetPlanPricingQuery = { plans: Array<{ id: string, code: string, pri
 export type GetExperienceProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetExperienceProfileQuery = { experienceProfile: { profile: { id: string, userId: string, headline: string | null | undefined, summary: string | null | undefined, location: string | null | undefined, yearsOfExperience: number | null | undefined, skills: Array<string>, customFields: any | null | undefined, createdAt: any, updatedAt: any } } | null | undefined };
+export type GetExperienceProfileQuery = { experienceProfile: { profile: { id: string, userId: string, headline: string | null | undefined, summary: string | null | undefined, location: string | null | undefined, yearsOfExperience: number | null | undefined, skills: Array<string>, customFields: Record<string, unknown> | null | undefined, createdAt: string, updatedAt: string } } | null | undefined };
 
 export type SaveExperienceMutationVariables = Exact<{
   input: SaveExperienceInput;

@@ -31,7 +31,7 @@ const fileSchema = z.instanceof(File).refine(
   }
 )
 
-export interface UploadResumeResult {
+export type UploadResumeResult = {
   success: boolean
   profileId?: string
   rolesCount?: number

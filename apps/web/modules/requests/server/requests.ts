@@ -91,7 +91,10 @@ async function executeGraphQL<TData>(params: {
  * @returns Typed GraphQL response data
  * @throws {GraphQLRequestError} On GraphQL errors or execution failures
  */
-export async function fetchGraphQL<TData, TVariables>(params: {
+export async function fetchGraphQL<
+  TData,
+  TVariables extends Record<string, unknown>,
+>(params: {
   document: TypedDocumentNode<TData, TVariables>
   variables?: TVariables
   useCache?: boolean
@@ -99,7 +102,7 @@ export async function fetchGraphQL<TData, TVariables>(params: {
   const { document, variables, useCache } = params
   return executeGraphQL({
     query: print(document),
-    variables: variables as Record<string, unknown>,
+    variables,
     useCache,
   })
 }

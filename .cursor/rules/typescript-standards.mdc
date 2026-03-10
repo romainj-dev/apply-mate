@@ -1,0 +1,123 @@
+---
+description: TypeScript type safety standards — type vs interface, unknown over any, type assertions, satisfies operator, discriminated unions, return types
+globs: **/*.ts, **/*.tsx
+alwaysApply: false
+---
+
+# TypeScript Standards
+
+## `type` vs `interface`
+
+| Use case | Keyword |
+|----------|---------|
+| React component props | `interface` — supports `extends` |
+| Data shapes (DTOs) | `type` — immutable contracts |
+| Function signatures | `type` — union/intersection support |
+| Discriminated unions | `type` — variant types |
+| Config objects | `type` — more composable |
+| Module augmentation | `interface` — required by TS |
+
+```typescript
+// ✅ interface for props
+interface ButtonProps extends BaseProps {
+  onClick: () => void
+  variant: 'primary' | 'secondary'
+}
+
+// ✅ type for data, functions, unions
+type User = { id: string; email: string }
+type Handler = (data: Data) => Promise<void>
+type Result<T> = { ok: true; value: T } | { ok: false; error: Error }
+```
+
+## Never use `any` — use `unknown` + type guards
+
+```typescript
+// ❌ AVOID
+function handle(value: any) { ... }
+
+// ✅ DO
+function handle(value: unknown) {
+  if (typeof value === 'string') { /* safely narrowed */ }
+}
+
+// ✅ Type guard pattern
+function isUser(v: unknown): v is User {
+  return typeof v === 'object' && v !== null &&
+    typeof (v as Record<string, unknown>).id === 'string'
+}
+```
+
+## Error handling — type guards, not casts
+
+```typescript
+// ❌ AVOID
+const err = error as { message: string }
+
+// ✅ DO
+if (error instanceof Error) {
+  console.error(error.message)
+}
+```
+
+## Type assertions — honest types + runtime validation
+
+```typescript
+// ❌ AVOID — blind cast hides missing values
+const { email } = (await req.json()) as { email: string }
+
+// ✅ DO — include undefined, then validate
+type Body = { email: string | undefined; password: string | undefined }
+const body = (await req.json()) as Body
+if (!body.email?.trim()) throw new Error('Invalid input')
+```
+
+## `satisfies` over `as` for validated inference
+
+```typescript
+// ❌ AVOID — bypasses validation
+const config = { timeout: 'fast' } as Config  // no error!
+
+// ✅ DO — validates AND preserves literal types
+const config = { endpoint: '/api', timeout: 5000 } satisfies Config
+```
+
+## `as const` for readonly literals
+
+```typescript
+const STATUS = { OK: 200, NOT_FOUND: 404 } as const
+type StatusCode = typeof STATUS[keyof typeof STATUS]  // 200 | 404
+```
+
+## Explicit return types on all exported functions
+
+```typescript
+// ✅ Required for all exports
+export function fetchUser(id: string): Promise<User | null> { ... }
+export async function createPost(data: PostInput): Promise<Post> { ... }
+```
+
+## Discriminated unions — exhaustive handling
+
+```typescript
+type ApiState<T> =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success'; data: T }
+  | { status: 'error'; error: Error }
+
+// Always handle ALL variants in switch or if/else chains
+```
+
+## Generics — constrain and provide defaults
+
+```typescript
+// ✅ Constrained
+function pick<T extends object, K extends keyof T>(obj: T, key: K): T[K]
+
+// ✅ Default type parameter
+type QueryResult<TData, TError = Error> =
+  | { status: 'loading' }
+  | { status: 'success'; data: TData }
+  | { status: 'error'; error: TError }
+```

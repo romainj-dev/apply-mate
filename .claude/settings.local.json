@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --filter web type-check)",
+      "Bash(pnpm --filter web lint)",
+      "Bash(pnpm --filter web lint --fix)"
+    ]
+  }
+}
