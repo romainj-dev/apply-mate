@@ -41,6 +41,23 @@ const insertLearningSchema = createInsertSchema(userExperienceLearning).omit({
 export type NormalizedProfile = z.infer<typeof insertProfileSchema>
 export type NormalizedRole = z.infer<typeof insertRoleSchema>
 export type NormalizedLearning = z.infer<typeof insertLearningSchema>
+type ExperienceProfileRecord = typeof userExperienceProfiles.$inferSelect
+type ExperienceRoleRecord = typeof userExperienceRoles.$inferSelect
+type ExperienceRoleProjectRecord =
+  typeof userExperienceRoleProjects.$inferSelect
+type ExperienceLearningRecord = typeof userExperienceLearning.$inferSelect
+
+export type ExperienceProfileWithRelations = {
+  profile: ExperienceProfileRecord & {
+    skills: string[]
+  }
+  roles: Array<
+    ExperienceRoleRecord & {
+      projects: ExperienceRoleProjectRecord[]
+    }
+  >
+  learning: ExperienceLearningRecord[]
+}
 
 export type SaveExperienceInput = {
   profile: NormalizedProfile
@@ -49,7 +66,9 @@ export type SaveExperienceInput = {
   rawPayload?: Record<string, unknown> | null
 }
 
-export async function getExperienceProfileByUserId(userId: string) {
+export async function getExperienceProfileByUserId(
+  userId: string
+): Promise<ExperienceProfileWithRelations | null> {
   const [profile] = await db
     .select()
     .from(userExperienceProfiles)
@@ -107,7 +126,7 @@ export async function getExperienceProfileByUserId(userId: string) {
 export async function saveExperienceByUserId(
   userId: string,
   input: SaveExperienceInput
-) {
+): Promise<{ profileId: string; rolesCount: number; learningCount: number }> {
   const profile = insertProfileSchema.parse(input.profile)
   const roles = insertRoleSchema.array().parse(input.roles ?? [])
   const learning = insertLearningSchema.array().parse(input.learning ?? [])

@@ -21,6 +21,7 @@ const upsertUserInputSchema = createInsertSchema(users, {
 const userIdSchema = z.string().uuid()
 
 export type UpsertUserFromOAuthInput = z.infer<typeof upsertUserInputSchema>
+type UserRecord = typeof users.$inferSelect
 
 export async function upsertUserFromOAuth(
   input: UpsertUserFromOAuthInput
@@ -55,7 +56,7 @@ export async function upsertUserFromOAuth(
   return { id: user.id }
 }
 
-export async function findUserById(userId: string) {
+export async function findUserById(userId: string): Promise<UserRecord | null> {
   const parsedUserId = userIdSchema.parse(userId)
   const [user] = await db
     .select()
