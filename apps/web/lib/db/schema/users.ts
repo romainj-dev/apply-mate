@@ -42,17 +42,14 @@ export const users = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => ({
-    emailIdx: index('users_email_idx').on(table.email),
-    providerIdx: index('users_provider_idx').on(
+  (table) => [
+    index('users_email_idx').on(table.email),
+    index('users_provider_idx').on(table.provider, table.providerAccountId),
+    unique('users_provider_provider_account_unique').on(
       table.provider,
       table.providerAccountId
     ),
-    providerAccountUnique: unique('users_provider_provider_account_unique').on(
-      table.provider,
-      table.providerAccountId
-    ),
-  })
+  ]
 )
 
 export const usersRelations = relations(users, ({ one }) => ({

@@ -58,12 +58,10 @@ export const userExperienceProfiles = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => ({
-    userUnique: unique('user_experience_profiles_user_id_unique').on(
-      table.userId
-    ),
-    userIdIdx: index('user_experience_profiles_user_id_idx').on(table.userId),
-  })
+  (table) => [
+    unique('user_experience_profiles_user_id_unique').on(table.userId),
+    index('user_experience_profiles_user_id_idx').on(table.userId),
+  ]
 )
 
 export const userExperienceRoles = pgTable(
@@ -118,11 +116,12 @@ export const userExperienceRoles = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => ({
-    profileStartDateIdx: index(
-      'user_experience_roles_profile_id_start_date_idx'
-    ).on(table.profileId, table.startDate),
-  })
+  (table) => [
+    index('user_experience_roles_profile_id_start_date_idx').on(
+      table.profileId,
+      table.startDate
+    ),
+  ]
 )
 
 export const userExperienceRoleProjects = pgTable(
@@ -153,11 +152,9 @@ export const userExperienceRoleProjects = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => ({
-    roleIdIdx: index('user_experience_role_projects_role_id_idx').on(
-      table.roleId
-    ),
-  })
+  (table) => [
+    index('user_experience_role_projects_role_id_idx').on(table.roleId),
+  ]
 )
 
 export const userExperienceLearning = pgTable(
@@ -188,11 +185,9 @@ export const userExperienceLearning = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => ({
-    profileIdIdx: index('user_experience_learning_profile_id_idx').on(
-      table.profileId
-    ),
-  })
+  (table) => [
+    index('user_experience_learning_profile_id_idx').on(table.profileId),
+  ]
 )
 
 export const userExperienceProfilesRelations = relations(
