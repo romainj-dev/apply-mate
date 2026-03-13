@@ -95,7 +95,7 @@ const NEXT_AUTH_COOKIE_NAMES = [
  * Clears all NextAuth cookies when they become invalid.
  * This happens when AUTH_SECRET changes and existing JWTs can no longer be decrypted.
  */
-async function clearInvalidSessionCookies() {
+async function clearInvalidSessionCookies(): Promise<void> {
   try {
     const requestCookies = await cookies()
     for (const cookieName of NEXT_AUTH_COOKIE_NAMES) {

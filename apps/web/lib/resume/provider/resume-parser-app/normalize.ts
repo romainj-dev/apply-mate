@@ -116,16 +116,18 @@ function roundYearsOfExperience(years: number | undefined): number | null {
   if (!years) return null
   return Math.round(years)
 }
+export type NormalizedResumeData = {
+  profile: NormalizedProfile
+  roles: NormalizedRole[]
+  learning: NormalizedLearning[]
+}
+
 /**
  * Normalizes a ResumeParser response to our internal experience format
  */
 export function normalizeResumeParserAppResponse(
   response: ResumeParserAppResponse
-): {
-  profile: NormalizedProfile
-  roles: NormalizedRole[]
-  learning: NormalizedLearning[]
-} {
+): NormalizedResumeData {
   const parsed = response.parsed
 
   // Build location string from contact info

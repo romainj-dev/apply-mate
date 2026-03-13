@@ -1,7 +1,7 @@
 import { auth } from '@/modules/session/server'
 import { db } from '@/lib/db/client'
 
-async function getSessionUser() {
+async function getSessionUser(): Promise<GraphqlContext['user']> {
   const session = await auth()
   if (!session?.user) {
     return null

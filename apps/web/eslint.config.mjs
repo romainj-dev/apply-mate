@@ -38,6 +38,17 @@ export default defineConfig([
    *   Target: CI-blocking once the migration is complete so the boundary
    *   becomes a hard contract.
    */
+  /*
+   * React components return JSX which TypeScript infers correctly as
+   * React.JSX.Element. Annotating it adds noise with no safety benefit.
+   * Hooks, utils, services, and API handlers in .ts files keep the rule.
+   */
+  {
+    files: ['**/*.tsx'],
+    rules: {
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
+  },
   {
     files: ['**/*.{ts,tsx}'],
     ignores: ['components/ui/**', 'styles/**'],

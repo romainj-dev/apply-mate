@@ -4,20 +4,16 @@ import {
   resumeParserAppResponseSchema,
   type ResumeParserAppResponse,
 } from './schemas'
-import { normalizeResumeParserAppResponse } from './normalize'
 import {
-  type NormalizedLearning,
-  type NormalizedProfile,
-  type NormalizedRole,
-} from '@/lib/db/services/experience-service'
+  normalizeResumeParserAppResponse,
+  type NormalizedResumeData,
+} from './normalize'
+
+export type { NormalizedResumeData }
 
 export interface ResumeParserProvider {
   parse(file: File): Promise<ResumeParserAppResponse>
-  normalize(response: ResumeParserAppResponse): {
-    profile: NormalizedProfile
-    roles: NormalizedRole[]
-    learning: NormalizedLearning[]
-  }
+  normalize(response: ResumeParserAppResponse): NormalizedResumeData
 }
 
 /**
@@ -53,7 +49,7 @@ export class ResumeParserAppProvider implements ResumeParserProvider {
     return resumeParserAppResponseSchema.parse(data)
   }
 
-  normalize(response: ResumeParserAppResponse) {
+  normalize(response: ResumeParserAppResponse): NormalizedResumeData {
     return normalizeResumeParserAppResponse(response)
   }
 }

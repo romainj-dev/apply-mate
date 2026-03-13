@@ -77,7 +77,7 @@ export async function handleResumeUpload(
         profile: normalized.profile,
         roles: normalized.roles,
         learning: normalized.learning,
-        rawPayload: parsedResume as unknown as Record<string, unknown>,
+        rawPayload: parsedResume as Record<string, unknown>,
       },
     }
 

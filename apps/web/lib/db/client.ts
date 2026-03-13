@@ -8,25 +8,25 @@ const env = parseBffEnv()
 type SqlClient = ReturnType<typeof postgres>
 type Database = ReturnType<typeof drizzle<typeof schema>>
 
-const globalForDb = globalThis as unknown as {
-  sqlClient?: SqlClient
-  db?: Database
+declare global {
+  var sqlClient: SqlClient | undefined
+  var db: Database | undefined
 }
 
 const sqlClient =
-  globalForDb.sqlClient ??
+  globalThis.sqlClient ??
   postgres(env.DATABASE_URL, {
     prepare: false,
     max: 4,
   })
 
 export const db =
-  globalForDb.db ??
+  globalThis.db ??
   drizzle(sqlClient, {
     schema,
   })
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForDb.sqlClient = sqlClient
-  globalForDb.db = db
+  globalThis.sqlClient = sqlClient
+  globalThis.db = db
 }

@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react'
 import { AuthLayout } from '@/components/layout/auth-layout/AuthLayout'
 
-export default function AuthLayoutRoute({ children }: { children: ReactNode }) {
+interface AuthLayoutRouteProps {
+  children: ReactNode
+}
+
+export default function AuthLayoutRoute({ children }: AuthLayoutRouteProps) {
   return <AuthLayout>{children}</AuthLayout>
 }

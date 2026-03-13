@@ -50,6 +50,15 @@ export const baseConfig = tseslint.config(
         },
       ],
       '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
+        {
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: true,
+          allowIIFEs: true,
+        },
+      ],
       'no-console': [
         'error',
         {

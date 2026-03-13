@@ -11,7 +11,7 @@ const defaultOptions: DefaultOptions = {
   },
 }
 
-export const createPrefetchQueryClient = async () => {
+export const createPrefetchQueryClient = async (): Promise<QueryClient> => {
   // Access request data so Next.js ties this client to the current render.
   // TODO find proper fix - log issue with Tanstack Query
   const incomingHeaders = await headers()
