@@ -27,7 +27,11 @@ const STATUS_CONFIG: Record<ApplicationStatus, { label: string }> = {
   Offer: { label: 'Offer' },
 }
 
-export function ApplicationsTable({ items }: { items: null | Application[] }) {
+interface ApplicationsTableProps {
+  items: null | Application[]
+}
+
+export function ApplicationsTable({ items }: ApplicationsTableProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | 'All'>(
     'All'

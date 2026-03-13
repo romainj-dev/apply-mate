@@ -1,10 +1,12 @@
+import type { Metadata } from 'next'
+
 import { type Application } from '@/components/features/dashboard/applications-table/ApplicationsTable'
 import { DashboardEmptyPageClient } from './page-client'
 
 export const metadata = {
   title: 'Dashboard | ApplyMate',
   description: 'Your ApplyMate dashboard',
-}
+} satisfies Metadata
 
 const mockApplications: Application[] = [
   {
@@ -58,7 +60,9 @@ const mockApplications: Application[] = [
 ]
 
 export default function DashboardEmptyPage() {
-  const profile = { status: 'ready' } as { status: 'ready' | 'incomplete' }
+  const profile = {
+    status: 'ready',
+  } satisfies { status: 'ready' | 'incomplete' }
   const hasProfileCompleted = profile.status === 'ready'
 
   return (

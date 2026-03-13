@@ -18,7 +18,13 @@ import {
   ArrowIcon,
 } from './QuickApplicationInput.styles'
 
-export function QuickApplicationInput({ disabled }: { disabled?: boolean }) {
+interface QuickApplicationInputProps {
+  disabled?: boolean
+}
+
+export function QuickApplicationInput({
+  disabled,
+}: QuickApplicationInputProps) {
   const [url, setUrl] = useState('')
   const router = useRouter()
 

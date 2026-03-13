@@ -10,7 +10,11 @@ import {
 
 export type Step = 'input' | 'processing'
 
-export function ProgressSteps({ step }: { step: Step }) {
+interface ProgressStepsProps {
+  step: Step
+}
+
+export function ProgressSteps({ step }: ProgressStepsProps) {
   return (
     <Container>
       <StepGroup>
