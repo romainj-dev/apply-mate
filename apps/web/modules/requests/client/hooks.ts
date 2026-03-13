@@ -12,8 +12,11 @@ import {
   useInfiniteQuery as useTanstackInfiniteQuery,
   useQueryClient,
   type UseQueryOptions,
+  type UseQueryResult,
   type UseMutationOptions,
+  type UseMutationResult,
   type UseInfiniteQueryOptions,
+  type UseInfiniteQueryResult,
   type InfiniteData,
 } from '@tanstack/react-query'
 import type { OperationDefinitionNode } from 'graphql'
@@ -64,7 +67,7 @@ export function useQuery<TQueryFnData, TVariables, TData = TQueryFnData>(
   > & {
     queryKey?: QueryKey // Narrow to our typed query keys
   }
-) {
+): UseQueryResult<TData, GraphQLClientError> {
   const operationName = getOperationName(document)
   const { queryKey, ...restOptions } = options ?? {}
 
@@ -131,7 +134,7 @@ export function useInfiniteQuery<
     queryKey: QueryKey // Narrow to our typed query keys
     getVariables: (pageParam: TPageParam) => TVariables // Custom helper for pagination
   }
-) {
+): UseInfiniteQueryResult<TData, GraphQLClientError> {
   const { getVariables, ...restOptions } = options
 
   return useTanstackInfiniteQuery<
@@ -173,7 +176,7 @@ export function useMutation<TData, TVariables, TContext = unknown>(
     UseMutationOptions<TData, GraphQLClientError, TVariables, TContext>,
     'mutationFn'
   >
-) {
+): UseMutationResult<TData, GraphQLClientError, TVariables, TContext> {
   return useTanstackMutation<TData, GraphQLClientError, TVariables, TContext>({
     mutationFn: (variables) => fetchGraphQLClient(document, variables),
     ...options,

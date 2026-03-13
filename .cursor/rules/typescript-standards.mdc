@@ -89,12 +89,21 @@ const STATUS = { OK: 200, NOT_FOUND: 404 } as const
 type StatusCode = typeof STATUS[keyof typeof STATUS]  // 200 | 404
 ```
 
-## Explicit return types on all exported functions
+## Explicit return types on exported hooks and utility functions
+
+Applies to hooks, utility functions, service functions, and API handlers.
+Does **not** apply to React components — TypeScript infers `JSX.Element` correctly and annotating it adds noise.
 
 ```typescript
-// ✅ Required for all exports
+// ✅ Required for hooks and utils
+export function useAuth(): AuthState { ... }
 export function fetchUser(id: string): Promise<User | null> { ... }
 export async function createPost(data: PostInput): Promise<Post> { ... }
+
+// ✅ React components — omit the return type, let TS infer
+export function UserCard({ name }: UserCardProps) {
+  return <div>{name}</div>
+}
 ```
 
 ## Discriminated unions — exhaustive handling
