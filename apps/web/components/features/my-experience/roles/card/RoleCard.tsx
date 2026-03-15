@@ -1,6 +1,7 @@
 'use client'
 
-import type { ExperienceRole } from '../data'
+import type { ExperienceRole } from '../data-types'
+import { getEmploymentTypeBadge } from '../employment-type'
 import {
   RoleCard,
   CardBody,
@@ -8,20 +9,21 @@ import {
   CardHeader,
   CardHeaderContent,
   BadgeRow,
-  StatusBadge,
+  EmploymentTypeBadge,
   CurrentBadge,
   RoleTitle,
   CompanyIcon,
   CompanyLine,
-  MissingDetailsIcon,
   PeriodLine,
   PeriodIcon,
   TechStack,
   TechBadge,
+  TechOverflow,
   SummaryRow,
   SummaryText,
-  MissingDetails,
 } from './RoleCard.styles'
+
+const MAX_VISIBLE_TECH = 2
 
 interface RolesCardProps {
   role: ExperienceRole
@@ -30,12 +32,17 @@ interface RolesCardProps {
 }
 
 export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
-  const isComplete = role.status === 'complete'
+  const employmentBadge = getEmploymentTypeBadge(role.employmentType)
+  const visibleTech = role.techStack?.slice(0, MAX_VISIBLE_TECH) ?? []
+  const overflowCount = Math.max(
+    0,
+    (role.techStack?.length ?? 0) - MAX_VISIBLE_TECH
+  )
 
   return (
     <RoleCard
       interactive={true}
-      variant={isComplete ? 'primary' : 'accent'}
+      variant="default"
       selected={isSelected}
       onClick={onClick}
     >
@@ -44,11 +51,16 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
           <CardHeader>
             <CardHeaderContent>
               <BadgeRow>
-                <StatusBadge variant="secondary" $isComplete={isComplete}>
-                  {isComplete ? 'Complete' : 'Incomplete'}
-                </StatusBadge>
                 {role.isCurrent && (
                   <CurrentBadge variant="outline">Current</CurrentBadge>
+                )}
+                {employmentBadge && (
+                  <EmploymentTypeBadge
+                    variant="outline"
+                    $statusKey={employmentBadge.statusKey}
+                  >
+                    {employmentBadge.label}
+                  </EmploymentTypeBadge>
                 )}
               </BadgeRow>
               <RoleTitle>{role.title}</RoleTitle>
@@ -58,42 +70,31 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
               </CompanyLine>
             </CardHeaderContent>
           </CardHeader>
+
           <PeriodLine>
             <PeriodIcon />
             {role.periodLabel} · {role.durationLabel}
           </PeriodLine>
 
-          {isComplete ? (
-            <>
-              {role.techStack && (
-                <TechStack>
-                  {role.techStack.slice(0, 4).map((tech) => (
-                    <TechBadge key={tech} variant="secondary">
-                      {tech}
-                    </TechBadge>
-                  ))}
-                </TechStack>
+          {visibleTech.length > 0 && (
+            <TechStack>
+              {visibleTech.map((tech) => (
+                <TechBadge key={tech} variant="secondary">
+                  {tech}
+                </TechBadge>
+              ))}
+              {overflowCount > 0 && (
+                <TechOverflow>+{overflowCount}</TechOverflow>
               )}
-              <SummaryRow>
-                <SummaryText>
-                  {role.projects.length} Projects ·{' '}
-                  {role.keyAchievements.length} Achievements
-                </SummaryText>
-              </SummaryRow>
-            </>
-          ) : (
-            <>
-              <MissingDetails>
-                <MissingDetailsIcon />
-                {role.missingDetails}
-              </MissingDetails>
-              <SummaryRow>
-                <SummaryText>
-                  {role.projects.length} Projects · Add more info
-                </SummaryText>
-              </SummaryRow>
-            </>
+            </TechStack>
           )}
+
+          <SummaryRow>
+            <SummaryText>
+              {role.projects.length} Projects · {role.keyAchievements.length}{' '}
+              Achievements
+            </SummaryText>
+          </SummaryRow>
         </CardStack>
       </CardBody>
     </RoleCard>

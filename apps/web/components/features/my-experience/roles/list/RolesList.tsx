@@ -1,17 +1,8 @@
 'use client'
 
-import type { ExperienceRole } from '../data'
-import { RolesCard } from '../card/RoleCard'
-import {
-  ScrollContainer,
-  AddRoleCard,
-  AddCardBody,
-  AddContent,
-  AddIconCircle,
-  AddRolePlusIcon,
-  AddLabel,
-  AddSubLabel,
-} from './RolesList.styles'
+import type { ExperienceRole } from '@/components/features/my-experience/roles/data-types'
+import { RolesCard } from '@/components/features/my-experience/roles/card/RoleCard'
+import { ScrollContainer } from './RolesList.styles'
 
 interface RolesListProps {
   roles: ExperienceRole[]
@@ -34,25 +25,6 @@ export function RolesList({
           onClick={() => onSelectRole(role.id)}
         />
       ))}
-
-      {/* Add new role card */}
-      <AddRoleCard
-        interactive={true}
-        variant="dashed"
-        onClick={() => {
-          // Logic to add new role
-        }}
-      >
-        <AddCardBody>
-          <AddContent>
-            <AddIconCircle>
-              <AddRolePlusIcon />
-            </AddIconCircle>
-            <AddLabel>Add New Role</AddLabel>
-            <AddSubLabel>Document another position</AddSubLabel>
-          </AddContent>
-        </AddCardBody>
-      </AddRoleCard>
     </ScrollContainer>
   )
 }

@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import type { ExperienceRole } from '@/components/features/my-experience/roles/data'
+import type { ExperienceRole } from '@/components/features/my-experience/roles/data-types'
 import {
   AchievementItem,
   AchievementList,

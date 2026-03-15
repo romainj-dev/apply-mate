@@ -1,15 +1,19 @@
 import styled from 'styled-components'
 import { Badge } from '@/components/ui/Badge'
 import { GlassCard, GlassCardContent } from '@/components/ui/GlassCard'
-import { AlertCircle, Building2, Calendar } from 'lucide-react'
+import { Building2, Calendar } from 'lucide-react'
+import type { Theme } from '@/styles/theme'
+
+type StatusKey = keyof Theme['colors']['status']
 
 export const RoleCard = styled(GlassCard)`
   flex-shrink: 0;
-  width: 20rem;
+  width: 16rem;
+  padding: ${({ theme }) => theme.space.xl} ${({ theme }) => theme.space.md};
 `
 
 export const CardBody = styled(GlassCardContent)`
-  padding: ${({ theme }) => theme.spaceCalc(5)};
+  padding: 0;
 `
 
 export const CardStack = styled.div`
@@ -36,22 +40,28 @@ export const BadgeRow = styled.div`
   margin-bottom: ${({ theme }) => theme.space.sm};
 `
 
-interface StatusBadgeProps {
-  $isComplete: boolean
-}
-
-export const StatusBadge = styled(Badge)<StatusBadgeProps>`
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  background-color: ${({ $isComplete }) =>
-    $isComplete ? '#dcfce7' : '#ffedd5'};
-  color: ${({ $isComplete }) => ($isComplete ? '#15803d' : '#c2410c')};
-`
-
 export const CurrentBadge = styled(Badge)`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
+  background-color: ${({ theme }) => theme.colors.status.success.bg};
+  color: ${({ theme }) => theme.colors.status.success.fg};
+  border-color: ${({ theme }) => theme.colors.status.success.border};
+`
+
+interface EmploymentTypeBadgeProps {
+  $statusKey: StatusKey
+}
+
+export const EmploymentTypeBadge = styled(Badge)<EmploymentTypeBadgeProps>`
+  font-size: ${({ theme }) => theme.typography.fontSize.xs};
+  background-color: ${({ theme, $statusKey }) =>
+    theme.colors.status[$statusKey].bg};
+  color: ${({ theme, $statusKey }) => theme.colors.status[$statusKey].fg};
+  border-color: ${({ theme, $statusKey }) =>
+    theme.colors.status[$statusKey].border};
 `
 
 export const RoleTitle = styled.h4`
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
   font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
   color: ${({ theme }) => theme.colors.foreground};
 `
@@ -86,6 +96,7 @@ export const PeriodIcon = styled(Calendar)`
 export const TechStack = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: ${({ theme }) => theme.spaceCalc(1.5)};
 `
 
@@ -109,16 +120,8 @@ export const SummaryText = styled.p`
   color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
-export const MissingDetails = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.space.sm};
+export const TechOverflow = styled.span`
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: #ea580c;
+  color: ${({ theme }) => theme.colors.mutedForeground};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-`
-
-export const MissingDetailsIcon = styled(AlertCircle)`
-  width: 0.875rem;
-  height: 0.875rem;
 `

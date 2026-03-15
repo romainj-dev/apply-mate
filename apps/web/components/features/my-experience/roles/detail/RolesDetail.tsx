@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { GlassCard, GlassCardHeader } from '@/components/ui/GlassCard'
-import type { ExperienceRole } from '../data'
+import type { ExperienceRole } from '../data-types'
 import { IncompleteRoleBanner } from './incomplete-role-banner/IncompleteRoleBanner'
 import { RoleCompleteContent } from './role-complete-content/RoleCompleteContent'
 import {

@@ -1,20 +1,19 @@
 'use client'
 
 import { useState } from 'react'
+import { FolderGit2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { GetExperienceProfileDocument } from '@/graphql/generated'
 import { useQuery } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
 import { DashboardHeader } from '@/components/features/dashboard/commons/header/Header'
+import { SectionHeader } from '@/components/commons/section-header/SectionHeader'
 import { RolesList } from '@/components/features/my-experience/roles/list/RolesList'
 import { RolesDetail } from '@/components/features/my-experience/roles/detail/RolesDetail'
 import {
-  AddIcon,
   PageContainer,
   RoleDetailSection,
-  RolesHeader,
   RolesSection,
-  RolesTitle,
 } from './CompleteExperience.styles'
 
 export function CompleteExperience() {
@@ -36,18 +35,22 @@ export function CompleteExperience() {
   return (
     <PageContainer>
       <DashboardHeader
-        title="Professional Experience"
-        subtitle="Build your tech profile by documenting roles, projects, and achievements"
+        title="Application Context"
+        subtitle="Everything AI needs to help you with applications and proposals"
       />
 
       <RolesSection>
-        <RolesHeader>
-          <RolesTitle>Your Roles</RolesTitle>
-          <Button variant="outline" size="sm">
-            <AddIcon />
-            Add Role
-          </Button>
-        </RolesHeader>
+        <SectionHeader
+          title="Roles & Projects"
+          subtitle="Work experience and side projects AI uses for applications"
+          icon={<FolderGit2 size={20} />}
+          action={
+            <Button variant="outline" size="sm">
+              <Plus size={16} />
+              Add Role
+            </Button>
+          }
+        />
 
         <RolesList
           roles={roles}
