@@ -2,7 +2,8 @@ import styled from 'styled-components'
 
 export const Root = styled.div`
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 18rem 1fr;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
 `
@@ -21,9 +22,10 @@ export const SidebarLayer = styled.div`
 `
 
 export const Content = styled.main`
-  z-index: 10;
-  margin-left: 18rem;
-  flex: 1;
-  padding-inline: ${({ theme }) => theme.space.lg};
-  padding-block: ${({ theme }) => theme.spaceCalc(10)};
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: ${({ theme }) => theme.space.xl} ${({ theme }) => theme.space.lg};
 `

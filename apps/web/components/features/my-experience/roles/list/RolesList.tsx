@@ -1,6 +1,6 @@
 'use client'
 
-import { Role } from '../data'
+import type { ExperienceRole } from '../data'
 import { RolesCard } from '../card/RoleCard'
 import {
   ScrollContainer,
@@ -14,7 +14,7 @@ import {
 } from './RolesList.styles'
 
 interface RolesListProps {
-  roles: Role[]
+  roles: ExperienceRole[]
   selectedRoleId: string | null
   onSelectRole: (id: string) => void
 }

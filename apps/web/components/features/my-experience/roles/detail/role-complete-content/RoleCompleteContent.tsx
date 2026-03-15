@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import type { Role } from '../../data'
+import type { ExperienceRole } from '@/components/features/my-experience/roles/data'
 import {
   AchievementItem,
   AchievementList,
@@ -35,7 +35,7 @@ import {
 } from './RoleCompleteContent.styles'
 
 interface RoleCompleteContentProps {
-  role: Role
+  role: ExperienceRole
 }
 
 export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
@@ -64,7 +64,7 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
             Methodology
           </SectionTitleFlex>
           <BadgesRow>
-            {role.methodology?.map((method) => (
+            {role.methodologies.map((method) => (
               <Badge key={method} variant="outline">
                 {method}
               </Badge>
@@ -85,7 +85,7 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
         <SectionTitle>Key Achievements</SectionTitle>
         <AchievementList>
           {role.keyAchievements?.map((achievement, i) => (
-            <AchievementItem key={i}>
+            <AchievementItem key={`${achievement}-${i}`}>
               <CheckMark>✓</CheckMark>
               <span>{achievement}</span>
             </AchievementItem>
@@ -106,8 +106,8 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
           </Button>
         </ProjectsHeader>
         <ProjectsList>
-          {role.projects?.map((project, i) => (
-            <GlassCard key={i} variant="primary">
+          {role.projects?.map((project) => (
+            <GlassCard key={project.id} variant="primary">
               <ProjectCardContent>
                 <ProjectHeader>
                   <FlexFill>
@@ -123,7 +123,7 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
                   <AchievementsLabel>Achievements</AchievementsLabel>
                   <ProjectAchievements>
                     {project.achievements.map((achievement, j) => (
-                      <ProjectAchievementItem key={j}>
+                      <ProjectAchievementItem key={`${achievement}-${j}`}>
                         <BulletMark>•</BulletMark>
                         <span>{achievement}</span>
                       </ProjectAchievementItem>

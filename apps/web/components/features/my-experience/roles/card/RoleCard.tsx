@@ -1,6 +1,6 @@
 'use client'
 
-import { Role } from '../data'
+import type { ExperienceRole } from '../data'
 import {
   RoleCard,
   CardBody,
@@ -24,13 +24,13 @@ import {
 } from './RoleCard.styles'
 
 interface RolesCardProps {
-  role: Role
+  role: ExperienceRole
   isSelected: boolean
   onClick: () => void
 }
 
 export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
-  const isComplete = role.status === 'Complete'
+  const isComplete = role.status === 'complete'
 
   return (
     <RoleCard
@@ -45,7 +45,7 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
             <CardHeaderContent>
               <BadgeRow>
                 <StatusBadge variant="secondary" $isComplete={isComplete}>
-                  {role.status}
+                  {isComplete ? 'Complete' : 'Incomplete'}
                 </StatusBadge>
                 {role.isCurrent && (
                   <CurrentBadge variant="outline">Current</CurrentBadge>
@@ -60,7 +60,7 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
           </CardHeader>
           <PeriodLine>
             <PeriodIcon />
-            {role.period} · {role.duration}
+            {role.periodLabel} · {role.durationLabel}
           </PeriodLine>
 
           {isComplete ? (
@@ -76,8 +76,8 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
               )}
               <SummaryRow>
                 <SummaryText>
-                  {role.projectsCount} Projects · {role.achievementsCount}{' '}
-                  Achievements
+                  {role.projects.length} Projects ·{' '}
+                  {role.keyAchievements.length} Achievements
                 </SummaryText>
               </SummaryRow>
             </>
@@ -89,7 +89,7 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
               </MissingDetails>
               <SummaryRow>
                 <SummaryText>
-                  {role.projectsCount} Projects · Add more info
+                  {role.projects.length} Projects · Add more info
                 </SummaryText>
               </SummaryRow>
             </>

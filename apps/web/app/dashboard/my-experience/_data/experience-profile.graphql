@@ -12,5 +12,31 @@ query GetExperienceProfile {
       createdAt
       updatedAt
     }
+    roles {
+      id
+      title
+      company
+      employmentType
+      location
+      startDate
+      endDate
+      isCurrent
+      periodLabel
+      durationLabel
+      status
+      summary
+      techStack
+      methodologies
+      teamStructure
+      keyAchievements
+      missingDetails
+      projects {
+        id
+        title
+        period
+        description
+        achievements
+      }
+    }
   }
 }

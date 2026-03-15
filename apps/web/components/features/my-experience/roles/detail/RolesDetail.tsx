@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { GlassCard, GlassCardHeader } from '@/components/ui/GlassCard'
-import { Role } from '../data'
+import type { ExperienceRole } from '../data'
 import { IncompleteRoleBanner } from './incomplete-role-banner/IncompleteRoleBanner'
 import { RoleCompleteContent } from './role-complete-content/RoleCompleteContent'
 import {
@@ -20,11 +20,11 @@ import {
 } from './RolesDetail.styles'
 
 interface RolesDetailProps {
-  role: Role
+  role: ExperienceRole
 }
 
 export function RolesDetail({ role }: RolesDetailProps) {
-  const isComplete = role.status === 'Complete'
+  const isComplete = role.status === 'complete'
 
   return (
     <GlassCard variant={!isComplete ? 'accent' : 'default'}>
@@ -36,7 +36,7 @@ export function RolesDetail({ role }: RolesDetailProps) {
             <PeriodRow>
               <PeriodItem>
                 <PeriodCalendarIcon />
-                {role.period} · {role.duration}
+                {role.periodLabel} · {role.durationLabel}
               </PeriodItem>
             </PeriodRow>
           </FlexFill>

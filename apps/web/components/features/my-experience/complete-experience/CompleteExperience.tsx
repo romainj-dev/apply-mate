@@ -6,9 +6,6 @@ import { GetExperienceProfileDocument } from '@/graphql/generated'
 import { useQuery } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
 import { DashboardHeader } from '@/components/features/dashboard/commons/header/Header'
-import { ProgressCard } from '@/components/features/my-experience/progress-card/ProgressCard'
-import { TechnicalSkills } from '@/components/features/my-experience/technical-skills/TechnicalSkills'
-import { ROLES } from '@/components/features/my-experience/roles/data'
 import { RolesList } from '@/components/features/my-experience/roles/list/RolesList'
 import { RolesDetail } from '@/components/features/my-experience/roles/detail/RolesDetail'
 import {
@@ -21,13 +18,20 @@ import {
 } from './CompleteExperience.styles'
 
 export function CompleteExperience() {
-  useQuery(GetExperienceProfileDocument, undefined, {
+  const { data } = useQuery(GetExperienceProfileDocument, undefined, {
     queryKey: queryKeys.experienceProfile.get(),
   })
 
-  const [selectedRoleId, setSelectedRoleId] = useState<string | null>('role1')
+  const profile = data?.experienceProfile?.profile
+  const roles = data?.experienceProfile?.roles ?? []
 
-  const selectedRole = ROLES.find((r) => r.id === selectedRoleId)
+  const [selectedRoleId, setSelectedRoleId] = useState<string | null>(
+    roles.length > 0 ? roles[0].id : null
+  )
+
+  const selectedRole = roles.find((r) => r.id === selectedRoleId)
+
+  if (!profile) return null
 
   return (
     <PageContainer>
@@ -35,10 +39,6 @@ export function CompleteExperience() {
         title="Professional Experience"
         subtitle="Build your tech profile by documenting roles, projects, and achievements"
       />
-
-      <ProgressCard />
-
-      <TechnicalSkills />
 
       <RolesSection>
         <RolesHeader>
@@ -50,7 +50,7 @@ export function CompleteExperience() {
         </RolesHeader>
 
         <RolesList
-          roles={ROLES}
+          roles={roles}
           selectedRoleId={selectedRoleId}
           onSelectRole={setSelectedRoleId}
         />

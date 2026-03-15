@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Root = styled.div`
   display: flex;
-  max-width: 72rem;
+  max-width: 100%;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.lg};
 `

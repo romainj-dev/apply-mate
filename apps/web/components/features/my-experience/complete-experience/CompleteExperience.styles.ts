@@ -5,7 +5,7 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.lg};
-  max-width: 72rem;
+  max-width: 100%;
 `
 
 export const RolesSection = styled.div``

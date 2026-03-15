@@ -3,7 +3,11 @@
     "allow": [
       "Bash(pnpm --filter web type-check)",
       "Bash(pnpm --filter web lint)",
-      "Bash(pnpm --filter web lint --fix)"
+      "Bash(pnpm --filter web lint --fix)",
+      "Bash(ls -la /Users/romainjulien/development/apply-mate/apps/web/app/\\\\\\(home\\\\\\)/)",
+      "Bash(cat \"/Users/romainjulien/development/apply-mate/apps/web/app/\\(home\\)/_data/plans.server.ts\")",
+      "Bash(pnpm codegen)",
+      "Bash(pnpm codegen:graphql)"
     ]
   }
 }

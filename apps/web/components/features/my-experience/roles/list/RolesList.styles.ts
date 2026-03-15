@@ -3,7 +3,9 @@ import { GlassCard, GlassCardContent } from '@/components/ui/GlassCard'
 import { Plus } from 'lucide-react'
 
 export const ScrollContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 20rem;
   gap: ${({ theme }) => theme.space.md};
   overflow-x: auto;
   padding-bottom: ${({ theme }) => theme.space.md};
@@ -12,8 +14,8 @@ export const ScrollContainer = styled.div`
 `
 
 export const AddRoleCard = styled(GlassCard)`
-  flex-shrink: 0;
-  width: 20rem;
+  width: 100%;
+  max-width: 100%;
 `
 
 export const AddCardBody = styled(GlassCardContent)`
