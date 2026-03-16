@@ -7,10 +7,13 @@ export const PageContainer = styled.div`
   max-width: 100%;
 `
 
-export const RolesSection = styled.div``
+export const RolesSection = styled.div`
+  scroll-margin-top: ${({ theme }) => theme.space.xl};
+`
 
 export const RoleDetailSection = styled.div`
   grid-column: span 2 / span 2;
+  scroll-margin-top: ${({ theme }) => theme.space.xl};
 
   ${({ theme }) => theme.media.belowTablet} {
     grid-column: auto;

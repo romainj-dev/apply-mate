@@ -9,7 +9,9 @@
       "Bash(pnpm codegen)",
       "Bash(pnpm codegen:graphql)",
       "Bash(npx tsc --noEmit)",
-      "Bash(pnpm --filter web codegen:graphql)"
+      "Bash(pnpm --filter web codegen:graphql)",
+      "Bash(xargs cat)",
+      "Bash(grep -r \"from ''styled-components''\" /Users/romainjulien/development/apply-mate/apps/web/components --include=\"*.ts\" --include=\"*.tsx\")"
     ]
   }
 }

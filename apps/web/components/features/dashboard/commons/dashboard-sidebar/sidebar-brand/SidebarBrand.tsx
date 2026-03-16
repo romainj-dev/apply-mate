@@ -10,17 +10,23 @@ import {
   BrandTitle,
 } from './SidebarBrand.styles'
 
-export function SidebarBrand() {
+interface SidebarBrandProps {
+  collapsed?: boolean
+}
+
+export function SidebarBrand({ collapsed = false }: SidebarBrandProps) {
   return (
-    <BrandSection>
-      <BrandLink href="/">
+    <BrandSection $collapsed={collapsed}>
+      <BrandLink href="/" $collapsed={collapsed}>
         <BrandIcon>
           <BrandIconText>A</BrandIconText>
         </BrandIcon>
-        <BrandText>
-          <BrandTitle>ApplyMate</BrandTitle>
-          <BrandSubtitle>Workspace</BrandSubtitle>
-        </BrandText>
+        {!collapsed && (
+          <BrandText>
+            <BrandTitle>ApplyMate</BrandTitle>
+            <BrandSubtitle>Workspace</BrandSubtitle>
+          </BrandText>
+        )}
       </BrandLink>
     </BrandSection>
   )

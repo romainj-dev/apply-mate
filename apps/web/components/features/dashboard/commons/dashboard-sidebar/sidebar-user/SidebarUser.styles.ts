@@ -4,16 +4,20 @@ import styled from 'styled-components'
 import { Avatar, AvatarFallback } from '@/components/ui/Avatar'
 import { Badge } from '@/components/ui/Badge'
 
-export const UserSection = styled.div`
-  margin-top: auto;
-  padding: ${({ theme }) => theme.space.md};
+interface CollapsibleProps {
+  $collapsed?: boolean
+}
+
+export const UserSection = styled.div<CollapsibleProps>`
+  padding: ${({ theme, $collapsed }) =>
+    $collapsed ? `${theme.space.sm} ${theme.space.xs}` : theme.space.md};
 `
 
 export const UserProfileLink = styled(Link)`
   display: block;
 `
 
-export const UserOuter = styled.div`
+export const UserOuter = styled.div<CollapsibleProps>`
   background: rgb(255 255 255 / 0.4);
   padding: ${({ theme }) => theme.space.xs};
   border-radius: ${({ theme }) => theme.radii['2xl']};
@@ -22,11 +26,15 @@ export const UserOuter = styled.div`
   backdrop-filter: blur(4px);
 `
 
-export const UserInner = styled.div`
+export const UserInner = styled.div<CollapsibleProps>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spaceCalc(3)};
   padding: ${({ theme }) => theme.space.sm};
+  padding-inline: ${({ theme, $collapsed }) =>
+    $collapsed ? '0' : theme.space.sm};
+  justify-content: ${({ $collapsed }) =>
+    $collapsed ? 'center' : 'flex-start'};
   border-radius: ${({ theme }) => theme.radii.xl};
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;

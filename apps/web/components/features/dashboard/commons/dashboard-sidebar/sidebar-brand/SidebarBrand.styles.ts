@@ -1,21 +1,29 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export const BrandSection = styled.div`
+interface CollapsibleProps {
+  $collapsed?: boolean
+}
+
+export const BrandSection = styled.div<CollapsibleProps>`
   padding: ${({ theme }) => theme.spaceCalc(6)};
   padding-bottom: ${({ theme }) => theme.space.sm};
 `
 
-export const BrandLink = styled(Link)`
+export const BrandLink = styled(Link)<CollapsibleProps>`
   display: flex;
   align-items: center;
+  justify-content: ${({ $collapsed }) =>
+    $collapsed ? 'center' : 'flex-start'};
   gap: ${({ theme }) => theme.spaceCalc(3)};
-  padding-inline: ${({ theme }) => theme.space.sm};
+  padding-inline: ${({ $collapsed, theme }) =>
+    $collapsed ? '0' : theme.space.sm};
 `
 
 export const BrandIcon = styled.div`
   width: 2.5rem;
   height: 2.5rem;
+  flex-shrink: 0;
   border-radius: ${({ theme }) => theme.radii.xl};
   background: linear-gradient(
     to bottom right,

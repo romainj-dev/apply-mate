@@ -3,6 +3,11 @@ import styled, { keyframes } from 'styled-components'
 
 interface NavLinkProps {
   $isActive: boolean
+  $collapsed?: boolean
+}
+
+interface NavProps {
+  $collapsed?: boolean
 }
 
 const pulse = keyframes`
@@ -11,28 +16,13 @@ const pulse = keyframes`
   }
 `
 
-export const Nav = styled.nav`
-  flex: 1;
-  padding-inline: ${({ theme }) => theme.space.md};
+export const Nav = styled.nav<NavProps>`
+  padding-inline: ${({ theme, $collapsed }) =>
+    $collapsed ? theme.space.sm : theme.space.md};
   padding-block: ${({ theme }) => theme.space.sm};
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.sm};
-`
-
-export const NavLabel = styled.div`
-  padding-inline: ${({ theme }) => theme.space.md};
-  margin-bottom: ${({ theme }) => theme.space.sm};
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.mutedForeground} 50%,
-    transparent
-  );
 `
 
 export const NavLinkItem = styled(Link)<NavLinkProps>`
@@ -40,6 +30,8 @@ export const NavLinkItem = styled(Link)<NavLinkProps>`
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: ${({ $collapsed }) =>
+    $collapsed ? 'center' : 'flex-start'};
   gap: ${({ theme }) => theme.spaceCalc(3)};
   padding: ${({ theme }) => theme.spaceCalc(3)};
   border-radius: ${({ theme }) => theme.radii['2xl']};

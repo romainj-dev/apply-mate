@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CircleHelp, FolderGit2, Lightbulb, Plus, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { GetExperienceProfileDocument } from '@/graphql/generated'
@@ -14,11 +14,17 @@ import {
 } from '@/components/features/my-experience/ai-suggestions/AiSuggestions'
 import { RolesList } from '@/components/features/my-experience/roles/list/RolesList'
 import { RolesDetail } from '@/components/features/my-experience/roles/detail/RolesDetail'
+import { useDashboardLayout } from '@/components/layout/dashboard-layout/DashboardLayout'
 import {
   PageContainer,
   RoleDetailSection,
   RolesSection,
 } from './CompleteExperience.styles'
+
+const PAGE_SECTIONS = [
+  { id: 'roles-projects', label: 'Roles & Projects' },
+  { id: 'role-detail', label: 'Role Detail' },
+]
 
 const SUGGESTIONS: AiSuggestion[] = [
   {
@@ -48,6 +54,9 @@ const SUGGESTIONS: AiSuggestion[] = [
 ]
 
 export function CompleteExperience() {
+  const { registerSections } = useDashboardLayout()
+  useEffect(() => registerSections(PAGE_SECTIONS), [registerSections])
+
   const { data } = useQuery(GetExperienceProfileDocument, undefined, {
     queryKey: queryKeys.experienceProfile.get(),
   })
@@ -72,7 +81,7 @@ export function CompleteExperience() {
 
       <AiSuggestions suggestions={SUGGESTIONS} />
 
-      <RolesSection>
+      <RolesSection id="roles-projects">
         <SectionHeader
           title="Roles & Projects"
           subtitle="Work experience and side projects AI uses for applications"
@@ -92,7 +101,7 @@ export function CompleteExperience() {
         />
       </RolesSection>
 
-      <RoleDetailSection>
+      <RoleDetailSection id="role-detail">
         {selectedRole && <RolesDetail role={selectedRole} />}
       </RoleDetailSection>
     </PageContainer>

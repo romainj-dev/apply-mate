@@ -1,11 +1,21 @@
 import styled from 'styled-components'
 
-export const Root = styled.div`
+interface RootProps {
+  $collapsed: boolean
+}
+
+export const Root = styled.div<RootProps>`
   position: relative;
   display: grid;
-  grid-template-columns: 18rem 1fr;
+  grid-template-columns: ${({ $collapsed }) =>
+      $collapsed ? '5rem' : '18rem'} 1fr;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
+  transition: grid-template-columns 0.2s ease;
+
+  ${({ theme }) => theme.media.belowTablet} {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const WhiteOverlay = styled.div`
@@ -28,4 +38,20 @@ export const Content = styled.main`
   max-width: 100%;
   min-width: 0;
   padding: ${({ theme }) => theme.space.xl} ${({ theme }) => theme.space.lg};
+
+  ${({ theme }) => theme.media.belowTablet} {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+export const ContentInner = styled.div`
+  display: contents;
+
+  ${({ theme }) => theme.media.belowTablet} {
+    display: block;
+    padding: ${({ theme }) => theme.space.lg};
+    flex: 1;
+  }
 `
