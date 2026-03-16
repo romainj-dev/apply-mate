@@ -12,6 +12,43 @@ type RoleRow = InferSelectModel<typeof schema.userExperienceRoles>
 type ProjectRow = InferSelectModel<typeof schema.userExperienceRoleProjects>
 type LearningRow = InferSelectModel<typeof schema.userExperienceLearning>
 
+/* ── Shared object types ─────────────────────────────────────────────── */
+
+type KeyMetricRow = {
+  type: string
+  customType?: string
+  value: string
+  text: string
+}
+
+const KeyMetricRef = builder.objectRef<KeyMetricRow>('KeyMetricModel')
+
+KeyMetricRef.implement({
+  fields: (t) => ({
+    type: t.exposeString('type'),
+    customType: t.exposeString('customType', { nullable: true }),
+    value: t.exposeString('value'),
+    text: t.exposeString('text'),
+  }),
+})
+
+type TechStackItemRow = {
+  value: string
+  customLabel?: string
+}
+
+const TechStackItemRef =
+  builder.objectRef<TechStackItemRow>('TechStackItemModel')
+
+TechStackItemRef.implement({
+  fields: (t) => ({
+    value: t.exposeString('value'),
+    customLabel: t.exposeString('customLabel', { nullable: true }),
+  }),
+})
+
+/* ── Project ─────────────────────────────────────────────────────────── */
+
 const ExperienceRoleProjectRef = builder.objectRef<ProjectRow>(
   'ExperienceRoleProjectModel'
 )
@@ -24,10 +61,16 @@ ExperienceRoleProjectRef.implement({
     period: t.exposeString('period', { nullable: true }),
     description: t.exposeString('description', { nullable: true }),
     achievements: t.exposeStringList('achievements'),
+    techStack: t.field({
+      type: [TechStackItemRef],
+      resolve: (project) => (project.techStack as TechStackItemRow[]) ?? [],
+    }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
   }),
 })
+
+/* ── Role ────────────────────────────────────────────────────────────── */
 
 const ExperienceRoleRef = builder.objectRef<
   RoleRow & { projects: ProjectRow[] }
@@ -51,7 +94,10 @@ ExperienceRoleRef.implement({
       resolve: (role) => role.status ?? 'incomplete',
     }),
     summary: t.exposeString('summary', { nullable: true }),
-    techStack: t.exposeStringList('techStack'),
+    techStack: t.field({
+      type: [TechStackItemRef],
+      resolve: (role) => (role.techStack as TechStackItemRow[]) ?? [],
+    }),
     methodologies: t.exposeStringList('methodologies'),
     teamStructure: t.exposeString('teamStructure', { nullable: true }),
     keyAchievements: t.exposeStringList('keyAchievements'),
@@ -59,6 +105,11 @@ ExperienceRoleRef.implement({
     customFields: t.expose('customFields', {
       type: 'JSONObject',
       nullable: true,
+    }),
+    keyMetrics: t.field({
+      type: [KeyMetricRef],
+      nullable: true,
+      resolve: (role) => (role.keyMetrics as KeyMetricRow[] | null) ?? null,
     }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
@@ -68,6 +119,8 @@ ExperienceRoleRef.implement({
     }),
   }),
 })
+
+/* ── Learning ────────────────────────────────────────────────────────── */
 
 const ExperienceLearningRef = builder.objectRef<LearningRow>(
   'ExperienceLearningModel'
@@ -89,6 +142,8 @@ ExperienceLearningRef.implement({
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
   }),
 })
+
+/* ── Profile ─────────────────────────────────────────────────────────── */
 
 const ExperienceProfileRef = builder.objectRef<ProfileRow>(
   'ExperienceProfileModel'
@@ -116,6 +171,8 @@ ExperienceProfileRef.implement({
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
   }),
 })
+
+/* ── Aggregate ───────────────────────────────────────────────────────── */
 
 const ExperienceProfileAggregateRef = builder.objectRef<{
   profile: ProfileRow
@@ -154,6 +211,8 @@ ExperienceMutationResultRef.implement({
   }),
 })
 
+/* ── Inputs ──────────────────────────────────────────────────────────── */
+
 const ExperienceProfileInput = builder.inputType('ExperienceProfileInput', {
   fields: (t) => ({
     headline: t.string(),
@@ -178,12 +237,13 @@ const ExperienceRoleInput = builder.inputType('ExperienceRoleInput', {
     durationLabel: t.string(),
     status: t.string(),
     summary: t.string(),
-    techStack: t.stringList(),
+    techStack: t.field({ type: 'JSONObject' }),
     methodologies: t.stringList(),
     teamStructure: t.string(),
     keyAchievements: t.stringList(),
     missingDetails: t.string(),
     customFields: t.field({ type: 'JSONObject' }),
+    keyMetrics: t.field({ type: 'JSONObject' }),
   }),
 })
 
@@ -208,6 +268,8 @@ const SaveExperienceInputRef = builder.inputType('SaveExperienceInput', {
     rawPayload: t.field({ type: 'JSONObject' }),
   }),
 })
+
+/* ── Query & Mutation ────────────────────────────────────────────────── */
 
 builder.queryField('experienceProfile', (t) =>
   t.field({

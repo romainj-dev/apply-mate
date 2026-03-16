@@ -6,6 +6,7 @@ import {
   SaveExperienceDocument,
   type SaveExperienceMutation,
   type SaveExperienceMutationVariables,
+  type ExperienceRoleInput,
 } from '@/graphql/generated'
 import { z } from 'zod'
 
@@ -72,10 +73,13 @@ export async function handleResumeUpload(
     // Normalize to our format
     const normalized = provider.normalize(parsedResume)
 
+    // NormalizedRole uses typed arrays for keyMetrics/techStack while the
+    // GraphQL codegen types them as JSONObject (Record<string, unknown>).
+    // Both serialize identically; cast at the boundary to satisfy codegen.
     const variables: SaveExperienceMutationVariables = {
       input: {
         profile: normalized.profile,
-        roles: normalized.roles,
+        roles: normalized.roles as unknown as ExperienceRoleInput[],
         learning: normalized.learning,
         rawPayload: parsedResume as Record<string, unknown>,
       },

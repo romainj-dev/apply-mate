@@ -22,8 +22,31 @@ const insertProfileSchema = createInsertSchema(userExperienceProfiles, {
   rawPayload: true,
 })
 
+const techStackSchema = z
+  .array(
+    z.object({
+      value: z.string(),
+      customLabel: z.string().optional(),
+    })
+  )
+  .default([])
+
+const keyMetricsSchema = z
+  .array(
+    z.object({
+      type: z.string(),
+      customType: z.string().optional(),
+      value: z.string(),
+      text: z.string(),
+    })
+  )
+  .nullable()
+  .optional()
+
 const insertRoleSchema = createInsertSchema(userExperienceRoles, {
   customFields: jsonbRecord,
+  keyMetrics: keyMetricsSchema,
+  techStack: techStackSchema,
 }).omit({
   id: true,
   profileId: true,
@@ -227,6 +250,7 @@ export async function saveExperienceByUserId(
             keyAchievements: role.keyAchievements ?? [],
             missingDetails: role.missingDetails ?? null,
             customFields: role.customFields ?? null,
+            keyMetrics: role.keyMetrics ?? null,
           }))
         )
         .returning({

@@ -3,20 +3,25 @@
 import { Button } from '@/components/ui/Button'
 import { GlassCard, GlassCardHeader } from '@/components/ui/GlassCard'
 import type { ExperienceRole } from '../data-types'
+import { getEmploymentTypeBadge } from '../employment-type'
 import { IncompleteRoleBanner } from './incomplete-role-banner/IncompleteRoleBanner'
 import { RoleCompleteContent } from './role-complete-content/RoleCompleteContent'
+import { Edit2, Sparkles } from 'lucide-react'
 import {
   BodyText,
+  ButtonGroup,
+  CompanyBuildingIcon,
   CompanyName,
   ContentArea,
+  EmploymentBadge,
   FlexFill,
-  HeaderEditIcon,
   HeaderRow,
   PeriodCalendarIcon,
   PeriodItem,
   PeriodRow,
   RoleTitle,
   SectionTitle,
+  TitleRow,
 } from './RolesDetail.styles'
 
 interface RolesDetailProps {
@@ -25,24 +30,42 @@ interface RolesDetailProps {
 
 export function RolesDetail({ role }: RolesDetailProps) {
   const isComplete = role.status === 'complete'
+  const employmentBadge = getEmploymentTypeBadge(role.employmentType)
 
   return (
     <GlassCard variant={!isComplete ? 'accent' : 'default'}>
       <GlassCardHeader>
         <HeaderRow>
           <FlexFill>
-            <RoleTitle>{role.title}</RoleTitle>
-            <CompanyName>{role.company}</CompanyName>
+            <TitleRow>
+              <RoleTitle>{role.title}</RoleTitle>
+              {employmentBadge && (
+                <EmploymentBadge $statusKey={employmentBadge.statusKey}>
+                  {employmentBadge.label}
+                </EmploymentBadge>
+              )}
+            </TitleRow>
+            <CompanyName>
+              <CompanyBuildingIcon />
+              {role.company}
+            </CompanyName>
             <PeriodRow>
               <PeriodItem>
                 <PeriodCalendarIcon />
-                {role.periodLabel} · {role.durationLabel}
+                {role.periodLabel}
               </PeriodItem>
             </PeriodRow>
           </FlexFill>
-          <Button variant="ghost" size="sm">
-            <HeaderEditIcon />
-          </Button>
+          <ButtonGroup>
+            <Button variant="accent" size="sm">
+              <Sparkles />
+              Polish
+            </Button>
+            <Button variant="outline" size="sm">
+              <Edit2 />
+              Edit
+            </Button>
+          </ButtonGroup>
         </HeaderRow>
       </GlassCardHeader>
 
@@ -50,10 +73,12 @@ export function RolesDetail({ role }: RolesDetailProps) {
         {!isComplete ? <IncompleteRoleBanner /> : null}
 
         {/* Role summary */}
-        <div>
-          <SectionTitle>Role Summary</SectionTitle>
-          <BodyText>{role.summary}</BodyText>
-        </div>
+        {role.summary && (
+          <div>
+            <SectionTitle>Summary</SectionTitle>
+            <BodyText>{role.summary}</BodyText>
+          </div>
+        )}
 
         {isComplete && <RoleCompleteContent role={role} />}
       </ContentArea>

@@ -73,6 +73,7 @@ input ExperienceRoleInput {
   endDate: String
   isCurrent: Boolean
   keyAchievements: [String!]
+  keyMetrics: JSONObject
   location: String
   methodologies: [String!]
   missingDetails: String
@@ -81,7 +82,7 @@ input ExperienceRoleInput {
   status: String
   summary: String
   teamStructure: String
-  techStack: [String!]
+  techStack: JSONObject
   title: String!
 }
 
@@ -95,6 +96,7 @@ type ExperienceRoleModel {
   id: ID!
   isCurrent: Boolean
   keyAchievements: [String!]!
+  keyMetrics: [KeyMetricModel!]
   location: String
   methodologies: [String!]!
   missingDetails: String
@@ -105,7 +107,7 @@ type ExperienceRoleModel {
   status: String!
   summary: String
   teamStructure: String
-  techStack: [String!]!
+  techStack: [TechStackItemModel!]!
   title: String!
   updatedAt: DateTime!
 }
@@ -117,6 +119,7 @@ type ExperienceRoleProjectModel {
   id: ID!
   period: String
   roleId: String!
+  techStack: [TechStackItemModel!]!
   title: String!
   updatedAt: DateTime!
 }
@@ -125,6 +128,13 @@ type ExperienceRoleProjectModel {
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSONObject
+
+type KeyMetricModel {
+  customType: String
+  text: String!
+  type: String!
+  value: String!
+}
 
 type Mutation {
   saveExperience(input: SaveExperienceInput!): ExperienceMutationResult!
@@ -151,6 +161,11 @@ input SaveExperienceInput {
   profile: ExperienceProfileInput!
   rawPayload: JSONObject
   roles: [ExperienceRoleInput!]
+}
+
+type TechStackItemModel {
+  customLabel: String
+  value: String!
 }
 
 type User {

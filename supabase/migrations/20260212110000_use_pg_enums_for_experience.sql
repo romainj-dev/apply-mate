@@ -18,11 +18,13 @@ END
 $$;
 
 ALTER TABLE user_experience_roles
+  DROP CONSTRAINT IF EXISTS user_experience_roles_status_check,
   ALTER COLUMN status DROP DEFAULT,
   ALTER COLUMN status TYPE experience_status
   USING status::experience_status,
   ALTER COLUMN status SET DEFAULT 'incomplete';
 
 ALTER TABLE user_experience_learning
+  DROP CONSTRAINT IF EXISTS user_experience_learning_entry_type_check,
   ALTER COLUMN entry_type TYPE experience_entry_type
   USING entry_type::experience_entry_type;

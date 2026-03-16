@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import { GlassCardContent } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import { Code2, Edit2, FolderGit2, Plus, Target, Users } from 'lucide-react'
+import { BarChart3, Edit2, FolderGit2, Plus, Target, Users } from 'lucide-react'
+
+/* ── Section headings ────────────────────────────────────────────────── */
 
 /** Heading with leading icon and gap. mb can be overridden via $mb3. */
 export const SectionTitleFlex = styled.h4<{ $mb3?: boolean }>`
@@ -19,6 +21,9 @@ export const SectionTitle = styled.h4`
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
   color: ${({ theme }) => theme.colors.foreground};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space.sm};
   margin-bottom: ${({ theme }) => theme.space.sm};
 `
 
@@ -28,28 +33,30 @@ export const BodyText = styled.p`
   line-height: ${({ theme }) => theme.typography.lineHeight.sm};
 `
 
-export const SectionCodeIcon = styled(Code2)`
+/* ── Section icons (all accent-colored) ──────────────────────────────── */
+
+export const SectionMetricsIcon = styled(BarChart3)`
   width: 1rem;
   height: 1rem;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.accent};
 `
 
 export const SectionTargetIcon = styled(Target)`
   width: 1rem;
   height: 1rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
+  color: ${({ theme }) => theme.colors.accent};
 `
 
 export const SectionUsersIcon = styled(Users)`
   width: 1rem;
   height: 1rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
+  color: ${({ theme }) => theme.colors.accent};
 `
 
 export const SectionProjectsIcon = styled(FolderGit2)`
   width: 1rem;
   height: 1rem;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.accent};
 `
 
 export const AddProjectIcon = styled(Plus)`
@@ -57,6 +64,8 @@ export const AddProjectIcon = styled(Plus)`
   height: 0.75rem;
   margin-right: ${({ theme }) => theme.space.xs};
 `
+
+/* ── Badges ──────────────────────────────────────────────────────────── */
 
 export const BadgesRow = styled.div`
   display: flex;
@@ -73,9 +82,11 @@ export const TechBadge = styled(Badge)`
   color: ${({ theme }) => theme.colors.primary};
 `
 
-export const TwoColGrid = styled.div`
+/* ── Meta grid (Team / Methodology / Tech Stack) ─────────────────────── */
+
+export const MetaGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: ${({ theme }) => theme.space.md};
 
   ${({ theme }) => theme.media.belowMobile} {
@@ -83,29 +94,62 @@ export const TwoColGrid = styled.div`
   }
 `
 
-export const MetaText = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.mutedForeground};
+export const MetaCard = styled.div`
+  padding: ${({ theme }) => theme.space.md};
+  border-radius: ${({ theme }) => theme.radii.lg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: color-mix(
+    in srgb,
+    ${({ theme }) => theme.colors.card} 50%,
+    transparent
+  );
 `
+
+export const MetaCardTitle = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSize.xs};
+  color: ${({ theme }) => theme.colors.mutedForeground};
+  margin-bottom: ${({ theme }) => theme.space.sm};
+`
+
+export const MetaCardValue = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  color: ${({ theme }) => theme.colors.foreground};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space.sm};
+`
+
+export const MetaUsersIcon = styled(Users)`
+  width: 0.875rem;
+  height: 0.875rem;
+  color: ${({ theme }) => theme.colors.mutedForeground};
+  flex-shrink: 0;
+`
+
+/* ── Achievements ────────────────────────────────────────────────────── */
 
 export const AchievementList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spaceCalc(1.5)};
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const AchievementItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: ${({ theme }) => theme.space.sm};
+  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const CheckMark = styled.span`
   color: ${({ theme }) => theme.colors.status.success.fg};
   margin-top: 0.125rem;
+  flex-shrink: 0;
 `
+
+/* ── Projects ────────────────────────────────────────────────────────── */
 
 export const ProjectsHeader = styled.div`
   display: flex;
@@ -115,8 +159,8 @@ export const ProjectsHeader = styled.div`
 `
 
 export const ProjectsList = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: ${({ theme }) => theme.spaceCalc(3)};
 `
 
@@ -138,36 +182,18 @@ export const ProjectTitle = styled.h5`
   color: ${({ theme }) => theme.colors.foreground};
 `
 
-export const ProjectPeriod = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin-top: ${({ theme }) => theme.space.xs};
-`
-
-export const AchievementsLabel = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.foreground};
-  margin-bottom: ${({ theme }) => theme.spaceCalc(1.5)};
-`
-
 export const ProjectAchievements = styled.ul`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.xs};
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const ProjectAchievementItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: ${({ theme }) => theme.spaceCalc(1.5)};
-`
-
-export const BulletMark = styled.span`
   color: ${({ theme }) => theme.colors.status.success.fg};
-  margin-top: 0.125rem;
 `
 
 export const IconOnlyEditIcon = styled(Edit2)`

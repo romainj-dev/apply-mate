@@ -35,7 +35,7 @@ export function ProfileSetupPrompt() {
             help us tailor your resumes and cover letters. Set up your profile
             with your work experience, skills, and preferences.
           </Body>
-          <SetupButton asChild size="lg" variant="orange">
+          <SetupButton asChild size="lg" variant="accent">
             <Link href="/dashboard/my-experience">
               Set Up Profile
               <ArrowIcon />

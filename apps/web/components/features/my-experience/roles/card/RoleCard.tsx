@@ -1,7 +1,9 @@
 'use client'
 
+import { parseTechStack } from '@/types/tech-stack'
 import type { ExperienceRole } from '../data-types'
 import { getEmploymentTypeBadge } from '../employment-type'
+import { getTechLabel } from '../tech-catalog'
 import {
   RoleCard,
   CardBody,
@@ -31,11 +33,9 @@ interface RolesCardProps {
 
 export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
   const employmentBadge = getEmploymentTypeBadge(role.employmentType)
-  const visibleTech = role.techStack?.slice(0, MAX_VISIBLE_TECH) ?? []
-  const overflowCount = Math.max(
-    0,
-    (role.techStack?.length ?? 0) - MAX_VISIBLE_TECH
-  )
+  const techStack = parseTechStack(role.techStack)
+  const visibleTech = techStack.slice(0, MAX_VISIBLE_TECH)
+  const overflowCount = Math.max(0, techStack.length - MAX_VISIBLE_TECH)
 
   return (
     <RoleCard
@@ -74,9 +74,12 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
 
           {visibleTech.length > 0 && (
             <TechStack>
-              {visibleTech.map((tech) => (
-                <TechBadge key={tech} variant="secondary">
-                  {tech}
+              {visibleTech.map((item) => (
+                <TechBadge
+                  key={item.value === 'other' ? item.customLabel : item.value}
+                  variant="secondary"
+                >
+                  {getTechLabel(item)}
                 </TechBadge>
               ))}
               {overflowCount > 0 && (

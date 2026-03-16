@@ -165,7 +165,6 @@ export function normalizeResumeParserAppResponse(
       const responsibilities = employment.responsibilities ?? []
       const roleResponsibilities =
         employment.roles?.flatMap((r) => r.responsibilities ?? []) ?? []
-      const allResponsibilities = [...responsibilities, ...roleResponsibilities]
 
       return {
         title: employment.title,
@@ -178,11 +177,12 @@ export function normalizeResumeParserAppResponse(
         periodLabel: formatPeriodLabel(startDate, endDate, isCurrent),
         durationLabel: calculateDuration(startDate, endDate),
         status: determineRoleStatus(employment),
-        summary: allResponsibilities.join('\n') || null,
+        summary: responsibilities.join('\n') || null,
         techStack: [],
         methodologies: [],
         teamStructure: null,
-        keyAchievements: allResponsibilities.slice(0, 5), // Top 5 as achievements
+        keyMetrics: null,
+        keyAchievements: roleResponsibilities,
         missingDetails:
           determineRoleStatus(employment) === 'incomplete'
             ? 'Missing projects and details'

@@ -79,7 +79,7 @@ export function CompleteExperience() {
           icon={<FolderGit2 size={20} />}
           action={
             <Button variant="outline" size="sm">
-              <Plus size={16} />
+              <Plus />
               Add Role
             </Button>
           }

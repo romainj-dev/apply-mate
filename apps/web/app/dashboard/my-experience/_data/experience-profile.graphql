@@ -25,17 +25,30 @@ query GetExperienceProfile {
       durationLabel
       status
       summary
-      techStack
+      techStack {
+        value
+        customLabel
+      }
       methodologies
       teamStructure
       keyAchievements
       missingDetails
+      keyMetrics {
+        type
+        customType
+        value
+        text
+      }
       projects {
         id
         title
         period
         description
         achievements
+        techStack {
+          value
+          customLabel
+        }
       }
     }
   }
