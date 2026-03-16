@@ -7,20 +7,18 @@ import {
   CardBody,
   CardStack,
   CardHeader,
-  CardHeaderContent,
   BadgeRow,
   EmploymentTypeBadge,
   CurrentBadge,
   RoleTitle,
   CompanyIcon,
   CompanyLine,
+  CompanyName,
   PeriodLine,
   PeriodIcon,
   TechStack,
   TechBadge,
   TechOverflow,
-  SummaryRow,
-  SummaryText,
 } from './RoleCard.styles'
 
 const MAX_VISIBLE_TECH = 2
@@ -49,26 +47,24 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
       <CardBody>
         <CardStack>
           <CardHeader>
-            <CardHeaderContent>
-              <BadgeRow>
-                {role.isCurrent && (
-                  <CurrentBadge variant="outline">Current</CurrentBadge>
-                )}
-                {employmentBadge && (
-                  <EmploymentTypeBadge
-                    variant="outline"
-                    $statusKey={employmentBadge.statusKey}
-                  >
-                    {employmentBadge.label}
-                  </EmploymentTypeBadge>
-                )}
-              </BadgeRow>
-              <RoleTitle>{role.title}</RoleTitle>
-              <CompanyLine>
-                <CompanyIcon />
-                {role.company}
-              </CompanyLine>
-            </CardHeaderContent>
+            <BadgeRow>
+              {role.isCurrent && (
+                <CurrentBadge variant="outline">Current</CurrentBadge>
+              )}
+              {employmentBadge && (
+                <EmploymentTypeBadge
+                  variant="outline"
+                  $statusKey={employmentBadge.statusKey}
+                >
+                  {employmentBadge.label}
+                </EmploymentTypeBadge>
+              )}
+            </BadgeRow>
+            <RoleTitle>{role.title}</RoleTitle>
+            <CompanyLine>
+              <CompanyIcon />
+              <CompanyName>{role.company}</CompanyName>
+            </CompanyLine>
           </CardHeader>
 
           <PeriodLine>
@@ -88,13 +84,6 @@ export function RolesCard({ role, isSelected, onClick }: RolesCardProps) {
               )}
             </TechStack>
           )}
-
-          <SummaryRow>
-            <SummaryText>
-              {role.projects.length} Projects · {role.keyAchievements.length}{' '}
-              Achievements
-            </SummaryText>
-          </SummaryRow>
         </CardStack>
       </CardBody>
     </RoleCard>

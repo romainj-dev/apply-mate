@@ -53,16 +53,6 @@ export const GlobalStyles = createGlobalStyle`
     text-wrap: pretty;
   }
 
-  /* Browsers don't inherit font from body for form elements by default */
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    font: inherit;
-    letter-spacing: inherit;
-  }
-
   img,
   video,
   canvas,

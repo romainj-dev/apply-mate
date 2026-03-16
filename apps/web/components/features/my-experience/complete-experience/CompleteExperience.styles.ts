@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.space.lg};
+  gap: ${({ theme }) => theme.space.xl};
   max-width: 100%;
 `
 

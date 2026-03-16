@@ -17,20 +17,15 @@ export const CardBody = styled(GlassCardContent)`
 `
 
 export const CardStack = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spaceCalc(3)};
+  display: grid;
+  grid-auto-flow: row;
+  gap: ${({ theme }) => theme.space.xs};
 `
 
 export const CardHeader = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-auto-flow: row;
   gap: ${({ theme }) => theme.space.sm};
-`
-
-export const CardHeaderContent = styled.div`
-  flex: 1;
 `
 
 export const BadgeRow = styled.div`
@@ -66,18 +61,25 @@ export const RoleTitle = styled.h4`
   color: ${({ theme }) => theme.colors.foreground};
 `
 
-export const CompanyLine = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.mutedForeground};
+export const CompanyLine = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: ${({ theme }) => theme.space.xs};
-  margin-top: ${({ theme }) => theme.space.xs};
+  width: 100%;
+  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const CompanyIcon = styled(Building2)`
   width: 0.875rem;
   height: 0.875rem;
+`
+
+export const CompanyName = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 export const PeriodLine = styled.div`
@@ -108,16 +110,6 @@ export const TechBadge = styled(Badge)`
     transparent
   );
   color: ${({ theme }) => theme.colors.primary};
-`
-
-export const SummaryRow = styled.div`
-  padding-top: ${({ theme }) => theme.space.sm};
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-`
-
-export const SummaryText = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const TechOverflow = styled.span`

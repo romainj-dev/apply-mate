@@ -2,7 +2,7 @@
 
 import { type ReactNode } from 'react'
 
-import { Wrapper, Inner, Title, Subtitle } from './Header.styles'
+import { Container, Title, Subtitle } from './Header.styles'
 
 export function DashboardHeader({
   title,
@@ -12,11 +12,9 @@ export function DashboardHeader({
   subtitle: string
 }) {
   return (
-    <Wrapper>
-      <Inner>
-        <Title>{title}</Title>
-        <Subtitle>{subtitle}</Subtitle>
-      </Inner>
-    </Wrapper>
+    <Container>
+      <Title>{title}</Title>
+      <Subtitle>{subtitle}</Subtitle>
+    </Container>
   )
 }
