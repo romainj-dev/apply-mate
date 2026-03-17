@@ -1,0 +1,5 @@
+mutation UpsertRole($input: UpsertRoleInput!) {
+  upsertRole(input: $input) {
+    roleId
+  }
+}

@@ -5,7 +5,7 @@ import {
   userExperienceRoleProjects,
   userExperienceRoles,
 } from '@/lib/db/schema'
-import { desc, eq, inArray } from 'drizzle-orm'
+import { and, desc, eq, inArray } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
@@ -289,5 +289,140 @@ export async function saveExperienceByUserId(
       rolesCount: insertedRolesCount,
       learningCount: insertedLearningCount,
     }
+  })
+}
+
+/* ── Single-role upsert ─────────────────────────────────────────────── */
+
+const upsertRoleProjectSchema = z.object({
+  title: z.string().min(1),
+  period: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  achievements: z.array(z.string()).default([]),
+  techStack: techStackSchema,
+})
+
+const upsertRoleSchema = z.object({
+  id: z.string().uuid().nullable().optional(),
+  title: z.string().min(1),
+  company: z.string().min(1),
+  employmentType: z.string().nullable().optional(),
+  location: z.string().nullable().optional(),
+  startDate: z.string().nullable().optional(),
+  endDate: z.string().nullable().optional(),
+  isCurrent: z.boolean().nullable().optional(),
+  periodLabel: z.string().nullable().optional(),
+  durationLabel: z.string().nullable().optional(),
+  status: z.string().nullable().optional(),
+  summary: z.string().nullable().optional(),
+  techStack: techStackSchema,
+  methodologies: z.array(z.string()).default([]),
+  teamStructure: z.string().nullable().optional(),
+  keyAchievements: z.array(z.string()).default([]),
+  keyMetrics: keyMetricsSchema,
+  projects: z.array(upsertRoleProjectSchema).default([]),
+})
+
+export type UpsertRoleInput = z.infer<typeof upsertRoleSchema>
+
+export async function upsertRoleByUserId(
+  userId: string,
+  rawInput: UpsertRoleInput
+): Promise<{ roleId: string }> {
+  const input = upsertRoleSchema.parse(rawInput)
+
+  return db.transaction(async (tx) => {
+    const [profile] = await tx
+      .select({ id: userExperienceProfiles.id })
+      .from(userExperienceProfiles)
+      .where(eq(userExperienceProfiles.userId, userId))
+      .limit(1)
+
+    if (!profile) {
+      throw new Error('Experience profile not found')
+    }
+
+    const status =
+      input.status === 'complete'
+        ? ('complete' as const)
+        : ('incomplete' as const)
+
+    const roleValues = {
+      title: input.title,
+      company: input.company,
+      employmentType: input.employmentType ?? null,
+      location: input.location ?? null,
+      startDate: input.startDate ?? null,
+      endDate: input.endDate ?? null,
+      isCurrent: input.isCurrent ?? false,
+      periodLabel: input.periodLabel ?? null,
+      durationLabel: input.durationLabel ?? null,
+      status,
+      summary: input.summary ?? null,
+      techStack: input.techStack ?? [],
+      methodologies: input.methodologies ?? [],
+      teamStructure: input.teamStructure ?? null,
+      keyAchievements: input.keyAchievements ?? [],
+      keyMetrics: input.keyMetrics ?? null,
+    }
+
+    let roleId: string
+
+    if (input.id) {
+      // Verify the role belongs to this user's profile
+      const [existing] = await tx
+        .select({ id: userExperienceRoles.id })
+        .from(userExperienceRoles)
+        .where(
+          and(
+            eq(userExperienceRoles.id, input.id),
+            eq(userExperienceRoles.profileId, profile.id)
+          )
+        )
+        .limit(1)
+
+      if (!existing) {
+        throw new Error('Role not found')
+      }
+
+      await tx
+        .update(userExperienceRoles)
+        .set(roleValues)
+        .where(eq(userExperienceRoles.id, input.id))
+
+      roleId = input.id
+
+      // Remove existing projects for re-insert
+      await tx
+        .delete(userExperienceRoleProjects)
+        .where(eq(userExperienceRoleProjects.roleId, roleId))
+    } else {
+      const [inserted] = await tx
+        .insert(userExperienceRoles)
+        .values({ profileId: profile.id, ...roleValues })
+        .returning({ id: userExperienceRoles.id })
+
+      if (!inserted) {
+        throw new Error('Failed to insert role')
+      }
+
+      roleId = inserted.id
+    }
+
+    // Insert projects
+    if (input.projects.length > 0) {
+      await tx.insert(userExperienceRoleProjects).values(
+        input.projects.map((p) => ({
+          roleId,
+          title: p.title,
+          period: p.period ?? null,
+          description: p.description ?? null,
+          achievements: p.achievements ?? [],
+          techStack: p.techStack ?? [],
+        }))
+      )
+    }
+
+    return { roleId }
   })
 }

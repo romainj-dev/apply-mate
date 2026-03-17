@@ -26,9 +26,10 @@ import {
 
 interface RolesDetailProps {
   role: ExperienceRole
+  onEditRole: (role: ExperienceRole) => void
 }
 
-export function RolesDetail({ role }: RolesDetailProps) {
+export function RolesDetail({ role, onEditRole }: RolesDetailProps) {
   const isComplete = role.status === 'complete'
   const employmentBadge = getEmploymentTypeBadge(role.employmentType)
 
@@ -61,7 +62,11 @@ export function RolesDetail({ role }: RolesDetailProps) {
               <Sparkles />
               Polish
             </Button>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEditRole(role)}
+            >
               <Edit2 />
               Edit
             </Button>

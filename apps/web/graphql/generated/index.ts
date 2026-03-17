@@ -149,11 +149,17 @@ export type KeyMetricModel = {
 
 export type Mutation = {
   saveExperience: ExperienceMutationResult;
+  upsertRole: UpsertRoleMutationResult;
 };
 
 
 export type MutationSaveExperienceArgs = {
   input: SaveExperienceInput;
+};
+
+
+export type MutationUpsertRoleArgs = {
+  input: UpsertRoleInput;
 };
 
 export type PlanModel = {
@@ -189,6 +195,39 @@ export type TechStackItemModel = {
   value: Scalars['String']['output'];
 };
 
+export type UpsertRoleInput = {
+  company: Scalars['String']['input'];
+  durationLabel?: InputMaybe<Scalars['String']['input']>;
+  employmentType?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  isCurrent?: InputMaybe<Scalars['Boolean']['input']>;
+  keyAchievements?: InputMaybe<Array<Scalars['String']['input']>>;
+  keyMetrics?: InputMaybe<Scalars['JSONObject']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  methodologies?: InputMaybe<Array<Scalars['String']['input']>>;
+  periodLabel?: InputMaybe<Scalars['String']['input']>;
+  projects?: InputMaybe<Array<UpsertRoleProjectInput>>;
+  startDate?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  teamStructure?: InputMaybe<Scalars['String']['input']>;
+  techStack?: InputMaybe<Scalars['JSONObject']['input']>;
+  title: Scalars['String']['input'];
+};
+
+export type UpsertRoleMutationResult = {
+  roleId: Scalars['ID']['output'];
+};
+
+export type UpsertRoleProjectInput = {
+  achievements?: InputMaybe<Array<Scalars['String']['input']>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  period?: InputMaybe<Scalars['String']['input']>;
+  techStack?: InputMaybe<Scalars['JSONObject']['input']>;
+  title: Scalars['String']['input'];
+};
+
 export type User = {
   avatarUrl: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
@@ -211,6 +250,13 @@ export type GetExperienceProfileQueryVariables = Exact<{ [key: string]: never; }
 
 export type GetExperienceProfileQuery = { experienceProfile: { profile: { id: string, userId: string, headline: string | null | undefined, summary: string | null | undefined, location: string | null | undefined, yearsOfExperience: number | null | undefined, skills: Array<string>, customFields: Record<string, unknown> | null | undefined, createdAt: string, updatedAt: string }, roles: Array<{ id: string, title: string, company: string, employmentType: string | null | undefined, location: string | null | undefined, startDate: string | null | undefined, endDate: string | null | undefined, isCurrent: boolean | null | undefined, periodLabel: string | null | undefined, durationLabel: string | null | undefined, status: string, summary: string | null | undefined, methodologies: Array<string>, teamStructure: string | null | undefined, keyAchievements: Array<string>, missingDetails: string | null | undefined, techStack: Array<{ value: string, customLabel: string | null | undefined }>, keyMetrics: Array<{ type: string, customType: string | null | undefined, value: string, text: string }> | null | undefined, projects: Array<{ id: string, title: string, period: string | null | undefined, description: string | null | undefined, achievements: Array<string>, techStack: Array<{ value: string, customLabel: string | null | undefined }> }> }> } | null | undefined };
 
+export type UpsertRoleMutationVariables = Exact<{
+  input: UpsertRoleInput;
+}>;
+
+
+export type UpsertRoleMutation = { upsertRole: { roleId: string } };
+
 export type SaveExperienceMutationVariables = Exact<{
   input: SaveExperienceInput;
 }>;
@@ -221,4 +267,5 @@ export type SaveExperienceMutation = { saveExperience: { profileId: string, role
 
 export const GetPlanPricingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPlanPricing"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"plans"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"price"}}]}}]}}]} as unknown as DocumentNode<GetPlanPricingQuery, GetPlanPricingQueryVariables>;
 export const GetExperienceProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetExperienceProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"experienceProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"headline"}},{"kind":"Field","name":{"kind":"Name","value":"summary"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"yearsOfExperience"}},{"kind":"Field","name":{"kind":"Name","value":"skills"}},{"kind":"Field","name":{"kind":"Name","value":"customFields"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"employmentType"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"isCurrent"}},{"kind":"Field","name":{"kind":"Name","value":"periodLabel"}},{"kind":"Field","name":{"kind":"Name","value":"durationLabel"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"summary"}},{"kind":"Field","name":{"kind":"Name","value":"techStack"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"customLabel"}}]}},{"kind":"Field","name":{"kind":"Name","value":"methodologies"}},{"kind":"Field","name":{"kind":"Name","value":"teamStructure"}},{"kind":"Field","name":{"kind":"Name","value":"keyAchievements"}},{"kind":"Field","name":{"kind":"Name","value":"missingDetails"}},{"kind":"Field","name":{"kind":"Name","value":"keyMetrics"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"customType"}},{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"period"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"achievements"}},{"kind":"Field","name":{"kind":"Name","value":"techStack"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"customLabel"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetExperienceProfileQuery, GetExperienceProfileQueryVariables>;
+export const UpsertRoleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertRole"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertRoleInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertRole"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"roleId"}}]}}]}}]} as unknown as DocumentNode<UpsertRoleMutation, UpsertRoleMutationVariables>;
 export const SaveExperienceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SaveExperience"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SaveExperienceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"saveExperience"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"rolesCount"}},{"kind":"Field","name":{"kind":"Name","value":"learningCount"}}]}}]}}]} as unknown as DocumentNode<SaveExperienceMutation, SaveExperienceMutationVariables>;

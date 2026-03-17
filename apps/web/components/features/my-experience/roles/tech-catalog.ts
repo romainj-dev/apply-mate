@@ -5,7 +5,7 @@ type TechEntry = {
   categories: TechCategory[]
 }
 
-const TECH_CATALOG: Record<Exclude<TechKey, 'other'>, TechEntry> = {
+export const TECH_CATALOG: Record<Exclude<TechKey, 'other'>, TechEntry> = {
   // Frontend
   react: { label: 'React', categories: ['frontend'] },
   vue: { label: 'Vue.js', categories: ['frontend'] },

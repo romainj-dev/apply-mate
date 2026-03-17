@@ -14,6 +14,8 @@ import {
 } from '@/components/features/my-experience/ai-suggestions/AiSuggestions'
 import { RolesList } from '@/components/features/my-experience/roles/list/RolesList'
 import { RolesDetail } from '@/components/features/my-experience/roles/detail/RolesDetail'
+import { RoleDrawer } from '@/components/features/my-experience/roles/drawer/RoleDrawer'
+import type { ExperienceRole } from '@/components/features/my-experience/roles/data-types'
 import { useDashboardLayout } from '@/components/layout/dashboard-layout/DashboardLayout'
 import {
   PageContainer,
@@ -67,6 +69,9 @@ export function CompleteExperience() {
   const [selectedRoleId, setSelectedRoleId] = useState<string | null>(
     roles.length > 0 ? roles[0].id : null
   )
+  const [drawerRole, setDrawerRole] = useState<ExperienceRole | 'new' | null>(
+    null
+  )
 
   const selectedRole = roles.find((r) => r.id === selectedRoleId)
 
@@ -87,7 +92,11 @@ export function CompleteExperience() {
           subtitle="Work experience and side projects AI uses for applications"
           icon={<FolderGit2 size={20} />}
           action={
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setDrawerRole('new')}
+            >
               <Plus />
               Add Role
             </Button>
@@ -102,8 +111,23 @@ export function CompleteExperience() {
       </RolesSection>
 
       <RoleDetailSection id="role-detail">
-        {selectedRole && <RolesDetail role={selectedRole} />}
+        {selectedRole && (
+          <RolesDetail
+            role={selectedRole}
+            onEditRole={(role) => setDrawerRole(role)}
+          />
+        )}
       </RoleDetailSection>
+
+      <RoleDrawer
+        open={drawerRole !== null}
+        onOpenChange={(open) => {
+          if (!open) setDrawerRole(null)
+        }}
+        role={
+          drawerRole !== 'new' && drawerRole !== null ? drawerRole : undefined
+        }
+      />
     </PageContainer>
   )
 }

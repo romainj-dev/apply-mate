@@ -138,6 +138,7 @@ type KeyMetricModel {
 
 type Mutation {
   saveExperience(input: SaveExperienceInput!): ExperienceMutationResult!
+  upsertRole(input: UpsertRoleInput!): UpsertRoleMutationResult!
 }
 
 type PlanModel {
@@ -166,6 +167,39 @@ input SaveExperienceInput {
 type TechStackItemModel {
   customLabel: String
   value: String!
+}
+
+input UpsertRoleInput {
+  company: String!
+  durationLabel: String
+  employmentType: String
+  endDate: String
+  id: String
+  isCurrent: Boolean
+  keyAchievements: [String!]
+  keyMetrics: JSONObject
+  location: String
+  methodologies: [String!]
+  periodLabel: String
+  projects: [UpsertRoleProjectInput!]
+  startDate: String
+  status: String
+  summary: String
+  teamStructure: String
+  techStack: JSONObject
+  title: String!
+}
+
+type UpsertRoleMutationResult {
+  roleId: ID!
+}
+
+input UpsertRoleProjectInput {
+  achievements: [String!]
+  description: String
+  period: String
+  techStack: JSONObject
+  title: String!
 }
 
 type User {

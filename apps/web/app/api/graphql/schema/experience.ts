@@ -1,7 +1,9 @@
 import {
   getExperienceProfileByUserId,
   saveExperienceByUserId,
+  upsertRoleByUserId,
   type SaveExperienceInput,
+  type UpsertRoleInput,
 } from '@/lib/db/services/experience-service'
 import type { InferSelectModel } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
@@ -269,6 +271,51 @@ const SaveExperienceInputRef = builder.inputType('SaveExperienceInput', {
   }),
 })
 
+/* ── Upsert Role Inputs ─────────────────────────────────────────────── */
+
+const UpsertRoleProjectInput = builder.inputType('UpsertRoleProjectInput', {
+  fields: (t) => ({
+    title: t.string({ required: true }),
+    period: t.string(),
+    description: t.string(),
+    achievements: t.stringList(),
+    techStack: t.field({ type: 'JSONObject' }),
+  }),
+})
+
+const UpsertRoleInputRef = builder.inputType('UpsertRoleInput', {
+  fields: (t) => ({
+    id: t.string(),
+    title: t.string({ required: true }),
+    company: t.string({ required: true }),
+    employmentType: t.string(),
+    location: t.string(),
+    startDate: t.string(),
+    endDate: t.string(),
+    isCurrent: t.boolean(),
+    periodLabel: t.string(),
+    durationLabel: t.string(),
+    status: t.string(),
+    summary: t.string(),
+    techStack: t.field({ type: 'JSONObject' }),
+    methodologies: t.stringList(),
+    teamStructure: t.string(),
+    keyAchievements: t.stringList(),
+    keyMetrics: t.field({ type: 'JSONObject' }),
+    projects: t.field({ type: [UpsertRoleProjectInput] }),
+  }),
+})
+
+const UpsertRoleMutationResultRef = builder.objectRef<{ roleId: string }>(
+  'UpsertRoleMutationResult'
+)
+
+UpsertRoleMutationResultRef.implement({
+  fields: (t) => ({
+    roleId: t.exposeID('roleId'),
+  }),
+})
+
 /* ── Query & Mutation ────────────────────────────────────────────────── */
 
 builder.queryField('experienceProfile', (t) =>
@@ -301,6 +348,27 @@ builder.mutationField('saveExperience', (t) =>
       return saveExperienceByUserId(
         context.user.id,
         args.input as unknown as SaveExperienceInput
+      )
+    },
+  })
+)
+
+builder.mutationField('upsertRole', (t) =>
+  t.field({
+    type: UpsertRoleMutationResultRef,
+    args: {
+      input: t.arg({ type: UpsertRoleInputRef, required: true }),
+    },
+    resolve: async (_root, args, context) => {
+      if (!context.user?.id) {
+        throw new Error('Unauthorized')
+      }
+
+      // TODO(ts-migration): Pothos input type and UpsertRoleInput are structurally equivalent but
+      // Pothos's generated type does not match directly — bridge via unknown.
+      return upsertRoleByUserId(
+        context.user.id,
+        args.input as unknown as UpsertRoleInput
       )
     },
   })
