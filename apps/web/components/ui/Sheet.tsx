@@ -29,7 +29,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = 'SheetOverlay'
 
 const sheetContentVariants = cva(
-  'fixed z-50 flex flex-col bg-background shadow-2xl border transition-transform duration-300 ease-in-out',
+  'fixed z-50 flex flex-col overflow-hidden bg-background shadow-2xl border transition-transform duration-300 ease-in-out',
   {
     variants: {
       side: {

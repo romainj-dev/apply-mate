@@ -14,11 +14,6 @@ import {
   CheckMark,
   FlexFill,
   IconOnlyEditIcon,
-  MetaCard,
-  MetaCardTitle,
-  MetaCardValue,
-  MetaGrid,
-  MetaUsersIcon,
   ProjectAchievementItem,
   ProjectAchievements,
   ProjectCardContent,
@@ -41,11 +36,6 @@ interface RoleCompleteContentProps {
 export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
   const keyMetrics = role.keyMetrics ?? null
   const hasMetrics = keyMetrics && keyMetrics.length > 0
-  const hasTeam = !!role.teamStructure
-  const hasMethodologies = role.methodologies.length > 0
-  const techStack = parseTechStack(role.techStack)
-  const hasTechStack = techStack.length > 0
-  const hasMetaCards = hasTeam || hasMethodologies || hasTechStack
   const hasAchievements = (role.keyAchievements?.length ?? 0) > 0
   const hasProjects = (role.projects?.length ?? 0) > 0
 
@@ -60,42 +50,6 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
           </SectionTitle>
           <KeyMetrics metrics={keyMetrics} />
         </div>
-      )}
-
-      {/* Team / Methodology / Tech Stack */}
-      {hasMetaCards && (
-        <MetaGrid>
-          {hasTeam && (
-            <MetaCard>
-              <MetaCardTitle>Team</MetaCardTitle>
-              <MetaCardValue>
-                <MetaUsersIcon />
-                {role.teamStructure}
-              </MetaCardValue>
-            </MetaCard>
-          )}
-          {hasMethodologies && (
-            <MetaCard>
-              <MetaCardTitle>Methodology</MetaCardTitle>
-              <MetaCardValue>{role.methodologies.join(', ')}</MetaCardValue>
-            </MetaCard>
-          )}
-          {hasTechStack && (
-            <MetaCard>
-              <MetaCardTitle>Tech Stack</MetaCardTitle>
-              <BadgesRow>
-                {techStack.map((item) => (
-                  <TechBadge
-                    key={item.value === 'other' ? item.customLabel : item.value}
-                    variant="secondary"
-                  >
-                    {getTechLabel(item)}
-                  </TechBadge>
-                ))}
-              </BadgesRow>
-            </MetaCard>
-          )}
-        </MetaGrid>
       )}
 
       {/* Key Achievements */}
@@ -133,7 +87,7 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
             {role.projects?.map((project) => {
               const projectTech = parseTechStack(project.techStack)
               return (
-                <GlassCard key={project.id} variant="primary">
+                <GlassCard key={project.id}>
                   <ProjectCardContent>
                     <ProjectHeader>
                       <FlexFill>

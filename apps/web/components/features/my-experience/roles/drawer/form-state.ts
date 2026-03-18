@@ -78,6 +78,7 @@ export type RoleFormAction =
     }
   | { type: 'ADD_PROJECT_TECH'; projectIndex: number; item: TechStackItem }
   | { type: 'REMOVE_PROJECT_TECH'; projectIndex: number; techIndex: number }
+  | { type: 'RESET'; role?: ExperienceRole }
 
 /* ── Helpers ───────────────────────────────────────────────────────── */
 
@@ -193,7 +194,7 @@ export function initFormState(role?: ExperienceRole): RoleFormState {
 
   return {
     roleGroup: isSideProject ? 'side-project' : 'work',
-    employmentType: (role.employmentType as EmploymentType) ?? 'full-time',
+    employmentType: role.employmentType as EmploymentType,
     title: role.title,
     company: role.company,
     startMonth: startParts.month,
@@ -369,6 +370,9 @@ export function roleFormReducer(
             : p
         ),
       }
+
+    case 'RESET':
+      return initFormState(action.role)
 
     default:
       return state

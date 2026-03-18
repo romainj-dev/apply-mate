@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const MetricsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  grid-template-columns: 1fr 1fr 1fr;
   gap: ${({ theme }) => theme.space.md};
 `
 
@@ -13,9 +13,11 @@ export const MetricCard = styled.div`
   text-align: center;
   padding: ${({ theme }) => theme.space.md} ${({ theme }) => theme.space.sm};
   border-radius: ${({ theme }) => theme.radii.xl};
+  border: 1px solid
+    color-mix(in srgb, ${({ theme }) => theme.colors.accent} 50%, transparent);
   background: color-mix(
     in srgb,
-    ${({ theme }) => theme.colors.primary} 5%,
+    ${({ theme }) => theme.colors.accent} 5%,
     transparent
   );
 `

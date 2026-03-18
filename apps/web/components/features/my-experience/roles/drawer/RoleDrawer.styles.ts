@@ -21,8 +21,17 @@ export const SaveErrorIcon = styled(AlertCircle)`
   flex-shrink: 0;
 `
 
+export const Form = styled.form`
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`
+
 export const FormBody = styled.div`
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: ${({ theme }) => theme.space.lg};
   display: flex;

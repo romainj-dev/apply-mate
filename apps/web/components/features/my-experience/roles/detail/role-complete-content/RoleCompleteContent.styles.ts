@@ -82,51 +82,6 @@ export const TechBadge = styled(Badge)`
   color: ${({ theme }) => theme.colors.primary};
 `
 
-/* ── Meta grid (Team / Methodology / Tech Stack) ─────────────────────── */
-
-export const MetaGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: ${({ theme }) => theme.space.md};
-
-  ${({ theme }) => theme.media.belowMobile} {
-    grid-template-columns: 1fr;
-  }
-`
-
-export const MetaCard = styled.div`
-  padding: ${({ theme }) => theme.space.md};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  background: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.card} 50%,
-    transparent
-  );
-`
-
-export const MetaCardTitle = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.xs};
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin-bottom: ${({ theme }) => theme.space.sm};
-`
-
-export const MetaCardValue = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  color: ${({ theme }) => theme.colors.foreground};
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.space.sm};
-`
-
-export const MetaUsersIcon = styled(Users)`
-  width: 0.875rem;
-  height: 0.875rem;
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  flex-shrink: 0;
-`
-
 /* ── Achievements ────────────────────────────────────────────────────── */
 
 export const AchievementList = styled.ul`

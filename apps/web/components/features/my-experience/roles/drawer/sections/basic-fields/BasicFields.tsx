@@ -2,7 +2,6 @@
 
 import { Input } from '@/components/ui/Input'
 import type { RoleFormState, StringField } from '../../form-state'
-import type { ValidationErrors } from '../../RoleDrawer.hook'
 import {
   FieldsGrid,
   DateRow,
@@ -42,50 +41,56 @@ interface BasicFieldsProps {
   state: RoleFormState
   onFieldChange: (field: StringField, value: string) => void
   onToggleCurrent: () => void
-  validationErrors: ValidationErrors
-  onClearFieldError: (field: 'title' | 'company') => void
+  fieldErrors: Record<string, string[]> | null
 }
 
 export function BasicFields({
   state,
   onFieldChange,
   onToggleCurrent,
-  validationErrors,
-  onClearFieldError,
+  fieldErrors,
 }: BasicFieldsProps) {
   const years = getYearOptions()
+  const titleError = fieldErrors?.['title']?.[0]
+  const companyError = fieldErrors?.['company']?.[0]
 
   return (
     <FieldsGrid>
       <div>
-        <FieldLabel>Role Title</FieldLabel>
+        <FieldLabel htmlFor="role-title">Role Title</FieldLabel>
         <Input
+          id="role-title"
           placeholder="e.g., Senior Full-Stack Developer"
           value={state.title}
           onChange={(e) => onFieldChange('title', e.target.value)}
-          onFocus={() => onClearFieldError('title')}
-          aria-invalid={!!validationErrors.title}
+          aria-invalid={!!titleError}
+          aria-describedby={titleError ? 'role-title-error' : undefined}
         />
-        {validationErrors.title && (
-          <FieldError>{validationErrors.title}</FieldError>
+        {titleError && (
+          <FieldError id="role-title-error" role="alert">
+            {titleError}
+          </FieldError>
         )}
       </div>
 
       <div>
-        <FieldLabel>
+        <FieldLabel htmlFor="role-company">
           {state.roleGroup === 'side-project'
             ? 'Project Name'
             : 'Company / Project Name'}
         </FieldLabel>
         <Input
+          id="role-company"
           placeholder="e.g., TechCorp Inc."
           value={state.company}
           onChange={(e) => onFieldChange('company', e.target.value)}
-          onFocus={() => onClearFieldError('company')}
-          aria-invalid={!!validationErrors.company}
+          aria-invalid={!!companyError}
+          aria-describedby={companyError ? 'role-company-error' : undefined}
         />
-        {validationErrors.company && (
-          <FieldError>{validationErrors.company}</FieldError>
+        {companyError && (
+          <FieldError id="role-company-error" role="alert">
+            {companyError}
+          </FieldError>
         )}
       </div>
 

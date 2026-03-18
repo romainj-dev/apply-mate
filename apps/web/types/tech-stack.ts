@@ -114,7 +114,7 @@ export type TechStackItem = KnownTechItem | CustomTechItem
 
 /* ── Parsing ─────────────────────────────────────────────────────────── */
 
-type RawTechStackItem = {
+export type RawTechStackItem = {
   value: string
   customLabel?: string | null
 }

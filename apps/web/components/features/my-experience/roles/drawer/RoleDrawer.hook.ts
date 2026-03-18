@@ -1,6 +1,13 @@
-import { useReducer, useCallback, useState } from 'react'
-import { UpsertRoleDocument, type UpsertRoleInput } from '@/graphql/generated'
-import { useMutation, useQueryClient } from '@/modules/requests/client/hooks'
+import {
+  useReducer,
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+  useActionState,
+  useTransition,
+} from 'react'
+import { useQueryClient } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
 import { KEY_METRIC_TYPES, type KeyMetricType } from '@/types/key-metrics'
 import type { ExperienceRole } from '../data-types'
@@ -10,63 +17,14 @@ import {
   type RoleFormState,
   type RoleFormAction,
 } from './form-state'
+import { upsertRoleAction } from '@/app/dashboard/my-experience/_actions/upsert-role'
+import { INITIAL_UPSERT_ROLE_STATE } from '@/app/dashboard/my-experience/_actions/upsert-role-types'
 
-/* ── Date helpers ──────────────────────────────────────────────────── */
-
-const MONTH_NAMES = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-]
+/* ── Helpers ──────────────────────────────────────────────────────── */
 
 function toDateString(month: string, year: string): string | null {
   if (!month || !year) return null
   return `${year}-${month}-01`
-}
-
-function computePeriodLabel(state: RoleFormState): string | null {
-  if (!state.startMonth || !state.startYear) return null
-  const startLabel = `${MONTH_NAMES[parseInt(state.startMonth, 10) - 1]} ${state.startYear}`
-  if (state.isCurrent) return `${startLabel} - Present`
-  if (!state.endMonth || !state.endYear) return startLabel
-  const endLabel = `${MONTH_NAMES[parseInt(state.endMonth, 10) - 1]} ${state.endYear}`
-  return `${startLabel} - ${endLabel}`
-}
-
-function computeDurationLabel(state: RoleFormState): string | null {
-  if (!state.startMonth || !state.startYear) return null
-  const startDate = new Date(
-    parseInt(state.startYear, 10),
-    parseInt(state.startMonth, 10) - 1
-  )
-  const endDate = state.isCurrent
-    ? new Date()
-    : state.endMonth && state.endYear
-      ? new Date(parseInt(state.endYear, 10), parseInt(state.endMonth, 10) - 1)
-      : null
-
-  if (!endDate) return null
-
-  let months =
-    (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-    (endDate.getMonth() - startDate.getMonth())
-  if (months < 0) months = 0
-
-  const years = Math.floor(months / 12)
-  const remainingMonths = months % 12
-
-  if (years === 0) return `${remainingMonths}m`
-  if (remainingMonths === 0) return `${years}y`
-  return `${years}y ${remainingMonths}m`
 }
 
 function buildTeamStructure(state: RoleFormState): string | null {
@@ -99,11 +57,6 @@ function resolveMetricType(label: string): {
   return { type: 'other', customType: label }
 }
 
-function computeStatus(state: RoleFormState): string {
-  if (state.title && state.company && state.summary) return 'complete'
-  return 'incomplete'
-}
-
 /* ── Hook ──────────────────────────────────────────────────────────── */
 
 interface UseRoleFormOptions {
@@ -111,17 +64,14 @@ interface UseRoleFormOptions {
   onClose: () => void
 }
 
-export type ValidationErrors = Partial<Record<'title' | 'company', string>>
-
 interface UseRoleFormReturn {
   state: RoleFormState
   dispatch: React.Dispatch<RoleFormAction>
-  handleSave: () => void
+  handleSubmit: () => void
   isPending: boolean
   isEditMode: boolean
-  saveError: Error | null
-  validationErrors: ValidationErrors
-  clearValidationError: (field: 'title' | 'company') => void
+  fieldErrors: Record<string, string[]> | null
+  serverError: string | null
 }
 
 export function useRoleForm({
@@ -131,38 +81,41 @@ export function useRoleForm({
   const isEditMode = !!role
   const [state, dispatch] = useReducer(roleFormReducer, role, initFormState)
 
+  // Reset form when role changes (e.g. open Add vs Edit) without remounting
+  const roleIdRef = useRef(role?.id)
+  useEffect(() => {
+    if (role?.id !== roleIdRef.current) {
+      roleIdRef.current = role?.id
+      dispatch({ type: 'RESET', role })
+    }
+  }, [role])
+
   const queryClient = useQueryClient()
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({})
-  const clearValidationError = useCallback((field: 'title' | 'company') => {
-    setValidationErrors((prev) => {
-      const next = { ...prev }
-      delete next[field]
-      return next
-    })
-  }, [])
-  const { mutate, isPending, error } = useMutation(UpsertRoleDocument, {
-    onSuccess: () => {
+  const [clientErrors, setClientErrors] = useState<Record<
+    string,
+    string[]
+  > | null>(null)
+
+  const [actionResult, formAction] = useActionState(
+    upsertRoleAction,
+    INITIAL_UPSERT_ROLE_STATE
+  )
+  const [isTransitioning, startTransition] = useTransition()
+
+  // On success: invalidate cache and close drawer
+  const prevResultRef = useRef(actionResult)
+  useEffect(() => {
+    if (actionResult !== prevResultRef.current && actionResult.success) {
       queryClient.invalidateQueries({
         queryKey: queryKeys.experienceProfile.get(),
       })
       onClose()
-    },
-  })
-
-  const handleSave = useCallback(() => {
-    const errors: ValidationErrors = {}
-    if (!state.title.trim()) errors.title = 'Role title is required'
-    if (!state.company.trim()) errors.company = 'Company is required'
-    if (Object.keys(errors).length > 0) {
-      setValidationErrors(errors)
-      return
     }
-    setValidationErrors({})
+    prevResultRef.current = actionResult
+  }, [actionResult, queryClient, onClose])
 
-    // techStack / keyMetrics are typed as JSONObject in the GraphQL schema
-    // but we send structured arrays — cast via unknown to satisfy the generated types
-    const techStackJson = state.techStack as unknown as Record<string, unknown>
-    const keyMetricsJson = state.keyMetrics
+  const buildInput = useCallback(() => {
+    const keyMetrics = state.keyMetrics
       .filter((m) => m.label && m.value)
       .map((m) => {
         const resolved = resolveMetricType(m.label)
@@ -172,9 +125,9 @@ export function useRoleForm({
           value: m.value,
           text: m.label,
         }
-      }) as unknown as Record<string, unknown>
+      })
 
-    const input: UpsertRoleInput = {
+    return {
       id: role?.id ?? null,
       title: state.title,
       company: state.company,
@@ -184,35 +137,54 @@ export function useRoleForm({
         ? null
         : toDateString(state.endMonth, state.endYear),
       isCurrent: state.isCurrent,
-      periodLabel: computePeriodLabel(state),
-      durationLabel: computeDurationLabel(state),
-      status: computeStatus(state),
       summary: state.summary || null,
-      techStack: techStackJson,
+      techStack: state.techStack,
       methodologies: state.methodology ? [state.methodology] : [],
       teamStructure: buildTeamStructure(state),
       keyAchievements: state.keyAchievements.map((a) => a.text).filter(Boolean),
-      keyMetrics: keyMetricsJson,
+      keyMetrics,
       projects: state.projects
         .filter((p) => p.title)
         .map((p) => ({
           title: p.title,
           description: p.description || null,
-          techStack: p.techStack as unknown as Record<string, unknown>,
+          techStack: p.techStack,
         })),
     }
+  }, [state, role?.id])
 
-    mutate({ input })
-  }, [state, role?.id, mutate])
+  const handleSubmit = useCallback(() => {
+    const input = buildInput()
+
+    // Lightweight client-side check for required fields (instant feedback).
+    // Full Zod validation runs server-side in the action.
+    const errors: Record<string, string[]> = {}
+    if (!input.title.trim()) errors.title = ['Title is required']
+    if (!input.company.trim()) errors.company = ['Company is required']
+    if (Object.keys(errors).length > 0) {
+      setClientErrors(errors)
+      return
+    }
+
+    setClientErrors(null)
+
+    const fd = new FormData()
+    fd.set('payload', JSON.stringify(input))
+    startTransition(() => {
+      formAction(fd)
+    })
+  }, [buildInput, formAction, startTransition])
+
+  // Merge client errors (priority) with server field errors
+  const fieldErrors = clientErrors ?? actionResult.fieldErrors ?? null
 
   return {
     state,
     dispatch,
-    handleSave,
-    isPending,
+    handleSubmit,
+    isPending: isTransitioning,
     isEditMode,
-    saveError: error ?? null,
-    validationErrors,
-    clearValidationError,
+    fieldErrors,
+    serverError: actionResult.error ?? null,
   }
 }

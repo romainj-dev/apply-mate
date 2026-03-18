@@ -13,7 +13,9 @@
       "Bash(xargs cat)",
       "Bash(grep -r \"from ''styled-components''\" /Users/romainjulien/development/apply-mate/apps/web/components --include=\"*.ts\" --include=\"*.tsx\")",
       "Bash(pnpm --filter web add @radix-ui/react-dialog)",
-      "Bash(pnpm --filter web run codegen:graphql)"
+      "Bash(pnpm --filter web run codegen:graphql)",
+      "Bash(pnpm --filter web build)",
+      "Bash(npm run build)"
     ]
   }
 }

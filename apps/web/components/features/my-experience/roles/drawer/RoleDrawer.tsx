@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/Button'
 import type { ExperienceRole } from '../data-types'
 import { useRoleForm } from './RoleDrawer.hook'
 import {
+  Form,
   FormBody,
   SaveErrorBanner,
   SaveErrorIcon,
@@ -38,12 +39,11 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
   const {
     state,
     dispatch,
-    handleSave,
+    handleSubmit,
     isPending,
     isEditMode,
-    saveError,
-    validationErrors,
-    clearValidationError,
+    fieldErrors,
+    serverError,
   } = useRoleForm({
     role,
     onClose: () => onOpenChange(false),
@@ -66,109 +66,116 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
           </SheetClose>
         </SheetHeader>
 
-        <FormBody>
-          {saveError && (
-            <SaveErrorBanner>
-              <SaveErrorIcon />
-              <span>{saveError.message}</span>
-            </SaveErrorBanner>
-          )}
-          <TypeToggle
-            roleGroup={state.roleGroup}
-            onChangeGroup={(group) =>
-              dispatch({ type: 'SET_ROLE_GROUP', group })
-            }
-          />
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleSubmit()
+          }}
+        >
+          <FormBody>
+            {serverError && (
+              <SaveErrorBanner>
+                <SaveErrorIcon />
+                <span>{serverError}</span>
+              </SaveErrorBanner>
+            )}
 
-          <BasicFields
-            state={state}
-            onFieldChange={(field, value) =>
-              dispatch({ type: 'SET_FIELD', field, value })
-            }
-            onToggleCurrent={() => dispatch({ type: 'TOGGLE_CURRENT' })}
-            validationErrors={validationErrors}
-            onClearFieldError={clearValidationError}
-          />
+            <TypeToggle
+              roleGroup={state.roleGroup}
+              onChangeGroup={(group) =>
+                dispatch({ type: 'SET_ROLE_GROUP', group })
+              }
+            />
 
-          <SectionDivider />
+            <BasicFields
+              state={state}
+              onFieldChange={(field, value) =>
+                dispatch({ type: 'SET_FIELD', field, value })
+              }
+              onToggleCurrent={() => dispatch({ type: 'TOGGLE_CURRENT' })}
+              fieldErrors={fieldErrors}
+            />
 
-          <SummarySection
-            summary={state.summary}
-            onChange={(value) =>
-              dispatch({
-                type: 'SET_FIELD',
-                field: 'summary',
-                value,
-              })
-            }
-          />
+            <SectionDivider />
 
-          <TeamSection
-            state={state}
-            onFieldChange={(field, value) =>
-              dispatch({ type: 'SET_FIELD', field, value })
-            }
-          />
+            <SummarySection
+              summary={state.summary}
+              onChange={(value) =>
+                dispatch({
+                  type: 'SET_FIELD',
+                  field: 'summary',
+                  value,
+                })
+              }
+            />
 
-          <SectionDivider />
+            <TeamSection
+              state={state}
+              onFieldChange={(field, value) =>
+                dispatch({ type: 'SET_FIELD', field, value })
+              }
+            />
 
-          <TechStackInput
-            techStack={state.techStack}
-            onAdd={(item) => dispatch({ type: 'ADD_TECH', item })}
-            onRemove={(index) => dispatch({ type: 'REMOVE_TECH', index })}
-          />
+            <SectionDivider />
 
-          <SectionDivider />
+            <TechStackInput
+              techStack={state.techStack}
+              onAdd={(item) => dispatch({ type: 'ADD_TECH', item })}
+              onRemove={(index) => dispatch({ type: 'REMOVE_TECH', index })}
+            />
 
-          <KeyMetricsSection
-            metrics={state.keyMetrics}
-            onAdd={() => dispatch({ type: 'ADD_METRIC' })}
-            onRemove={(index) => dispatch({ type: 'REMOVE_METRIC', index })}
-            onUpdate={(index, field, value) =>
-              dispatch({ type: 'UPDATE_METRIC', index, field, value })
-            }
-          />
+            <SectionDivider />
 
-          <SectionDivider />
+            <KeyMetricsSection
+              metrics={state.keyMetrics}
+              onAdd={() => dispatch({ type: 'ADD_METRIC' })}
+              onRemove={(index) => dispatch({ type: 'REMOVE_METRIC', index })}
+              onUpdate={(index, field, value) =>
+                dispatch({ type: 'UPDATE_METRIC', index, field, value })
+              }
+            />
 
-          <AchievementsSection
-            achievements={state.keyAchievements}
-            onAdd={() => dispatch({ type: 'ADD_ACHIEVEMENT' })}
-            onRemove={(index) =>
-              dispatch({ type: 'REMOVE_ACHIEVEMENT', index })
-            }
-            onUpdate={(index, text) =>
-              dispatch({ type: 'UPDATE_ACHIEVEMENT', index, text })
-            }
-            onPaste={(index, text) => {
-              dispatch({ type: 'REMOVE_ACHIEVEMENT', index })
-              dispatch({ type: 'PASTE_ACHIEVEMENTS', text })
-            }}
-          />
+            <SectionDivider />
 
-          <SectionDivider />
+            <AchievementsSection
+              achievements={state.keyAchievements}
+              onAdd={() => dispatch({ type: 'ADD_ACHIEVEMENT' })}
+              onRemove={(index) =>
+                dispatch({ type: 'REMOVE_ACHIEVEMENT', index })
+              }
+              onUpdate={(index, text) =>
+                dispatch({ type: 'UPDATE_ACHIEVEMENT', index, text })
+              }
+              onPaste={(index, text) => {
+                dispatch({ type: 'REMOVE_ACHIEVEMENT', index })
+                dispatch({ type: 'PASTE_ACHIEVEMENTS', text })
+              }}
+            />
 
-          <ProjectsSection
-            projects={state.projects}
-            onAdd={() => dispatch({ type: 'ADD_PROJECT' })}
-            onRemove={(index) => dispatch({ type: 'REMOVE_PROJECT', index })}
-            onUpdateField={(index, field, value) =>
-              dispatch({ type: 'UPDATE_PROJECT', index, field, value })
-            }
-            onAddTech={(projectIndex, item) =>
-              dispatch({ type: 'ADD_PROJECT_TECH', projectIndex, item })
-            }
-            onRemoveTech={(projectIndex, techIndex) =>
-              dispatch({
-                type: 'REMOVE_PROJECT_TECH',
-                projectIndex,
-                techIndex,
-              })
-            }
-          />
-        </FormBody>
+            <SectionDivider />
 
-        <DrawerFooter onSave={handleSave} isPending={isPending} />
+            <ProjectsSection
+              projects={state.projects}
+              onAdd={() => dispatch({ type: 'ADD_PROJECT' })}
+              onRemove={(index) => dispatch({ type: 'REMOVE_PROJECT', index })}
+              onUpdateField={(index, field, value) =>
+                dispatch({ type: 'UPDATE_PROJECT', index, field, value })
+              }
+              onAddTech={(projectIndex, item) =>
+                dispatch({ type: 'ADD_PROJECT_TECH', projectIndex, item })
+              }
+              onRemoveTech={(projectIndex, techIndex) =>
+                dispatch({
+                  type: 'REMOVE_PROJECT_TECH',
+                  projectIndex,
+                  techIndex,
+                })
+              }
+            />
+          </FormBody>
+
+          <DrawerFooter isPending={isPending} />
+        </Form>
       </SheetContent>
     </Sheet>
   )

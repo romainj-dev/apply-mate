@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { GlassCardContent, GlassCardTitle } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import { Building2, Calendar } from 'lucide-react'
 import type { Theme } from '@/styles/theme'
 
 type StatusKey = keyof Theme['colors']['status']
@@ -42,41 +41,36 @@ export const EmploymentBadge = styled(Badge)<EmploymentBadgeProps>`
     theme.colors.status[$statusKey].border};
 `
 
-export const CompanyName = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  margin-top: ${({ theme }) => theme.space.xs};
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.space.xs};
+const InfoGridBase = styled.div`
+  width: fit-content;
+  margin-top: ${({ theme }) => theme.space.md};
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: ${({ theme }) => theme.space.sm} ${({ theme }) => theme.space.lg};
 `
 
-export const CompanyBuildingIcon = styled(Building2)`
-  width: 0.875rem;
-  height: 0.875rem;
-  flex-shrink: 0;
-`
+interface InfoGridItemProps {
+  $columnSpan?: number
+}
 
-export const PeriodRow = styled.div`
+const InfoGridItem = styled.div<InfoGridItemProps>`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.space.md};
-  margin-top: ${({ theme }) => theme.space.sm};
+  justify-content: flex-start;
+  gap: ${({ theme }) => theme.space.sm};
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
   color: ${({ theme }) => theme.colors.mutedForeground};
+
+  & > svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
 `
 
-export const PeriodItem = styled.span`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.space.xs};
-`
-
-export const PeriodCalendarIcon = styled(Calendar)`
-  width: 1rem;
-  height: 1rem;
-  color: ${({ theme }) => theme.colors.primary};
-`
+export const InfoGrid = Object.assign(InfoGridBase, {
+  Item: InfoGridItem,
+})
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -94,7 +88,6 @@ export const ContentArea = styled(GlassCardContent)`
 
 /* ── Section headings ────────────────────────────────────────────────── */
 
-/** Plain heading (no icon). mb = 8px by default. */
 export const SectionTitle = styled.h4`
   font-size: ${({ theme }) => theme.typography.fontSize.sm};
   font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};

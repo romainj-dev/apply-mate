@@ -197,7 +197,6 @@ export type TechStackItemModel = {
 
 export type UpsertRoleInput = {
   company: Scalars['String']['input'];
-  durationLabel?: InputMaybe<Scalars['String']['input']>;
   employmentType?: InputMaybe<Scalars['String']['input']>;
   endDate?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
@@ -206,10 +205,8 @@ export type UpsertRoleInput = {
   keyMetrics?: InputMaybe<Scalars['JSONObject']['input']>;
   location?: InputMaybe<Scalars['String']['input']>;
   methodologies?: InputMaybe<Array<Scalars['String']['input']>>;
-  periodLabel?: InputMaybe<Scalars['String']['input']>;
   projects?: InputMaybe<Array<UpsertRoleProjectInput>>;
   startDate?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
   summary?: InputMaybe<Scalars['String']['input']>;
   teamStructure?: InputMaybe<Scalars['String']['input']>;
   techStack?: InputMaybe<Scalars['JSONObject']['input']>;
