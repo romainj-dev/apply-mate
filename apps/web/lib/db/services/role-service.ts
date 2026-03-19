@@ -71,6 +71,15 @@ export const upsertRoleSchema = createInsertSchema(userExperienceRoles, {
 
 export type UpsertRoleInput = z.infer<typeof upsertRoleSchema>
 
+export const upsertSingleProjectSchema = upsertRoleProjectSchema.extend({
+  id: z.string().uuid().nullable().optional(),
+  roleId: z.string().uuid(),
+})
+
+export type UpsertSingleProjectInput = z.infer<
+  typeof upsertSingleProjectSchema
+>
+
 /* ── Server-side derived field computation ─────────────────────────── */
 
 const MONTH_NAMES = [
@@ -279,5 +288,86 @@ export async function upsertRoleByUserId(
     }
 
     return { roleId }
+  })
+}
+
+/* ── Single-project upsert ───────────────────────────────────────── */
+
+export async function upsertProjectByUserId(
+  userId: string,
+  rawInput: UpsertSingleProjectInput
+): Promise<{ projectId: string }> {
+  const input = upsertSingleProjectSchema.parse(rawInput)
+
+  return db.transaction(async (tx) => {
+    // Verify user owns the role
+    const [profile] = await tx
+      .select({ id: userExperienceProfiles.id })
+      .from(userExperienceProfiles)
+      .where(eq(userExperienceProfiles.userId, userId))
+      .limit(1)
+
+    if (!profile) {
+      throw new Error('Experience profile not found')
+    }
+
+    const [role] = await tx
+      .select({ id: userExperienceRoles.id })
+      .from(userExperienceRoles)
+      .where(
+        and(
+          eq(userExperienceRoles.id, input.roleId),
+          eq(userExperienceRoles.profileId, profile.id)
+        )
+      )
+      .limit(1)
+
+    if (!role) {
+      throw new Error('Role not found')
+    }
+
+    const projectValues = {
+      title: input.title,
+      period: input.period ?? null,
+      description: input.description ?? null,
+      achievements: input.achievements ?? [],
+      techStack: input.techStack ?? [],
+    }
+
+    if (input.id) {
+      // Verify the project belongs to this role
+      const [existing] = await tx
+        .select({ id: userExperienceRoleProjects.id })
+        .from(userExperienceRoleProjects)
+        .where(
+          and(
+            eq(userExperienceRoleProjects.id, input.id),
+            eq(userExperienceRoleProjects.roleId, input.roleId)
+          )
+        )
+        .limit(1)
+
+      if (!existing) {
+        throw new Error('Project not found')
+      }
+
+      await tx
+        .update(userExperienceRoleProjects)
+        .set(projectValues)
+        .where(eq(userExperienceRoleProjects.id, input.id))
+
+      return { projectId: input.id }
+    }
+
+    const [inserted] = await tx
+      .insert(userExperienceRoleProjects)
+      .values({ roleId: input.roleId, ...projectValues })
+      .returning({ id: userExperienceRoleProjects.id })
+
+    if (!inserted) {
+      throw new Error('Failed to insert project')
+    }
+
+    return { projectId: inserted.id }
   })
 }

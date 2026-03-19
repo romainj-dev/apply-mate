@@ -1,14 +1,13 @@
 'use client'
 
 import type React from 'react'
-import { Plus, Sparkles, X } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import {
   Container,
   HeaderRow,
   SectionLabel,
-  GenerateText,
   AchievementRow,
   CheckIcon,
   AchievementInput,
@@ -21,6 +20,8 @@ interface AchievementsSectionProps {
   onRemove: (index: number) => void
   onUpdate: (index: number, text: string) => void
   onPaste: (index: number, text: string) => void
+  label?: string
+  headerAction?: React.ReactNode
 }
 
 export function AchievementsSection({
@@ -29,6 +30,8 @@ export function AchievementsSection({
   onRemove,
   onUpdate,
   onPaste,
+  label = 'Achievements',
+  headerAction,
 }: AchievementsSectionProps) {
   function handlePaste(
     e: React.ClipboardEvent<HTMLInputElement>,
@@ -45,13 +48,14 @@ export function AchievementsSection({
 
   return (
     <Container>
-      <HeaderRow>
-        <SectionLabel>Achievements</SectionLabel>
-        <Button variant="ghost" size="sm" disabled>
-          <Sparkles size={14} />
-          <GenerateText>Generate from summary</GenerateText>
-        </Button>
-      </HeaderRow>
+      {headerAction ? (
+        <HeaderRow>
+          <SectionLabel>{label}</SectionLabel>
+          {headerAction}
+        </HeaderRow>
+      ) : (
+        <SectionLabel>{label}</SectionLabel>
+      )}
 
       {achievements.map((achievement, index) => (
         <AchievementRow key={achievement.localId}>

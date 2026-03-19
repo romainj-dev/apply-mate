@@ -2,15 +2,16 @@
 
 import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
-import type { ExperienceRole } from '@/components/features/my-experience/roles/data-types'
-import { getTechLabel } from '@/components/features/my-experience/roles/tech-catalog'
-import { parseTechStack } from '@/types/tech-stack'
+import type {
+  ExperienceRole,
+  ExperienceRoleProject,
+} from '@/components/features/my-experience/roles/data-types'
+import { TechBadgeRow } from '@/components/features/my-experience/roles/_commons/tech-badge/TechBadge'
 import { KeyMetrics } from '../key-metrics/KeyMetrics'
 import {
   AchievementItem,
   AchievementList,
   AddProjectIcon,
-  BadgesRow,
   CheckMark,
   FlexFill,
   IconOnlyEditIcon,
@@ -25,15 +26,20 @@ import {
   SectionProjectsIcon,
   SectionTargetIcon,
   SectionTitle,
-  BodyText,
-  TechBadge,
+  ProjectText,
 } from './RoleCompleteContent.styles'
 
 interface RoleCompleteContentProps {
   role: ExperienceRole
+  onAddProject: () => void
+  onEditProject: (project: ExperienceRoleProject) => void
 }
 
-export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
+export function RoleCompleteContent({
+  role,
+  onAddProject,
+  onEditProject,
+}: RoleCompleteContentProps) {
   const keyMetrics = role.keyMetrics ?? null
   const hasMetrics = keyMetrics && keyMetrics.length > 0
   const hasAchievements = (role.keyAchievements?.length ?? 0) > 0
@@ -78,58 +84,47 @@ export function RoleCompleteContent({ role }: RoleCompleteContentProps) {
               <SectionProjectsIcon />
               Notable Projects
             </SectionTitle>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={onAddProject}>
               <AddProjectIcon />
               Add Project
             </Button>
           </ProjectsHeader>
           <ProjectsList>
-            {role.projects?.map((project) => {
-              const projectTech = parseTechStack(project.techStack)
-              return (
-                <GlassCard key={project.id}>
-                  <ProjectCardContent>
-                    <ProjectHeader>
-                      <FlexFill>
-                        <ProjectTitle>{project.title}</ProjectTitle>
-                      </FlexFill>
-                      <Button variant="ghost" size="sm">
-                        <IconOnlyEditIcon />
-                      </Button>
-                    </ProjectHeader>
-                    {project.description && (
-                      <BodyText>{project.description}</BodyText>
-                    )}
-                    {projectTech.length > 0 && (
-                      <BadgesRow>
-                        {projectTech.map((item) => (
-                          <TechBadge
-                            key={
-                              item.value === 'other'
-                                ? item.customLabel
-                                : item.value
-                            }
-                            variant="secondary"
-                          >
-                            {getTechLabel(item)}
-                          </TechBadge>
-                        ))}
-                      </BadgesRow>
-                    )}
-                    {project.achievements.length > 0 && (
-                      <ProjectAchievements>
-                        {project.achievements.map((achievement, j) => (
-                          <ProjectAchievementItem key={`${achievement}-${j}`}>
-                            <CheckMark>&#10003;</CheckMark>
-                            <span>{achievement}</span>
-                          </ProjectAchievementItem>
-                        ))}
-                      </ProjectAchievements>
-                    )}
-                  </ProjectCardContent>
-                </GlassCard>
-              )
-            })}
+            {role.projects?.map((project) => (
+              <GlassCard key={project.id}>
+                <ProjectCardContent>
+                  <ProjectHeader>
+                    <FlexFill>
+                      <ProjectTitle>{project.title}</ProjectTitle>
+                    </FlexFill>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onEditProject(project)}
+                    >
+                      <IconOnlyEditIcon />
+                      Edit
+                    </Button>
+                  </ProjectHeader>
+                  {project.description && (
+                    <ProjectText>{project.description}</ProjectText>
+                  )}
+                  {project.techStack.length > 0 && (
+                    <TechBadgeRow techStack={project.techStack} />
+                  )}
+                  {project.achievements.length > 0 && (
+                    <ProjectAchievements>
+                      {project.achievements.map((achievement, j) => (
+                        <ProjectAchievementItem key={`${achievement}-${j}`}>
+                          <CheckMark>&#10003;</CheckMark>
+                          <span>{achievement}</span>
+                        </ProjectAchievementItem>
+                      ))}
+                    </ProjectAchievements>
+                  )}
+                </ProjectCardContent>
+              </GlassCard>
+            ))}
           </ProjectsList>
         </div>
       )}

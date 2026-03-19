@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { GlassCard, GlassCardHeader } from '@/components/ui/GlassCard'
-import type { ExperienceRole } from '../data-types'
+import type { ExperienceRole, ExperienceRoleProject } from '../data-types'
 import { getEmploymentTypeBadge } from '../employment-type'
 import { RoleCompleteContent } from './role-complete-content/RoleCompleteContent'
 import {
@@ -31,9 +31,16 @@ import { TechBadgeRow } from '../_commons/tech-badge/TechBadge'
 interface RolesDetailProps {
   role: ExperienceRole
   onEditRole: (role: ExperienceRole) => void
+  onAddProject: (roleId: string) => void
+  onEditProject: (roleId: string, project: ExperienceRoleProject) => void
 }
 
-export function RolesDetail({ role, onEditRole }: RolesDetailProps) {
+export function RolesDetail({
+  role,
+  onEditRole,
+  onAddProject,
+  onEditProject,
+}: RolesDetailProps) {
   const {
     title,
     company,
@@ -112,7 +119,11 @@ export function RolesDetail({ role, onEditRole }: RolesDetailProps) {
           </div>
         )}
 
-        <RoleCompleteContent role={role} />
+        <RoleCompleteContent
+          role={role}
+          onAddProject={() => onAddProject(role.id)}
+          onEditProject={(project) => onEditProject(role.id, project)}
+        />
       </ContentArea>
     </GlassCard>
   )

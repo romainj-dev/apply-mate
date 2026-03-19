@@ -10,6 +10,7 @@ export interface ProjectFormState {
   title: string
   description: string
   techStack: TechStackItem[]
+  achievements: Array<{ localId: string; text: string }>
 }
 
 /* ── Top-level form ────────────────────────────────────────────────── */
@@ -78,6 +79,19 @@ export type RoleFormAction =
     }
   | { type: 'ADD_PROJECT_TECH'; projectIndex: number; item: TechStackItem }
   | { type: 'REMOVE_PROJECT_TECH'; projectIndex: number; techIndex: number }
+  | { type: 'ADD_PROJECT_ACHIEVEMENT'; projectIndex: number }
+  | {
+      type: 'REMOVE_PROJECT_ACHIEVEMENT'
+      projectIndex: number
+      achievementIndex: number
+    }
+  | {
+      type: 'UPDATE_PROJECT_ACHIEVEMENT'
+      projectIndex: number
+      achievementIndex: number
+      text: string
+    }
+  | { type: 'PASTE_PROJECT_ACHIEVEMENTS'; projectIndex: number; text: string }
   | { type: 'RESET'; role?: ExperienceRole }
 
 /* ── Helpers ───────────────────────────────────────────────────────── */
@@ -216,6 +230,10 @@ export function initFormState(role?: ExperienceRole): RoleFormState {
       title: p.title,
       description: p.description ?? '',
       techStack: parseTechStack(p.techStack),
+      achievements: (p.achievements ?? []).map((text) => ({
+        localId: localId(),
+        text,
+      })),
     })),
   }
 }
@@ -325,7 +343,13 @@ export function roleFormReducer(
         ...state,
         projects: [
           ...state.projects,
-          { localId: localId(), title: '', description: '', techStack: [] },
+          {
+            localId: localId(),
+            title: '',
+            description: '',
+            techStack: [],
+            achievements: [],
+          },
         ],
       }
 
@@ -370,6 +394,73 @@ export function roleFormReducer(
             : p
         ),
       }
+
+    // ── Project achievements ──
+    case 'ADD_PROJECT_ACHIEVEMENT':
+      return {
+        ...state,
+        projects: state.projects.map((p, i) =>
+          i === action.projectIndex
+            ? {
+                ...p,
+                achievements: [
+                  ...p.achievements,
+                  { localId: localId(), text: '' },
+                ],
+              }
+            : p
+        ),
+      }
+
+    case 'REMOVE_PROJECT_ACHIEVEMENT':
+      return {
+        ...state,
+        projects: state.projects.map((p, i) =>
+          i === action.projectIndex
+            ? {
+                ...p,
+                achievements: p.achievements.filter(
+                  (_, j) => j !== action.achievementIndex
+                ),
+              }
+            : p
+        ),
+      }
+
+    case 'UPDATE_PROJECT_ACHIEVEMENT':
+      return {
+        ...state,
+        projects: state.projects.map((p, i) =>
+          i === action.projectIndex
+            ? {
+                ...p,
+                achievements: p.achievements.map((a, j) =>
+                  j === action.achievementIndex
+                    ? { ...a, text: action.text }
+                    : a
+                ),
+              }
+            : p
+        ),
+      }
+
+    case 'PASTE_PROJECT_ACHIEVEMENTS': {
+      const projAchLines = parseAchievementLines(action.text)
+      return {
+        ...state,
+        projects: state.projects.map((p, i) =>
+          i === action.projectIndex
+            ? {
+                ...p,
+                achievements: [
+                  ...p.achievements,
+                  ...projAchLines.map((text) => ({ localId: localId(), text })),
+                ],
+              }
+            : p
+        ),
+      }
+    }
 
     case 'RESET':
       return initFormState(action.role)

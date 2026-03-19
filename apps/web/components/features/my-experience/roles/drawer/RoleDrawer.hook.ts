@@ -149,6 +149,7 @@ export function useRoleForm({
           title: p.title,
           description: p.description || null,
           techStack: p.techStack,
+          achievements: p.achievements.map((a) => a.text).filter(Boolean),
         })),
     }
   }, [state, role?.id])

@@ -15,7 +15,8 @@
       "Bash(pnpm --filter web add @radix-ui/react-dialog)",
       "Bash(pnpm --filter web run codegen:graphql)",
       "Bash(pnpm --filter web build)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(npx tsc --noEmit --project apps/web/tsconfig.json)"
     ]
   }
 }

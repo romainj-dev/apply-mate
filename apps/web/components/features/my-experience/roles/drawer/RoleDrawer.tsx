@@ -1,6 +1,6 @@
 'use client'
 
-import { X } from 'lucide-react'
+import { Sparkles, X } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -150,6 +150,12 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
                 dispatch({ type: 'REMOVE_ACHIEVEMENT', index })
                 dispatch({ type: 'PASTE_ACHIEVEMENTS', text })
               }}
+              headerAction={
+                <Button variant="ghost" size="sm" disabled>
+                  <Sparkles size={14} />
+                  Generate from summary
+                </Button>
+              }
             />
 
             <SectionDivider />
@@ -171,6 +177,36 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
                   techIndex,
                 })
               }
+              onAddAchievement={(projectIndex) =>
+                dispatch({ type: 'ADD_PROJECT_ACHIEVEMENT', projectIndex })
+              }
+              onRemoveAchievement={(projectIndex, achievementIndex) =>
+                dispatch({
+                  type: 'REMOVE_PROJECT_ACHIEVEMENT',
+                  projectIndex,
+                  achievementIndex,
+                })
+              }
+              onUpdateAchievement={(projectIndex, achievementIndex, text) =>
+                dispatch({
+                  type: 'UPDATE_PROJECT_ACHIEVEMENT',
+                  projectIndex,
+                  achievementIndex,
+                  text,
+                })
+              }
+              onPasteAchievements={(projectIndex, achievementIndex, text) => {
+                dispatch({
+                  type: 'REMOVE_PROJECT_ACHIEVEMENT',
+                  projectIndex,
+                  achievementIndex,
+                })
+                dispatch({
+                  type: 'PASTE_PROJECT_ACHIEVEMENTS',
+                  projectIndex,
+                  text,
+                })
+              }}
             />
           </FormBody>
 

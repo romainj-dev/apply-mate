@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import type { TechStackItem } from '@/types/tech-stack'
 import type { ProjectFormState } from '../../form-state'
 import { TechStackInput } from '../tech-stack-input/TechStackInput'
+import { AchievementsSection } from '../achievements-section/AchievementsSection'
 import {
   Container,
   HeaderRow,
@@ -29,6 +30,18 @@ interface ProjectsSectionProps {
   ) => void
   onAddTech: (projectIndex: number, item: TechStackItem) => void
   onRemoveTech: (projectIndex: number, techIndex: number) => void
+  onAddAchievement: (projectIndex: number) => void
+  onRemoveAchievement: (projectIndex: number, achievementIndex: number) => void
+  onUpdateAchievement: (
+    projectIndex: number,
+    achievementIndex: number,
+    text: string
+  ) => void
+  onPasteAchievements: (
+    projectIndex: number,
+    achievementIndex: number,
+    text: string
+  ) => void
 }
 
 export function ProjectsSection({
@@ -38,6 +51,10 @@ export function ProjectsSection({
   onUpdateField,
   onAddTech,
   onRemoveTech,
+  onAddAchievement,
+  onRemoveAchievement,
+  onUpdateAchievement,
+  onPasteAchievements,
 }: ProjectsSectionProps) {
   return (
     <Container>
@@ -85,6 +102,19 @@ export function ProjectsSection({
             techStack={project.techStack}
             onAdd={(item) => onAddTech(index, item)}
             onRemove={(techIndex) => onRemoveTech(index, techIndex)}
+          />
+
+          <AchievementsSection
+            label="Key Achievements"
+            achievements={project.achievements}
+            onAdd={() => onAddAchievement(index)}
+            onRemove={(achIndex) => onRemoveAchievement(index, achIndex)}
+            onUpdate={(achIndex, text) =>
+              onUpdateAchievement(index, achIndex, text)
+            }
+            onPaste={(achIndex, text) =>
+              onPasteAchievements(index, achIndex, text)
+            }
           />
         </ProjectCard>
       ))}

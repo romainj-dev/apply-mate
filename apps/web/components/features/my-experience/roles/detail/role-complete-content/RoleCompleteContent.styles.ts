@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { GlassCardContent } from '@/components/ui/GlassCard'
-import { Badge } from '@/components/ui/Badge'
 import { BarChart3, Edit2, FolderGit2, Plus, Target, Users } from 'lucide-react'
 
 /* ── Section headings ────────────────────────────────────────────────── */
@@ -25,12 +24,6 @@ export const SectionTitle = styled.h4`
   align-items: center;
   gap: ${({ theme }) => theme.space.sm};
   margin-bottom: ${({ theme }) => theme.space.sm};
-`
-
-export const BodyText = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.mutedForeground};
-  line-height: ${({ theme }) => theme.typography.lineHeight.sm};
 `
 
 /* ── Section icons (all accent-colored) ──────────────────────────────── */
@@ -63,23 +56,6 @@ export const AddProjectIcon = styled(Plus)`
   width: 0.75rem;
   height: 0.75rem;
   margin-right: ${({ theme }) => theme.space.xs};
-`
-
-/* ── Badges ──────────────────────────────────────────────────────────── */
-
-export const BadgesRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.space.sm};
-`
-
-export const TechBadge = styled(Badge)`
-  background: color-mix(
-    in srgb,
-    ${({ theme }) => theme.colors.primary} 10%,
-    transparent
-  );
-  color: ${({ theme }) => theme.colors.primary};
 `
 
 /* ── Achievements ────────────────────────────────────────────────────── */
@@ -120,10 +96,10 @@ export const ProjectsList = styled.div`
 `
 
 export const ProjectCardContent = styled(GlassCardContent)`
-  padding: ${({ theme }) => theme.space.md};
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spaceCalc(3)};
+  gap: ${({ theme }) => theme.space.md};
 `
 
 export const ProjectHeader = styled.div`
@@ -133,14 +109,21 @@ export const ProjectHeader = styled.div`
 `
 
 export const ProjectTitle = styled.h5`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
   font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
   color: ${({ theme }) => theme.colors.foreground};
+`
+
+export const ProjectText = styled.p`
+  font-size: ${({ theme }) => theme.typography.fontSize.xs};
+  color: ${({ theme }) => theme.colors.mutedForeground};
+  line-height: ${({ theme }) => theme.typography.lineHeight.sm};
+  white-space: pre-wrap;
 `
 
 export const ProjectAchievements = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.space.xs};
   font-size: ${({ theme }) => theme.typography.fontSize.xs};
 `
 
@@ -148,7 +131,7 @@ export const ProjectAchievementItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: ${({ theme }) => theme.spaceCalc(1.5)};
-  color: ${({ theme }) => theme.colors.status.success.fg};
+  color: ${({ theme }) => theme.colors.mutedForeground};
 `
 
 export const IconOnlyEditIcon = styled(Edit2)`

@@ -15,7 +15,11 @@ import {
 import { RolesList } from '@/components/features/my-experience/roles/list/RolesList'
 import { RolesDetail } from '@/components/features/my-experience/roles/detail/RolesDetail'
 import { RoleDrawer } from '@/components/features/my-experience/roles/drawer/RoleDrawer'
-import type { ExperienceRole } from '@/components/features/my-experience/roles/data-types'
+import { ProjectDrawer } from '@/components/features/my-experience/roles/drawer/ProjectDrawer'
+import type {
+  ExperienceRole,
+  ExperienceRoleProject,
+} from '@/components/features/my-experience/roles/data-types'
 import { useDashboardLayout } from '@/components/layout/dashboard-layout/DashboardLayout'
 import {
   PageContainer,
@@ -72,6 +76,10 @@ export function CompleteExperience() {
   const [drawerRole, setDrawerRole] = useState<ExperienceRole | 'new' | null>(
     null
   )
+  const [drawerProject, setDrawerProject] = useState<{
+    roleId: string
+    project?: ExperienceRoleProject
+  } | null>(null)
 
   const selectedRole = roles.find((r) => r.id === selectedRoleId)
 
@@ -115,6 +123,10 @@ export function CompleteExperience() {
           <RolesDetail
             role={selectedRole}
             onEditRole={(role) => setDrawerRole(role)}
+            onAddProject={(roleId) => setDrawerProject({ roleId })}
+            onEditProject={(roleId, project) =>
+              setDrawerProject({ roleId, project })
+            }
           />
         )}
       </RoleDetailSection>
@@ -128,6 +140,17 @@ export function CompleteExperience() {
           drawerRole !== 'new' && drawerRole !== null ? drawerRole : undefined
         }
       />
+
+      {drawerProject && (
+        <ProjectDrawer
+          open
+          onOpenChange={(open) => {
+            if (!open) setDrawerProject(null)
+          }}
+          roleId={drawerProject.roleId}
+          project={drawerProject.project}
+        />
+      )}
     </PageContainer>
   )
 }
