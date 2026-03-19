@@ -130,6 +130,9 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
               metrics={state.keyMetrics}
               onAdd={() => dispatch({ type: 'ADD_METRIC' })}
               onRemove={(index) => dispatch({ type: 'REMOVE_METRIC', index })}
+              onSetMetricType={(index, metricType) =>
+                dispatch({ type: 'SET_METRIC_TYPE', index, metricType })
+              }
               onUpdate={(index, field, value) =>
                 dispatch({ type: 'UPDATE_METRIC', index, field, value })
               }

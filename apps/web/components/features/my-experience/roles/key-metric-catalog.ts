@@ -19,7 +19,7 @@ type MetricEntry = {
   defaultText: string
 }
 
-const KEY_METRIC_CATALOG: Record<KeyMetricType, MetricEntry> = {
+export const KEY_METRIC_CATALOG: Record<KeyMetricType, MetricEntry> = {
   'github-stars': { icon: Star, defaultText: 'GitHub Stars' },
   'weekly-downloads': { icon: Download, defaultText: 'Weekly Downloads' },
   'npm-downloads': { icon: Download, defaultText: 'npm Downloads' },

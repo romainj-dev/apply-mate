@@ -9,7 +9,6 @@ import {
 } from 'react'
 import { useQueryClient } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
-import { KEY_METRIC_TYPES, type KeyMetricType } from '@/types/key-metrics'
 import type { ExperienceRole } from '../data-types'
 import {
   roleFormReducer,
@@ -40,21 +39,6 @@ function buildTeamStructure(state: RoleFormState): string | null {
   if (state.teamPMs)
     parts.push(`${state.teamPMs} PM${parseInt(state.teamPMs) !== 1 ? 's' : ''}`)
   return parts.length > 0 ? parts.join(', ') : null
-}
-
-function resolveMetricType(label: string): {
-  type: KeyMetricType
-  customType?: string
-} {
-  const normalised = label.toLowerCase().replace(/[\s-_]/g, '')
-  for (const key of KEY_METRIC_TYPES) {
-    if (key === 'other') continue
-    const normKey = key.replace(/-/g, '')
-    if (normalised === normKey || normalised.includes(normKey)) {
-      return { type: key }
-    }
-  }
-  return { type: 'other', customType: label }
 }
 
 /* ── Hook ──────────────────────────────────────────────────────────── */
@@ -116,16 +100,13 @@ export function useRoleForm({
 
   const buildInput = useCallback(() => {
     const keyMetrics = state.keyMetrics
-      .filter((m) => m.label && m.value)
-      .map((m) => {
-        const resolved = resolveMetricType(m.label)
-        return {
-          type: resolved.type,
-          customType: resolved.customType,
-          value: m.value,
-          text: m.label,
-        }
-      })
+      .filter((m) => m.metricType && m.label && m.value)
+      .map((m) => ({
+        type: m.metricType,
+        ...(m.metricType === 'other' ? { customType: m.label } : {}),
+        value: m.value,
+        text: m.label,
+      }))
 
     return {
       id: role?.id ?? null,

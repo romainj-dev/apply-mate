@@ -1,6 +1,8 @@
 import type { TechStackItem } from '@/types/tech-stack'
 import type { EmploymentType } from '@/types/employment-types'
+import type { KeyMetricType } from '@/types/key-metrics'
 import { parseTechStack } from '@/types/tech-stack'
+import { KEY_METRIC_CATALOG } from '../key-metric-catalog'
 import type { ExperienceRole } from '../data-types'
 
 /* ── Project sub-form ──────────────────────────────────────────────── */
@@ -31,7 +33,12 @@ export interface RoleFormState {
   teamPMs: string
   methodology: string
   techStack: TechStackItem[]
-  keyMetrics: Array<{ localId: string; label: string; value: string }>
+  keyMetrics: Array<{
+    localId: string
+    metricType: KeyMetricType | ''
+    label: string
+    value: string
+  }>
   keyAchievements: Array<{ localId: string; text: string }>
   projects: ProjectFormState[]
 }
@@ -63,6 +70,7 @@ export type RoleFormAction =
   | { type: 'REMOVE_TECH'; index: number }
   | { type: 'ADD_METRIC' }
   | { type: 'REMOVE_METRIC'; index: number }
+  | { type: 'SET_METRIC_TYPE'; index: number; metricType: KeyMetricType }
   | {
       type: 'UPDATE_METRIC'
       index: number
@@ -168,6 +176,7 @@ function parseKeyMetrics(
   if (!raw) return []
   return raw.map((m) => ({
     localId: localId(),
+    metricType: (m.type as KeyMetricType) ?? '',
     label: m.type === 'other' ? (m.customType ?? '') : m.text,
     value: m.value,
   }))
@@ -319,7 +328,7 @@ export function roleFormReducer(
         ...state,
         keyMetrics: [
           ...state.keyMetrics,
-          { localId: localId(), label: '', value: '' },
+          { localId: localId(), metricType: '', label: '', value: '' },
         ],
       }
 
@@ -328,6 +337,29 @@ export function roleFormReducer(
         ...state,
         keyMetrics: state.keyMetrics.filter((_, i) => i !== action.index),
       }
+
+    case 'SET_METRIC_TYPE': {
+      const defaultText =
+        action.metricType === 'other'
+          ? ''
+          : KEY_METRIC_CATALOG[action.metricType].defaultText
+      return {
+        ...state,
+        keyMetrics: state.keyMetrics.map((m, i) => {
+          if (i !== action.index) return m
+          const prevDefault =
+            m.metricType && m.metricType !== 'other'
+              ? KEY_METRIC_CATALOG[m.metricType].defaultText
+              : ''
+          const shouldAutoFill = !m.label || m.label === prevDefault
+          return {
+            ...m,
+            metricType: action.metricType,
+            label: shouldAutoFill ? defaultText : m.label,
+          }
+        }),
+      }
+    }
 
     case 'UPDATE_METRIC':
       return {
