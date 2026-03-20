@@ -291,6 +291,48 @@ export async function upsertRoleByUserId(
   })
 }
 
+/* ── Delete role ─────────────────────────────────────────────────── */
+
+export async function deleteRoleByUserId(
+  userId: string,
+  roleId: string
+): Promise<void> {
+  await db.transaction(async (tx) => {
+    const [profile] = await tx
+      .select({ id: userExperienceProfiles.id })
+      .from(userExperienceProfiles)
+      .where(eq(userExperienceProfiles.userId, userId))
+      .limit(1)
+
+    if (!profile) {
+      throw new Error('Experience profile not found')
+    }
+
+    const [existing] = await tx
+      .select({ id: userExperienceRoles.id })
+      .from(userExperienceRoles)
+      .where(
+        and(
+          eq(userExperienceRoles.id, roleId),
+          eq(userExperienceRoles.profileId, profile.id)
+        )
+      )
+      .limit(1)
+
+    if (!existing) {
+      throw new Error('Role not found')
+    }
+
+    await tx
+      .delete(userExperienceRoleProjects)
+      .where(eq(userExperienceRoleProjects.roleId, roleId))
+
+    await tx
+      .delete(userExperienceRoles)
+      .where(eq(userExperienceRoles.id, roleId))
+  })
+}
+
 /* ── Single-project upsert ───────────────────────────────────────── */
 
 export async function upsertProjectByUserId(

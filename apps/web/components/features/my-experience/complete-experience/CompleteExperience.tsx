@@ -83,6 +83,10 @@ export function CompleteExperience() {
 
   const selectedRole = roles.find((r) => r.id === selectedRoleId)
 
+  function onRoleDeleted() {
+    setSelectedRoleId(roles[0]?.id ?? null)
+  }
+
   if (!profile) return null
 
   return (
@@ -139,6 +143,7 @@ export function CompleteExperience() {
         role={
           drawerRole !== 'new' && drawerRole !== null ? drawerRole : undefined
         }
+        onDeleted={onRoleDeleted}
       />
 
       {drawerProject && (

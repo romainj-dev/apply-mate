@@ -1,6 +1,6 @@
 'use client'
 
-import { Sparkles, X } from 'lucide-react'
+import { X, Sparkles } from 'lucide-react'
 import {
   Sheet,
   SheetContent,
@@ -33,9 +33,15 @@ interface RoleDrawerProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   role?: ExperienceRole
+  onDeleted: () => void
 }
 
-export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
+export function RoleDrawer({
+  open,
+  onOpenChange,
+  role,
+  onDeleted: onDeletedCallback,
+}: RoleDrawerProps) {
   const {
     state,
     dispatch,
@@ -46,8 +52,17 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
     serverError,
   } = useRoleForm({
     role,
-    onClose: () => onOpenChange(false),
+    onClose,
   })
+
+  function onClose() {
+    onOpenChange(false)
+  }
+
+  function onDeleted() {
+    onDeletedCallback()
+    onClose()
+  }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -213,7 +228,12 @@ export function RoleDrawer({ open, onOpenChange, role }: RoleDrawerProps) {
             />
           </FormBody>
 
-          <DrawerFooter isPending={isPending} />
+          <DrawerFooter
+            roleId={role?.id}
+            isPending={isPending}
+            isEditMode={isEditMode}
+            onDeleted={onDeleted}
+          />
         </Form>
       </SheetContent>
     </Sheet>
