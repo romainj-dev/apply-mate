@@ -1,10 +1,11 @@
 import {
-  getExperienceProfileByUserId,
-  saveExperienceByUserId,
-  upsertRoleByUserId,
+  getExperienceProfile,
+  saveExperience,
+  upsertRole,
   type SaveExperienceInput,
   type UpsertRoleInput,
 } from '@/lib/db/services/experience-service'
+import { withRlsDb } from '@/lib/db/rls'
 import type { InferSelectModel } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
 import { builder } from './builder'
@@ -324,7 +325,7 @@ builder.queryField('experienceProfile', (t) =>
         return null
       }
 
-      return getExperienceProfileByUserId(context.user.id)
+      return withRlsDb(context.user.id, (tx) => getExperienceProfile(tx))
     },
   })
 )
@@ -342,9 +343,8 @@ builder.mutationField('saveExperience', (t) =>
 
       // TODO(ts-migration): Pothos input type and SaveExperienceInput are structurally equivalent
       // but Pothos's generated type does not match directly — bridge via unknown
-      return saveExperienceByUserId(
-        context.user.id,
-        args.input as unknown as SaveExperienceInput
+      return withRlsDb(context.user.id, (tx) =>
+        saveExperience(tx, args.input as unknown as SaveExperienceInput)
       )
     },
   })
@@ -363,9 +363,8 @@ builder.mutationField('upsertRole', (t) =>
 
       // TODO(ts-migration): Pothos input type and UpsertRoleInput are structurally equivalent but
       // Pothos's generated type does not match directly — bridge via unknown.
-      return upsertRoleByUserId(
-        context.user.id,
-        args.input as unknown as UpsertRoleInput
+      return withRlsDb(context.user.id, (tx) =>
+        upsertRole(tx, args.input as unknown as UpsertRoleInput)
       )
     },
   })

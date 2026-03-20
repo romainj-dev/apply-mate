@@ -1,10 +1,8 @@
 'use server'
 
 import { auth } from '@/modules/session/server'
-import {
-  upsertRoleByUserId,
-  upsertRoleSchema,
-} from '@/lib/db/services/role-service'
+import { withRlsDb } from '@/lib/db/rls'
+import { upsertRole, upsertRoleSchema } from '@/lib/db/services/role-service'
 import type { UpsertRoleResult } from './upsert-role-types'
 
 export async function upsertRoleAction(
@@ -40,7 +38,9 @@ export async function upsertRoleAction(
   }
 
   try {
-    const result = await upsertRoleByUserId(session.user.id, parsed.data)
+    const result = await withRlsDb(session.user.id, (tx) =>
+      upsertRole(tx, parsed.data)
+    )
     return { success: true, roleId: result.roleId }
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Failed to save role'

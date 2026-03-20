@@ -20,7 +20,18 @@
       "Bash(npx shadcn@latest add select --yes)",
       "Bash(pnpm add @radix-ui/react-alert-dialog -F web)",
       "WebFetch(domain:orm.drizzle.team)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(npx tsc --noEmit -p apps/web/tsconfig.json)",
+      "Bash(npx eslint apps/web/lib/db/queries/users.ts apps/web/lib/db/services/role-service.ts apps/web/lib/db/services/experience-service.ts apps/web/lib/db/services/user-service.ts apps/web/lib/db/queries/plans.ts)",
+      "Bash(npx eslint --stdin --stdin-filename apps/web/lib/db/queries/test.ts)",
+      "Bash(echo \"import { db } from ''@/lib/db/client'':*)",
+      "Bash(npx eslint apps/web/lib/db/queries/_test_lint.ts)",
+      "Bash(/Users/romainjulien/development/apply-mate/apps/web/lib/db/queries/_test_lint.ts:*)",
+      "Bash(npx eslint lib/db/queries/_test_lint.ts)",
+      "Bash(npx eslint lib/db/services/user-service.ts)",
+      "Bash(npx eslint lib/db/queries/plans.ts)",
+      "Bash(npx eslint lib/db/services/role-service.ts lib/db/services/experience-service.ts lib/db/queries/users.ts)",
+      "Bash(npx eslint lib/db/services/plan-service.ts app/api/graphql/schema/plan.ts)"
     ]
   }
 }

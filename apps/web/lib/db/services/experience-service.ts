@@ -1,11 +1,11 @@
-import { db } from '@/lib/db/client'
+import type { RlsTransaction } from '@/lib/db/rls'
 import {
   userExperienceLearning,
   userExperienceProfiles,
   userExperienceRoleProjects,
   userExperienceRoles,
 } from '@/lib/db/schema'
-import { desc, eq, inArray } from 'drizzle-orm'
+import { desc, eq, inArray, sql } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
 import {
@@ -19,7 +19,7 @@ export {
   keyMetricsSchema,
   upsertRoleSchema,
   upsertRoleProjectSchema,
-  upsertRoleByUserId,
+  upsertRole,
   buildRoleValues,
   type UpsertRoleInput,
 } from './role-service'
@@ -83,26 +83,22 @@ export type SaveExperienceInput = {
   rawPayload?: Record<string, unknown> | null
 }
 
-export async function getExperienceProfileByUserId(
-  userId: string
+export async function getExperienceProfile(
+  tx: RlsTransaction
 ): Promise<ExperienceProfileWithRelations | null> {
-  const [profile] = await db
-    .select()
-    .from(userExperienceProfiles)
-    .where(eq(userExperienceProfiles.userId, userId))
-    .limit(1)
+  const [profile] = await tx.select().from(userExperienceProfiles).limit(1)
 
   if (!profile) {
     return null
   }
 
-  const roles = await db
+  const roles = await tx
     .select()
     .from(userExperienceRoles)
     .where(eq(userExperienceRoles.profileId, profile.id))
     .orderBy(desc(userExperienceRoles.startDate))
 
-  const learning = await db
+  const learning = await tx
     .select()
     .from(userExperienceLearning)
     .where(eq(userExperienceLearning.profileId, profile.id))
@@ -115,7 +111,7 @@ export async function getExperienceProfileByUserId(
   >()
 
   if (roleIds.length > 0) {
-    const projects = await db
+    const projects = await tx
       .select()
       .from(userExperienceRoleProjects)
       .where(inArray(userExperienceRoleProjects.roleId, roleIds))
@@ -140,19 +136,20 @@ export async function getExperienceProfileByUserId(
   }
 }
 
-export async function saveExperienceByUserId(
-  userId: string,
+export async function saveExperience(
+  tx: RlsTransaction,
   input: SaveExperienceInput
 ): Promise<{ profileId: string; rolesCount: number; learningCount: number }> {
   const profile = insertProfileSchema.parse(input.profile)
   const roles = insertRoleSchema.array().parse(input.roles ?? [])
   const learning = insertLearningSchema.array().parse(input.learning ?? [])
+  const currentUserId = sql<string>`current_setting('app.current_user_id', true)::uuid`
 
-  return db.transaction(async (tx) => {
-    const [upsertedProfile] = await tx
+  return tx.transaction(async (stx) => {
+    const [upsertedProfile] = await stx
       .insert(userExperienceProfiles)
       .values({
-        userId,
+        userId: currentUserId,
         headline: profile.headline ?? null,
         summary: profile.summary ?? null,
         location: profile.location ?? null,
@@ -189,7 +186,7 @@ export async function saveExperienceByUserId(
 
     const profileId = upsertedProfile.id
 
-    const existingRoles = await tx
+    const existingRoles = await stx
       .select({
         id: userExperienceRoles.id,
       })
@@ -198,15 +195,15 @@ export async function saveExperienceByUserId(
 
     const existingRoleIds = existingRoles.map((role) => role.id)
     if (existingRoleIds.length > 0) {
-      await tx
+      await stx
         .delete(userExperienceRoleProjects)
         .where(inArray(userExperienceRoleProjects.roleId, existingRoleIds))
-      await tx
+      await stx
         .delete(userExperienceRoles)
         .where(inArray(userExperienceRoles.id, existingRoleIds))
     }
 
-    const existingLearning = await tx
+    const existingLearning = await stx
       .select({
         id: userExperienceLearning.id,
       })
@@ -215,14 +212,14 @@ export async function saveExperienceByUserId(
 
     const existingLearningIds = existingLearning.map((entry) => entry.id)
     if (existingLearningIds.length > 0) {
-      await tx
+      await stx
         .delete(userExperienceLearning)
         .where(inArray(userExperienceLearning.id, existingLearningIds))
     }
 
     let insertedRolesCount = 0
     if (roles.length > 0) {
-      const insertedRoles = await tx
+      const insertedRoles = await stx
         .insert(userExperienceRoles)
         .values(
           roles.map((role) => ({
@@ -241,7 +238,7 @@ export async function saveExperienceByUserId(
 
     let insertedLearningCount = 0
     if (learning.length > 0) {
-      const insertedLearning = await tx
+      const insertedLearning = await stx
         .insert(userExperienceLearning)
         .values(
           learning.map((entry) => ({

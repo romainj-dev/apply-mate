@@ -1,7 +1,8 @@
 'use server'
 
 import { auth } from '@/modules/session/server'
-import { deleteRoleByUserId } from '@/lib/db/services/role-service'
+import { withRlsDb } from '@/lib/db/rls'
+import { deleteRole } from '@/lib/db/services/role-service'
 import type { DeleteRoleResult } from './delete-role-types'
 
 export async function deleteRoleAction(
@@ -17,7 +18,7 @@ export async function deleteRoleAction(
   }
 
   try {
-    await deleteRoleByUserId(session.user.id, roleId)
+    await withRlsDb(session.user.id, (tx) => deleteRole(tx, roleId))
     return { success: true }
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Failed to delete role'

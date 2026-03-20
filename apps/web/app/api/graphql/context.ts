@@ -1,5 +1,4 @@
 import { auth } from '@/modules/session/server'
-import { db } from '@/lib/db/client'
 
 async function getSessionUser(): Promise<GraphqlContext['user']> {
   const session = await auth()
@@ -15,7 +14,6 @@ async function getSessionUser(): Promise<GraphqlContext['user']> {
 }
 
 export type GraphqlContext = {
-  db: typeof db
   user: {
     id: string
     email: string
@@ -27,9 +25,9 @@ export async function createGraphqlContext(
   request: Request
 ): Promise<GraphqlContext> {
   if (request.headers.get('Internal-Use-Cache') === 'true') {
-    return { db, user: null }
+    return { user: null }
   } else {
     const sessionUser = await getSessionUser()
-    return { db, user: sessionUser }
+    return { user: sessionUser }
   }
 }

@@ -1,4 +1,6 @@
+// eslint-disable-next-line no-restricted-imports
 import { db } from '@/lib/db/client'
+import type { RlsTransaction } from '@/lib/db/rls'
 import { users } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
@@ -28,6 +30,7 @@ export async function upsertUserFromOAuth(
 ): Promise<{ id: string }> {
   const parsedInput = upsertUserInputSchema.parse(input)
 
+  // Bootstrap writes run before a user-scoped RLS transaction exists.
   const [user] = await db
     .insert(users)
     .values({
@@ -56,9 +59,15 @@ export async function upsertUserFromOAuth(
   return { id: user.id }
 }
 
-export async function findUserById(userId: string): Promise<UserRecord | null> {
+/**
+ * RLS-aware — must be called inside a `withRlsDb` transaction.
+ */
+export async function findUserById(
+  tx: RlsTransaction,
+  userId: string
+): Promise<UserRecord | null> {
   const parsedUserId = userIdSchema.parse(userId)
-  const [user] = await db
+  const [user] = await tx
     .select()
     .from(users)
     .where(eq(users.id, parsedUserId))

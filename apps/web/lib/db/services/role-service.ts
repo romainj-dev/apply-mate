@@ -1,10 +1,10 @@
-import { db } from '@/lib/db/client'
+import type { RlsTransaction } from '@/lib/db/rls'
 import {
   userExperienceProfiles,
   userExperienceRoleProjects,
   userExperienceRoles,
 } from '@/lib/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
@@ -76,9 +76,7 @@ export const upsertSingleProjectSchema = upsertRoleProjectSchema.extend({
   roleId: z.string().uuid(),
 })
 
-export type UpsertSingleProjectInput = z.infer<
-  typeof upsertSingleProjectSchema
->
+export type UpsertSingleProjectInput = z.infer<typeof upsertSingleProjectSchema>
 
 /* ── Server-side derived field computation ─────────────────────────── */
 
@@ -211,57 +209,48 @@ export function buildRoleValues(input: {
 
 /* ── Service ──────────────────────────────────────────────────────── */
 
-export async function upsertRoleByUserId(
-  userId: string,
+export async function upsertRole(
+  tx: RlsTransaction,
   rawInput: UpsertRoleInput
 ): Promise<{ roleId: string }> {
   const input = upsertRoleSchema.parse(rawInput)
 
-  return db.transaction(async (tx) => {
-    const [profile] = await tx
-      .select({ id: userExperienceProfiles.id })
-      .from(userExperienceProfiles)
-      .where(eq(userExperienceProfiles.userId, userId))
-      .limit(1)
-
-    if (!profile) {
-      throw new Error('Experience profile not found')
-    }
-
+  return tx.transaction(async (stx) => {
     const roleValues = buildRoleValues(input)
 
     let roleId: string
 
     if (input.id) {
-      // Verify the role belongs to this user's profile
-      const [existing] = await tx
-        .select({ id: userExperienceRoles.id })
-        .from(userExperienceRoles)
-        .where(
-          and(
-            eq(userExperienceRoles.id, input.id),
-            eq(userExperienceRoles.profileId, profile.id)
-          )
-        )
-        .limit(1)
-
-      if (!existing) {
-        throw new Error('Role not found')
-      }
-
-      await tx
+      // RLS ensures the UPDATE only affects the current user's own roles
+      const [updated] = await stx
         .update(userExperienceRoles)
         .set(roleValues)
         .where(eq(userExperienceRoles.id, input.id))
+        .returning({ id: userExperienceRoles.id })
+
+      if (!updated) {
+        throw new Error('Role not found')
+      }
 
       roleId = input.id
 
       // Remove existing projects for re-insert
-      await tx
+      await stx
         .delete(userExperienceRoleProjects)
         .where(eq(userExperienceRoleProjects.roleId, roleId))
     } else {
-      const [inserted] = await tx
+      // TODO send profile id to the service and remove this query
+      // Currently use the single visible profile inside the RLS-scoped transaction.
+      const [profile] = await stx
+        .select({ id: userExperienceProfiles.id })
+        .from(userExperienceProfiles)
+        .limit(1)
+
+      if (!profile) {
+        throw new Error('Experience profile not found')
+      }
+
+      const [inserted] = await stx
         .insert(userExperienceRoles)
         .values({ profileId: profile.id, ...roleValues })
         .returning({ id: userExperienceRoles.id })
@@ -275,7 +264,7 @@ export async function upsertRoleByUserId(
 
     // Insert projects
     if (input.projects.length > 0) {
-      await tx.insert(userExperienceRoleProjects).values(
+      await stx.insert(userExperienceRoleProjects).values(
         input.projects.map((p) => ({
           roleId,
           title: p.title,
@@ -293,81 +282,36 @@ export async function upsertRoleByUserId(
 
 /* ── Delete role ─────────────────────────────────────────────────── */
 
-export async function deleteRoleByUserId(
-  userId: string,
+export async function deleteRole(
+  tx: RlsTransaction,
   roleId: string
 ): Promise<void> {
-  await db.transaction(async (tx) => {
-    const [profile] = await tx
-      .select({ id: userExperienceProfiles.id })
-      .from(userExperienceProfiles)
-      .where(eq(userExperienceProfiles.userId, userId))
-      .limit(1)
-
-    if (!profile) {
-      throw new Error('Experience profile not found')
-    }
-
-    const [existing] = await tx
-      .select({ id: userExperienceRoles.id })
-      .from(userExperienceRoles)
-      .where(
-        and(
-          eq(userExperienceRoles.id, roleId),
-          eq(userExperienceRoles.profileId, profile.id)
-        )
-      )
-      .limit(1)
-
-    if (!existing) {
-      throw new Error('Role not found')
-    }
-
-    await tx
+  await tx.transaction(async (stx) => {
+    // RLS ensures only the current user's projects/roles are affected
+    await stx
       .delete(userExperienceRoleProjects)
       .where(eq(userExperienceRoleProjects.roleId, roleId))
 
-    await tx
+    const deleted = await stx
       .delete(userExperienceRoles)
       .where(eq(userExperienceRoles.id, roleId))
+      .returning({ id: userExperienceRoles.id })
+
+    if (deleted.length === 0) {
+      throw new Error('Role not found')
+    }
   })
 }
 
 /* ── Single-project upsert ───────────────────────────────────────── */
 
-export async function upsertProjectByUserId(
-  userId: string,
+export async function upsertProject(
+  tx: RlsTransaction,
   rawInput: UpsertSingleProjectInput
 ): Promise<{ projectId: string }> {
   const input = upsertSingleProjectSchema.parse(rawInput)
 
-  return db.transaction(async (tx) => {
-    // Verify user owns the role
-    const [profile] = await tx
-      .select({ id: userExperienceProfiles.id })
-      .from(userExperienceProfiles)
-      .where(eq(userExperienceProfiles.userId, userId))
-      .limit(1)
-
-    if (!profile) {
-      throw new Error('Experience profile not found')
-    }
-
-    const [role] = await tx
-      .select({ id: userExperienceRoles.id })
-      .from(userExperienceRoles)
-      .where(
-        and(
-          eq(userExperienceRoles.id, input.roleId),
-          eq(userExperienceRoles.profileId, profile.id)
-        )
-      )
-      .limit(1)
-
-    if (!role) {
-      throw new Error('Role not found')
-    }
-
+  return tx.transaction(async (stx) => {
     const projectValues = {
       title: input.title,
       period: input.period ?? null,
@@ -377,31 +321,33 @@ export async function upsertProjectByUserId(
     }
 
     if (input.id) {
-      // Verify the project belongs to this role
-      const [existing] = await tx
-        .select({ id: userExperienceRoleProjects.id })
-        .from(userExperienceRoleProjects)
-        .where(
-          and(
-            eq(userExperienceRoleProjects.id, input.id),
-            eq(userExperienceRoleProjects.roleId, input.roleId)
-          )
-        )
-        .limit(1)
-
-      if (!existing) {
-        throw new Error('Project not found')
-      }
-
-      await tx
+      // RLS ensures the UPDATE only affects the current user's own projects
+      const [updated] = await stx
         .update(userExperienceRoleProjects)
         .set(projectValues)
         .where(eq(userExperienceRoleProjects.id, input.id))
+        .returning({ id: userExperienceRoleProjects.id })
+
+      if (!updated) {
+        throw new Error('Project not found')
+      }
 
       return { projectId: input.id }
     }
 
-    const [inserted] = await tx
+    // Verify role exists (RLS ensures only own roles are visible)
+    const [role] = await stx
+      .select({ id: userExperienceRoles.id })
+      .from(userExperienceRoles)
+      .where(eq(userExperienceRoles.id, input.roleId))
+      .limit(1)
+
+    if (!role) {
+      throw new Error('Role not found')
+    }
+
+    // RLS WITH CHECK ensures roleId belongs to the current user's chain
+    const [inserted] = await stx
       .insert(userExperienceRoleProjects)
       .values({ roleId: input.roleId, ...projectValues })
       .returning({ id: userExperienceRoleProjects.id })

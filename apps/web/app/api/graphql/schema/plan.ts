@@ -1,4 +1,4 @@
-import { listPlans } from '@/lib/db/queries/plans'
+import { listPlans } from '@/lib/db/services/plan-service'
 import type { InferSelectModel } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
 import { builder } from './builder'

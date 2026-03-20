@@ -1,4 +1,5 @@
 import { findUserById } from '@/lib/db/services/user-service'
+import { withRlsDb } from '@/lib/db/rls'
 import type { InferSelectModel } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
 import { builder } from './builder'
@@ -28,7 +29,9 @@ builder.queryField('currentUser', (t) =>
       if (!context.user?.id) {
         return null
       }
-      return findUserById(context.user.id)
+      return withRlsDb(context.user.id, (tx) =>
+        findUserById(tx, context.user!.id)
+      )
     },
   })
 )
@@ -43,11 +46,11 @@ builder.queryField('user', (t) =>
       if (!context.user?.id) {
         throw new Error('Unauthorized')
       }
-      if (context.user.id !== args.id) {
-        throw new Error('Cannot access other users')
-      }
 
-      const user = await findUserById(args.id)
+      // RLS ensures only the current user's own row is visible
+      const user = await withRlsDb(context.user.id, (tx) =>
+        findUserById(tx, args.id as string)
+      )
       if (!user) {
         throw new Error(`User ${args.id} not found`)
       }

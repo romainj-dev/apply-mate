@@ -1,8 +1,9 @@
 'use server'
 
 import { auth } from '@/modules/session/server'
+import { withRlsDb } from '@/lib/db/rls'
 import {
-  upsertProjectByUserId,
+  upsertProject,
   upsertSingleProjectSchema,
 } from '@/lib/db/services/role-service'
 import type { UpsertProjectResult } from './upsert-project-types'
@@ -40,7 +41,9 @@ export async function upsertProjectAction(
   }
 
   try {
-    const result = await upsertProjectByUserId(session.user.id, parsed.data)
+    const result = await withRlsDb(session.user.id, (tx) =>
+      upsertProject(tx, parsed.data)
+    )
     return { success: true, projectId: result.projectId }
   } catch (err) {
     const message =

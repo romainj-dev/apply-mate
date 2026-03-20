@@ -70,4 +70,37 @@ export default defineConfig([
       ],
     },
   },
+  /*
+   * RLS boundary guardrail.
+   *
+   * App code must NOT import the shared db client directly; user-scoped access
+   * must enter through withRlsDb() and pass an RlsTransaction downward.
+   *
+   * The only global exceptions are the DB infrastructure files themselves:
+   *   - lib/db/client.ts → defines the shared client
+   *   - lib/db/rls.ts    → wraps the shared client with RLS context
+   *
+   * One-off privileged or public call sites must use a local eslint disable so
+   * the exception stays explicit at the point of use.
+   */
+  {
+    files: ['**/*.{ts,tsx}'],
+    ignores: ['lib/db/client.ts', 'lib/db/rls.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/lib/db/client',
+              message:
+                'Direct db imports bypass RLS. Accept an RlsTransaction ' +
+                'parameter and use withRlsDb() at the entry point instead. ' +
+                'See docs/auth-session-access.md.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ])
