@@ -1,14 +1,7 @@
-import {
-  useReducer,
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-  useActionState,
-  useTransition,
-} from 'react'
-import { useQueryClient } from '@/modules/requests/client/hooks'
+import { useReducer, useCallback, useState, useEffect, useRef } from 'react'
+import { useMutation, useQueryClient } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
+import { UpsertProjectDocument } from '@/graphql/generated'
 import type { ExperienceRoleProject } from '../data-types'
 import {
   projectFormReducer,
@@ -16,8 +9,6 @@ import {
   type ProjectDrawerFormState,
   type ProjectFormAction,
 } from './project-form-state'
-import { upsertProjectAction } from '@/app/dashboard/my-experience/_actions/upsert-project'
-import { INITIAL_UPSERT_PROJECT_STATE } from '@/app/dashboard/my-experience/_actions/upsert-project-types'
 
 /* ── Hook ──────────────────────────────────────────────────────────── */
 
@@ -64,23 +55,14 @@ export function useProjectForm({
     string[]
   > | null>(null)
 
-  const [actionResult, formAction] = useActionState(
-    upsertProjectAction,
-    INITIAL_UPSERT_PROJECT_STATE
-  )
-  const [isTransitioning, startTransition] = useTransition()
-
-  // On success: invalidate cache and close drawer
-  const prevResultRef = useRef(actionResult)
-  useEffect(() => {
-    if (actionResult !== prevResultRef.current && actionResult.success) {
+  const { mutate, isPending, error } = useMutation(UpsertProjectDocument, {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.experienceProfile.get(),
       })
       onClose()
-    }
-    prevResultRef.current = actionResult
-  }, [actionResult, queryClient, onClose])
+    },
+  })
 
   const buildInput = useCallback(() => {
     return {
@@ -104,23 +86,18 @@ export function useProjectForm({
     }
 
     setClientErrors(null)
+    mutate({ input })
+  }, [buildInput, mutate])
 
-    const fd = new FormData()
-    fd.set('payload', JSON.stringify(input))
-    startTransition(() => {
-      formAction(fd)
-    })
-  }, [buildInput, formAction, startTransition])
-
-  const fieldErrors = clientErrors ?? actionResult.fieldErrors ?? null
+  const fieldErrors = clientErrors ?? null
 
   return {
     state,
     dispatch,
     handleSubmit,
-    isPending: isTransitioning,
+    isPending,
     isEditMode,
     fieldErrors,
-    serverError: actionResult.error ?? null,
+    serverError: error?.message ?? null,
   }
 }

@@ -1,14 +1,7 @@
-import {
-  useReducer,
-  useCallback,
-  useState,
-  useEffect,
-  useRef,
-  useActionState,
-  useTransition,
-} from 'react'
-import { useQueryClient } from '@/modules/requests/client/hooks'
+import { useReducer, useCallback, useState, useEffect, useRef } from 'react'
+import { useMutation, useQueryClient } from '@/modules/requests/client/hooks'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
+import { UpsertRoleDocument } from '@/graphql/generated'
 import type { ExperienceRole } from '../data-types'
 import {
   roleFormReducer,
@@ -16,8 +9,6 @@ import {
   type RoleFormState,
   type RoleFormAction,
 } from './form-state'
-import { upsertRoleAction } from '@/app/dashboard/my-experience/_actions/upsert-role'
-import { INITIAL_UPSERT_ROLE_STATE } from '@/app/dashboard/my-experience/_actions/upsert-role-types'
 
 /* ── Helpers ──────────────────────────────────────────────────────── */
 
@@ -80,23 +71,14 @@ export function useRoleForm({
     string[]
   > | null>(null)
 
-  const [actionResult, formAction] = useActionState(
-    upsertRoleAction,
-    INITIAL_UPSERT_ROLE_STATE
-  )
-  const [isTransitioning, startTransition] = useTransition()
-
-  // On success: invalidate cache and close drawer
-  const prevResultRef = useRef(actionResult)
-  useEffect(() => {
-    if (actionResult !== prevResultRef.current && actionResult.success) {
+  const { mutate, isPending, error } = useMutation(UpsertRoleDocument, {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.experienceProfile.get(),
       })
       onClose()
-    }
-    prevResultRef.current = actionResult
-  }, [actionResult, queryClient, onClose])
+    },
+  })
 
   const buildInput = useCallback(() => {
     const keyMetrics = state.keyMetrics
@@ -139,7 +121,6 @@ export function useRoleForm({
     const input = buildInput()
 
     // Lightweight client-side check for required fields (instant feedback).
-    // Full Zod validation runs server-side in the action.
     const errors: Record<string, string[]> = {}
     if (!input.title.trim()) errors.title = ['Title is required']
     if (!input.company.trim()) errors.company = ['Company is required']
@@ -149,24 +130,18 @@ export function useRoleForm({
     }
 
     setClientErrors(null)
+    mutate({ input })
+  }, [buildInput, mutate])
 
-    const fd = new FormData()
-    fd.set('payload', JSON.stringify(input))
-    startTransition(() => {
-      formAction(fd)
-    })
-  }, [buildInput, formAction, startTransition])
-
-  // Merge client errors (priority) with server field errors
-  const fieldErrors = clientErrors ?? actionResult.fieldErrors ?? null
+  const fieldErrors = clientErrors ?? null
 
   return {
     state,
     dispatch,
     handleSubmit,
-    isPending: isTransitioning,
+    isPending,
     isEditMode,
     fieldErrors,
-    serverError: actionResult.error ?? null,
+    serverError: error?.message ?? null,
   }
 }

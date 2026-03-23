@@ -2,9 +2,8 @@ import {
   getExperienceProfile,
   saveExperience,
   upsertRole,
-  type SaveExperienceInput,
-  type UpsertRoleInput,
 } from '@/lib/db/services/experience-service'
+import { deleteRole, upsertProject } from '@/lib/db/services/role-service'
 import { withRlsDb } from '@/lib/db/rls'
 import type { InferSelectModel } from 'drizzle-orm'
 import * as schema from '@/lib/db/schema'
@@ -19,7 +18,7 @@ type LearningRow = InferSelectModel<typeof schema.userExperienceLearning>
 
 type KeyMetricRow = {
   type: string
-  customType?: string
+  customType?: string | null
   value: string
   text: string
 }
@@ -37,7 +36,7 @@ KeyMetricRef.implement({
 
 type TechStackItemRow = {
   value: string
-  customLabel?: string
+  customLabel?: string | null
 }
 
 const TechStackItemRef =
@@ -47,6 +46,22 @@ TechStackItemRef.implement({
   fields: (t) => ({
     value: t.exposeString('value'),
     customLabel: t.exposeString('customLabel', { nullable: true }),
+  }),
+})
+
+const TechStackItemInputRef = builder.inputType('TechStackItemInput', {
+  fields: (t) => ({
+    value: t.string({ required: true }),
+    customLabel: t.string(),
+  }),
+})
+
+const KeyMetricInputRef = builder.inputType('KeyMetricInput', {
+  fields: (t) => ({
+    type: t.string({ required: true }),
+    customType: t.string(),
+    value: t.string({ required: true }),
+    text: t.string({ required: true }),
   }),
 })
 
@@ -66,7 +81,7 @@ ExperienceRoleProjectRef.implement({
     achievements: t.exposeStringList('achievements'),
     techStack: t.field({
       type: [TechStackItemRef],
-      resolve: (project) => (project.techStack as TechStackItemRow[]) ?? [],
+      resolve: (project) => project.techStack ?? [],
     }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
@@ -99,7 +114,7 @@ ExperienceRoleRef.implement({
     summary: t.exposeString('summary', { nullable: true }),
     techStack: t.field({
       type: [TechStackItemRef],
-      resolve: (role) => (role.techStack as TechStackItemRow[]) ?? [],
+      resolve: (role) => role.techStack ?? [],
     }),
     methodologies: t.exposeStringList('methodologies'),
     teamStructure: t.exposeString('teamStructure', { nullable: true }),
@@ -112,7 +127,7 @@ ExperienceRoleRef.implement({
     keyMetrics: t.field({
       type: [KeyMetricRef],
       nullable: true,
-      resolve: (role) => (role.keyMetrics as KeyMetricRow[] | null) ?? null,
+      resolve: (role) => role.keyMetrics ?? null,
     }),
     createdAt: t.expose('createdAt', { type: 'DateTime' }),
     updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
@@ -240,13 +255,13 @@ const ExperienceRoleInput = builder.inputType('ExperienceRoleInput', {
     durationLabel: t.string(),
     status: t.string(),
     summary: t.string(),
-    techStack: t.field({ type: 'JSONObject' }),
+    techStack: t.field({ type: [TechStackItemInputRef] }),
     methodologies: t.stringList(),
     teamStructure: t.string(),
     keyAchievements: t.stringList(),
     missingDetails: t.string(),
     customFields: t.field({ type: 'JSONObject' }),
-    keyMetrics: t.field({ type: 'JSONObject' }),
+    keyMetrics: t.field({ type: [KeyMetricInputRef] }),
   }),
 })
 
@@ -280,7 +295,7 @@ const UpsertRoleProjectInput = builder.inputType('UpsertRoleProjectInput', {
     period: t.string(),
     description: t.string(),
     achievements: t.stringList(),
-    techStack: t.field({ type: 'JSONObject' }),
+    techStack: t.field({ type: [TechStackItemInputRef] }),
   }),
 })
 
@@ -295,11 +310,11 @@ const UpsertRoleInputRef = builder.inputType('UpsertRoleInput', {
     endDate: t.string(),
     isCurrent: t.boolean(),
     summary: t.string(),
-    techStack: t.field({ type: 'JSONObject' }),
+    techStack: t.field({ type: [TechStackItemInputRef] }),
     methodologies: t.stringList(),
     teamStructure: t.string(),
     keyAchievements: t.stringList(),
-    keyMetrics: t.field({ type: 'JSONObject' }),
+    keyMetrics: t.field({ type: [KeyMetricInputRef] }),
     projects: t.field({ type: [UpsertRoleProjectInput] }),
   }),
 })
@@ -311,6 +326,42 @@ const UpsertRoleMutationResultRef = builder.objectRef<{ roleId: string }>(
 UpsertRoleMutationResultRef.implement({
   fields: (t) => ({
     roleId: t.exposeID('roleId'),
+  }),
+})
+
+/* ── Upsert Project Input ──────────────────────────────────────────── */
+
+const UpsertProjectInputRef = builder.inputType('UpsertProjectInput', {
+  fields: (t) => ({
+    id: t.string(),
+    roleId: t.string({ required: true }),
+    title: t.string({ required: true }),
+    description: t.string(),
+    period: t.string(),
+    techStack: t.field({ type: [TechStackItemInputRef] }),
+    achievements: t.stringList(),
+  }),
+})
+
+const UpsertProjectMutationResultRef = builder.objectRef<{
+  projectId: string
+}>('UpsertProjectMutationResult')
+
+UpsertProjectMutationResultRef.implement({
+  fields: (t) => ({
+    projectId: t.exposeID('projectId'),
+  }),
+})
+
+/* ── Delete Role Result ───────────────────────────────────────────── */
+
+const DeleteRoleMutationResultRef = builder.objectRef<{
+  success: boolean
+}>('DeleteRoleMutationResult')
+
+DeleteRoleMutationResultRef.implement({
+  fields: (t) => ({
+    success: t.exposeBoolean('success'),
   }),
 })
 
@@ -341,11 +392,7 @@ builder.mutationField('saveExperience', (t) =>
         throw new Error('Unauthorized')
       }
 
-      // TODO(ts-migration): Pothos input type and SaveExperienceInput are structurally equivalent
-      // but Pothos's generated type does not match directly — bridge via unknown
-      return withRlsDb(context.user.id, (tx) =>
-        saveExperience(tx, args.input as unknown as SaveExperienceInput)
-      )
+      return withRlsDb(context.user.id, (tx) => saveExperience(tx, args.input))
     },
   })
 )
@@ -361,11 +408,42 @@ builder.mutationField('upsertRole', (t) =>
         throw new Error('Unauthorized')
       }
 
-      // TODO(ts-migration): Pothos input type and UpsertRoleInput are structurally equivalent but
-      // Pothos's generated type does not match directly — bridge via unknown.
-      return withRlsDb(context.user.id, (tx) =>
-        upsertRole(tx, args.input as unknown as UpsertRoleInput)
+      return withRlsDb(context.user.id, (tx) => upsertRole(tx, args.input))
+    },
+  })
+)
+
+builder.mutationField('upsertProject', (t) =>
+  t.field({
+    type: UpsertProjectMutationResultRef,
+    args: {
+      input: t.arg({ type: UpsertProjectInputRef, required: true }),
+    },
+    resolve: async (_root, args, context) => {
+      if (!context.user?.id) {
+        throw new Error('Unauthorized')
+      }
+
+      return withRlsDb(context.user.id, (tx) => upsertProject(tx, args.input))
+    },
+  })
+)
+
+builder.mutationField('deleteRole', (t) =>
+  t.field({
+    type: DeleteRoleMutationResultRef,
+    args: {
+      roleId: t.arg.id({ required: true }),
+    },
+    resolve: async (_root, args, context) => {
+      if (!context.user?.id) {
+        throw new Error('Unauthorized')
+      }
+
+      await withRlsDb(context.user.id, (tx) =>
+        deleteRole(tx, String(args.roleId))
       )
+      return { success: true }
     },
   })
 )

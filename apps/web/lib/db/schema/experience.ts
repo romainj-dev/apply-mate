@@ -83,7 +83,7 @@ export const userExperienceRoles = pgTable(
     status: experienceStatusEnum('status').default('incomplete'),
     summary: text('summary'),
     techStack: jsonb('tech_stack')
-      .$type<Array<{ value: string; customLabel?: string }>>()
+      .$type<Array<{ value: string; customLabel?: string | null }>>()
       .default([])
       .notNull(),
     methodologies: text('methodologies')
@@ -104,7 +104,7 @@ export const userExperienceRoles = pgTable(
     > | null>(),
     keyMetrics: jsonb('key_metrics').$type<Array<{
       type: string
-      customType?: string
+      customType?: string | null
       value: string
       text: string
     }> | null>(),
@@ -145,7 +145,7 @@ export const userExperienceRoleProjects = pgTable(
       .default([])
       .notNull(),
     techStack: jsonb('tech_stack')
-      .$type<Array<{ value: string; customLabel?: string }>>()
+      .$type<Array<{ value: string; customLabel?: string | null }>>()
       .default([])
       .notNull(),
     createdAt: timestamp('created_at', {

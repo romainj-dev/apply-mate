@@ -14,10 +14,10 @@ import {
   AlertDialogCancel,
 } from '@/components/ui/AlertDialog'
 import { Footer, SaveButton } from './DrawerFooter.styles'
-import { useCallback, useTransition } from 'react'
-import { deleteRoleAction } from '@/app/dashboard/my-experience/_actions/delete-role'
+import { useCallback } from 'react'
+import { DeleteRoleDocument } from '@/graphql/generated'
 import { queryKeys } from '@/modules/requests/shared/query-keys'
-import { useQueryClient } from '@/modules/requests/client/hooks'
+import { useMutation, useQueryClient } from '@/modules/requests/client/hooks'
 
 type UseDeleteOptions = {
   roleId?: string
@@ -25,21 +25,24 @@ type UseDeleteOptions = {
 }
 
 function useDelete({ roleId, onDeleted }: UseDeleteOptions) {
-  const [isPendingDelete, startTransition] = useTransition()
   const queryClient = useQueryClient()
 
-  const handleDelete = useCallback(() => {
-    if (!roleId) return
-    startTransition(async () => {
-      const result = await deleteRoleAction(roleId)
-      if (result.success) {
+  const { mutate, isPending: isPendingDelete } = useMutation(
+    DeleteRoleDocument,
+    {
+      onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: queryKeys.experienceProfile.get(),
         })
         onDeleted()
-      }
-    })
-  }, [roleId, startTransition, queryClient, onDeleted])
+      },
+    }
+  )
+
+  const handleDelete = useCallback(() => {
+    if (!roleId) return
+    mutate({ roleId })
+  }, [roleId, mutate])
 
   return {
     handleDelete,

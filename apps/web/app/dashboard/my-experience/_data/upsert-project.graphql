@@ -1,0 +1,5 @@
+mutation UpsertProject($input: UpsertProjectInput!) {
+  upsertProject(input: $input) {
+    projectId
+  }
+}

@@ -5,78 +5,6 @@ import {
   userExperienceRoles,
 } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { createInsertSchema } from 'drizzle-zod'
-import { z } from 'zod'
-
-/* ── Jsonb overrides (drizzle-zod can't infer .$type<>) ───────────── */
-
-export const techStackSchema = z
-  .array(
-    z.object({
-      value: z.string(),
-      customLabel: z.string().optional(),
-    })
-  )
-  .default([])
-
-export const keyMetricsSchema = z
-  .array(
-    z.object({
-      type: z.string(),
-      customType: z.string().optional(),
-      value: z.string(),
-      text: z.string(),
-    })
-  )
-  .nullable()
-  .optional()
-
-/* ── Schemas (derived from Drizzle) ───────────────────────────────── */
-
-export const upsertRoleProjectSchema = createInsertSchema(
-  userExperienceRoleProjects,
-  {
-    techStack: techStackSchema,
-    title: z.string().min(1),
-  }
-).pick({
-  title: true,
-  period: true,
-  description: true,
-  achievements: true,
-  techStack: true,
-})
-
-export const upsertRoleSchema = createInsertSchema(userExperienceRoles, {
-  techStack: techStackSchema,
-  keyMetrics: keyMetricsSchema,
-  title: z.string().min(1),
-  company: z.string().min(1),
-})
-  .omit({
-    id: true,
-    profileId: true,
-    createdAt: true,
-    updatedAt: true,
-    periodLabel: true,
-    durationLabel: true,
-    status: true,
-    missingDetails: true,
-    customFields: true,
-  })
-  .extend({
-    id: z.string().uuid().nullable().optional(),
-    projects: z.array(upsertRoleProjectSchema).default([]),
-  })
-
-export type UpsertRoleInput = z.infer<typeof upsertRoleSchema>
-
-export const upsertSingleProjectSchema = upsertRoleProjectSchema.extend({
-  id: z.string().uuid().nullable().optional(),
-  roleId: z.string().uuid(),
-})
-
-export type UpsertSingleProjectInput = z.infer<typeof upsertSingleProjectSchema>
 
 /* ── Server-side derived field computation ─────────────────────────── */
 
@@ -162,7 +90,15 @@ type RoleValues = Omit<
   'id' | 'profileId' | 'createdAt' | 'updatedAt'
 >
 
-export function buildRoleValues(input: {
+type TechStackItem = { value: string; customLabel?: string | null }
+type KeyMetricItem = {
+  type: string
+  customType?: string | null
+  value: string
+  text: string
+}
+
+type BuildRoleValuesInput = {
   title: string
   company: string
   employmentType?: string | null
@@ -171,17 +107,14 @@ export function buildRoleValues(input: {
   endDate?: string | null
   isCurrent?: boolean | null
   summary?: string | null
-  techStack?: Array<{ value: string; customLabel?: string }> | null
+  techStack?: TechStackItem[] | null
   methodologies?: string[] | null
   teamStructure?: string | null
   keyAchievements?: string[] | null
-  keyMetrics?: Array<{
-    type: string
-    customType?: string
-    value: string
-    text: string
-  }> | null
-}): RoleValues {
+  keyMetrics?: KeyMetricItem[] | null
+}
+
+export function buildRoleValues(input: BuildRoleValuesInput): RoleValues {
   const isCurrent = input.isCurrent ?? false
   return {
     title: input.title,
@@ -209,12 +142,21 @@ export function buildRoleValues(input: {
 
 /* ── Service ──────────────────────────────────────────────────────── */
 
+type UpsertRoleServiceInput = BuildRoleValuesInput & {
+  id?: string | null
+  projects?: Array<{
+    title: string
+    period?: string | null
+    description?: string | null
+    achievements?: string[] | null
+    techStack?: TechStackItem[] | null
+  }> | null
+}
+
 export async function upsertRole(
   tx: RlsTransaction,
-  rawInput: UpsertRoleInput
+  input: UpsertRoleServiceInput
 ): Promise<{ roleId: string }> {
-  const input = upsertRoleSchema.parse(rawInput)
-
   return tx.transaction(async (stx) => {
     const roleValues = buildRoleValues(input)
 
@@ -263,9 +205,10 @@ export async function upsertRole(
     }
 
     // Insert projects
-    if (input.projects.length > 0) {
+    const projects = input.projects ?? []
+    if (projects.length > 0) {
       await stx.insert(userExperienceRoleProjects).values(
-        input.projects.map((p) => ({
+        projects.map((p) => ({
           roleId,
           title: p.title,
           period: p.period ?? null,
@@ -305,12 +248,20 @@ export async function deleteRole(
 
 /* ── Single-project upsert ───────────────────────────────────────── */
 
+type UpsertProjectServiceInput = {
+  id?: string | null
+  roleId: string
+  title: string
+  period?: string | null
+  description?: string | null
+  achievements?: string[] | null
+  techStack?: TechStackItem[] | null
+}
+
 export async function upsertProject(
   tx: RlsTransaction,
-  rawInput: UpsertSingleProjectInput
+  input: UpsertProjectServiceInput
 ): Promise<{ projectId: string }> {
-  const input = upsertSingleProjectSchema.parse(rawInput)
-
   return tx.transaction(async (stx) => {
     const projectValues = {
       title: input.title,

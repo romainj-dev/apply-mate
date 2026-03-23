@@ -7,7 +7,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "graphql:schema": "tsx --tsconfig ./tsconfig.json ./scripts/generate-graphql-schema.ts",
+    "graphql:schema": "tsx --conditions=react-server --tsconfig ./tsconfig.json ./scripts/generate-graphql-schema.ts",
     "codegen:graphql": "pnpm graphql:schema && graphql-codegen --config codegen.ts",
     "codegen:check": "pnpm codegen:graphql && git diff --exit-code -- graphql/schema.graphql graphql/generated/index.ts",
     "lint": "eslint .",

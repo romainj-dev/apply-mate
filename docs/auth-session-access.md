@@ -65,8 +65,8 @@ flowchart TB
 | ----------------- | ----------------------------------------------------- |
 | Protected pages   | Middleware matcher + `authorized` callback            |
 | Server Components | `getSession()` check before data access               |
-| Server Actions    | `auth()` check + `withRlsDb()` for DB operations     |
-| GraphQL API       | Per-resolver `context.user` check + `withRlsDb()`    |
+| Server Actions    | `auth()` check + `withRlsDb()` for DB operations      |
+| GraphQL API       | Per-resolver `context.user` check + `withRlsDb()`     |
 | Auth endpoints    | `/api/auth/*` — handled by NextAuth, public by design |
 
 ## GraphQL auth model
@@ -135,11 +135,11 @@ flowchart TB
 
 ### RLS policy summary
 
-| Table | Policy |
-| ----- | ------ |
-| `users` | Own row: `id = current_user_id` |
-| `user_experience_profiles` | Own profile: `user_id = current_user_id` |
-| `user_experience_roles` | Via profile ownership |
-| `user_experience_role_projects` | Via role → profile ownership |
-| `user_experience_learning` | Via profile ownership |
-| `plans` | Public read (`USING (true)`) |
+| Table                           | Policy                                   |
+| ------------------------------- | ---------------------------------------- |
+| `users`                         | Own row: `id = current_user_id`          |
+| `user_experience_profiles`      | Own profile: `user_id = current_user_id` |
+| `user_experience_roles`         | Via profile ownership                    |
+| `user_experience_role_projects` | Via role → profile ownership             |
+| `user_experience_learning`      | Via profile ownership                    |
+| `plans`                         | Public read (`USING (true)`)             |

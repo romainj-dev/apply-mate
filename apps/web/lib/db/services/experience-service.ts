@@ -8,21 +8,32 @@ import {
 import { desc, eq, inArray, sql } from 'drizzle-orm'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import {
-  techStackSchema,
-  keyMetricsSchema,
-  buildRoleValues,
-} from './role-service'
+import { buildRoleValues } from './role-service'
 
-export {
-  techStackSchema,
-  keyMetricsSchema,
-  upsertRoleSchema,
-  upsertRoleProjectSchema,
-  upsertRole,
-  buildRoleValues,
-  type UpsertRoleInput,
-} from './role-service'
+export { upsertRole, buildRoleValues } from './role-service'
+
+/* ── Jsonb overrides (drizzle-zod can't infer .$type<>) ───────────── */
+
+const techStackSchema = z
+  .array(
+    z.object({
+      value: z.string(),
+      customLabel: z.string().nullish(),
+    })
+  )
+  .default([])
+
+const keyMetricsSchema = z
+  .array(
+    z.object({
+      type: z.string(),
+      customType: z.string().nullish(),
+      value: z.string(),
+      text: z.string(),
+    })
+  )
+  .nullable()
+  .optional()
 
 const jsonbRecord = z.record(z.string(), z.unknown()).nullable().optional()
 
@@ -76,10 +87,12 @@ export type ExperienceProfileWithRelations = {
   learning: ExperienceLearningRecord[]
 }
 
+// saveExperience validates all sub-objects through zod .parse(),
+// so the input type accepts the shape Pothos sends (wider than zod-inferred types).
 export type SaveExperienceInput = {
-  profile: NormalizedProfile
-  roles?: NormalizedRole[] | null
-  learning?: NormalizedLearning[] | null
+  profile: Record<string, unknown>
+  roles?: Record<string, unknown>[] | null
+  learning?: Record<string, unknown>[] | null
   rawPayload?: Record<string, unknown> | null
 }
 

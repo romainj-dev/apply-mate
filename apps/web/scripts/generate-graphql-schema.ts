@@ -1,3 +1,11 @@
+/**
+ * GraphQL schema generator — extracts the Pothos schema to schema.graphql.
+ *
+ * IMPORTANT: This script must be invoked with `--conditions=react-server`
+ * (configured in the `graphql:schema` package.json script) so that
+ * `server-only` imports resolve to a no-op, matching Next.js behavior.
+ */
+
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'

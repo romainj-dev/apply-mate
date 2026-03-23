@@ -31,7 +31,12 @@
       "Bash(npx eslint lib/db/services/user-service.ts)",
       "Bash(npx eslint lib/db/queries/plans.ts)",
       "Bash(npx eslint lib/db/services/role-service.ts lib/db/services/experience-service.ts lib/db/queries/users.ts)",
-      "Bash(npx eslint lib/db/services/plan-service.ts app/api/graphql/schema/plan.ts)"
+      "Bash(npx eslint lib/db/services/plan-service.ts app/api/graphql/schema/plan.ts)",
+      "Bash(pnpm graphql:codegen:web)",
+      "Bash(pnpm --filter web install)",
+      "Bash(pnpm --filter web add -D server-only)",
+      "Bash(npm info tsx)",
+      "Bash(npx tsx --help)"
     ]
   }
 }
